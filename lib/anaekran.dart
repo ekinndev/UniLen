@@ -45,16 +45,12 @@ class AnaEkran extends StatelessWidget {
             )
           ],
         ),
-        SizedBox(
-          height: 15,
-        ),
         Expanded(
           child: ListView(
-      
-            padding: EdgeInsets.all(0),
+            padding: EdgeInsets.zero,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.only(left: 8.0),
+                padding: const EdgeInsets.only(left: 8.0,top: 15.0),
                 child: Align(
                     alignment: Alignment.topLeft,
                     child: Text(
@@ -67,11 +63,10 @@ class AnaEkran extends StatelessWidget {
                 height: 15,
               ),
               Padding(
-                padding: const EdgeInsets.only(left:8.0),
+                padding: const EdgeInsets.only(left: 8.0),
                 child: Wrap(
                   spacing: 15,
                   runSpacing: 15,
-                  
                   children: <Widget>[
                     DersButonu(
                         Icon(
@@ -141,7 +136,7 @@ class AnaEkran extends StatelessWidget {
                 height: 15,
               ),
               SizedBox(
-                height: ekranBoy*0.25,
+                height: ekranBoy * 0.25,
                 child: ListView.builder(
                   shrinkWrap: true,
                   itemBuilder: (ctx, i) => Container(
@@ -180,8 +175,6 @@ class AnaEkran extends StatelessWidget {
       ],
     );
   }
-
-  
 
   ClipOval graphButton() {
     return ClipOval(
