@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './anaekran.dart';
+import './screens/anaekran.dart';
+import './screens/ders_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -8,7 +9,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      
+      routes: {
+        DersGenelSecim.dersGenelSecimRoute:(ctx)=>DersGenelSecim(),
+      },
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(

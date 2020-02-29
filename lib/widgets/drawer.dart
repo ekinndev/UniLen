@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-
-import '../colors.dart';
+import '../screens/ders_screen.dart';
+import '../settings/colors.dart';
 
 class AnaDrawer extends StatelessWidget {
   @override
@@ -9,46 +9,49 @@ class AnaDrawer extends StatelessWidget {
     return Drawer(
       child: Column(
         children: <Widget>[
+          UserAccountsDrawerHeader(
+            margin: EdgeInsets.zero,
+            accountName: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  'Ekin Abalıoğlu',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Text('SAY'),
+                ),
+              ],
+            ),
+            accountEmail: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text('ekinabalioglu@gmail.com'),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Text('Mezun'),
+                ),
+              ],
+            ),
+            currentAccountPicture: CircleAvatar(
+              backgroundImage:
+                  NetworkImage('https://ekinabalioglu.com/resimler/ekin.jpg'),
+            ),
+            decoration: BoxDecoration(
+              color: DanColor.felseDinRenk  ,
+            ),
+          ),
           Expanded(
             child: ListView(
+              padding: EdgeInsets.zero,
               children: <Widget>[
-                UserAccountsDrawerHeader(
-                    accountName: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          'Ekin Abalıoğlu',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: Text('SAY'),
-                        ),
-                      ],
-                    ),
-                    accountEmail: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text('ekinabalioglu@gmail.com'),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: Text('Mezun'),
-                        ),
-                      ],
-                    ),
-                    currentAccountPicture: CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            'https://ekinabalioglu.com/resimler/ekin.jpg'),
-                      ),
-                    decoration: BoxDecoration(
-                      color: DanColor.cogRenk,
-                    )),
                 ListTile(
-                    onTap: ()=>Navigator.pushNamed(context, "/"),
+                    onTap: () => Navigator.pushReplacementNamed(context, "/"),
                     leading: Icon(SimpleLineIcons.home),
                     title: Text('Anasayfa')),
                 ListTile(
-                    onTap: () {},
+                    onTap: () =>Navigator.pushReplacementNamed(context, DersGenelSecim.dersGenelSecimRoute),
                     leading: Icon(SimpleLineIcons.note),
                     title: Text('Dersler')),
                 ListTile(
@@ -68,7 +71,9 @@ class AnaDrawer extends StatelessWidget {
               child: Container(
                 child: Column(
                   children: <Widget>[
-                    Divider(),
+                    Divider(
+                      height: 0,
+                    ),
                     ListTile(
                       leading: Icon(SimpleLineIcons.settings),
                       title: Text('Ayarlar'),

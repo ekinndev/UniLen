@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:uniapp/colors.dart';
+import '../settings/colors.dart';
 
 class DersButonu extends StatelessWidget {
   final Icon icon;
   final String text;
   final Color renk;
-  DersButonu(this.icon, this.text, this.renk);
+  final double radius;
+  DersButonu(this.icon, this.text, this.renk, this.radius);
   @override
   Widget build(
     BuildContext context,
   ) {
     return RawMaterialButton(
-    
       onPressed: () {},
-      
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      splashColor: DanColor.felseDinRenk,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(this.radius)),
+      splashColor: Colors.deepOrange,
       fillColor: renk,
       constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width * 0.46, maxHeight: 70),
@@ -34,8 +34,8 @@ class DersButonu extends StatelessWidget {
             Expanded(
               child: Text(
                 text,
-                style: TextStyle(color: Colors.white, fontSize: 20),
-                overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: Colors.white, fontSize: 18),
+                overflow: TextOverflow.clip,
               ),
             ),
           ],
