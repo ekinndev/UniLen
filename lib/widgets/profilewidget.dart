@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+
 class ProfileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
         CircleAvatar(
-          minRadius: 25,
-          backgroundImage:
-              NetworkImage('https://ekinabalioglu.com/resimler/ekin.jpg'),
-        ),
+            minRadius: 25,
+            backgroundImage:
+                NetworkImage('https://ekinabalioglu.com/resimler/ekin.jpg'),
+          ),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -33,5 +34,4 @@ class ProfileWidget extends StatelessWidget {
       ],
     );
   }
-  
 }

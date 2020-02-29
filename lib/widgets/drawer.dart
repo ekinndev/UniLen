@@ -37,16 +37,14 @@ class AnaDrawer extends StatelessWidget {
                       ],
                     ),
                     currentAccountPicture: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          'https://ekinabalioglu.com/resimler/ekin.jpg'),
-                    ),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [DanColor.felseDinRenk, DanColor.cogRenk],
+                        backgroundImage: NetworkImage(
+                            'https://ekinabalioglu.com/resimler/ekin.jpg'),
                       ),
+                    decoration: BoxDecoration(
+                      color: DanColor.cogRenk,
                     )),
                 ListTile(
-                    onTap: () {},
+                    onTap: ()=>Navigator.pushNamed(context, "/"),
                     leading: Icon(SimpleLineIcons.home),
                     title: Text('Anasayfa')),
                 ListTile(
@@ -72,11 +70,15 @@ class AnaDrawer extends StatelessWidget {
                   children: <Widget>[
                     Divider(),
                     ListTile(
-                        leading: Icon(SimpleLineIcons.settings),
-                        title: Text('Ayarlar')),
+                      leading: Icon(SimpleLineIcons.settings),
+                      title: Text('Ayarlar'),
+                      onTap: () {},
+                    ),
                     ListTile(
-                        leading: Icon(SimpleLineIcons.envelope),
-                        title: Text('İletişim'))
+                      leading: Icon(SimpleLineIcons.envelope),
+                      title: Text('İletişim'),
+                      onTap: () {},
+                    ),
                   ],
                 ),
               ),

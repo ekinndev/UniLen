@@ -28,9 +28,8 @@ class AnaEkran extends StatelessWidget {
               height: ekranBoy * 0.34,
               width: double.infinity,
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [DanColor.felseDinRenk, DanColor.cogRenk],
-                ),
+                color: DanColor.cogRenk,
+               
               ),
             ),
             Positioned(
@@ -50,7 +49,7 @@ class AnaEkran extends StatelessWidget {
             padding: EdgeInsets.zero,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.only(left: 8.0,top: 15.0),
+                padding: const EdgeInsets.only(left: 8.0, top: 15.0),
                 child: Align(
                     alignment: Alignment.topLeft,
                     child: Text(
@@ -135,12 +134,15 @@ class AnaEkran extends StatelessWidget {
               SizedBox(
                 height: 15,
               ),
-              SizedBox(
+              Container(
                 height: ekranBoy * 0.25,
                 child: ListView.builder(
                   shrinkWrap: true,
                   itemBuilder: (ctx, i) => Container(
-                    margin: EdgeInsets.only(left: 8, bottom: 15),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    margin: EdgeInsets.only(left: i==0?8:15, bottom: 15,right: i==4 ? 8:0),
                     child: Stack(
                       children: <Widget>[
                         ClipRRect(
@@ -189,7 +191,7 @@ class AnaEkran extends StatelessWidget {
               child: Icon(
                 AntDesign.linechart,
                 size: 30,
-                color: Color(0xFFfe864a),
+                color: DanColor.cogRenk
               )),
           onTap: () {},
         ),

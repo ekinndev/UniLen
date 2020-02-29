@@ -13,6 +13,7 @@ class DersButonu extends StatelessWidget {
     return RawMaterialButton(
     
       onPressed: () {},
+      
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       splashColor: DanColor.felseDinRenk,
       fillColor: renk,
