@@ -17,7 +17,7 @@ class AnaAppBar {
       elevation: 0,
       backgroundColor: Colors.transparent,
       title: Text(
-        'Danışman Akademi',
+        'Danışman Akademi',style: TextStyle(fontWeight: FontWeight.bold),
       ),
     );
   }

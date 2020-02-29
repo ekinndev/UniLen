@@ -4,6 +4,7 @@ import 'package:uniapp/widgets/dersbutonu.dart';
 import './colors.dart';
 import './widgets/appbar.dart';
 import './widgets/drawer.dart';
+import './widgets/profilewidget.dart';
 
 class AnaEkran extends StatelessWidget {
   @override
@@ -35,7 +36,7 @@ class AnaEkran extends StatelessWidget {
             Positioned(
               top: 100,
               left: 15,
-              child: profilePart(),
+              child: ProfileWidget(),
             ),
             Positioned(
               bottom: 10,
@@ -180,38 +181,7 @@ class AnaEkran extends StatelessWidget {
     );
   }
 
-  Row profilePart() {
-    return Row(
-      children: <Widget>[
-        CircleAvatar(
-          minRadius: 25,
-          backgroundImage:
-              NetworkImage('https://ekinabalioglu.com/resimler/ekin.jpg'),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: <Widget>[
-              Text(
-                'Ekin Abalıoğlu',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18),
-              ),
-              Text(
-                'SAY/12. Sınıf',
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
-        )
-      ],
-    );
-  }
+  
 
   ClipOval graphButton() {
     return ClipOval(
