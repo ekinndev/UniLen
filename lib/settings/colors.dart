@@ -9,6 +9,7 @@ class DanColor {
   static const Color tarihRenk = Color(0xff07cfaa);
   static const Color cogRenk = Color(0xfffec033);
   static const Color felseDinRenk = Color(0xfffe864a);
+  static const Color anaRenk = Color(0xfffe864a);
 
 
 }

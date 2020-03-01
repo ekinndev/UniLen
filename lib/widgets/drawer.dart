@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import '../screens/ders_screen.dart';
 import '../settings/colors.dart';
+import '../screens/ders_screen.dart';
 
 class AnaDrawer extends StatelessWidget {
   @override
@@ -10,6 +10,7 @@ class AnaDrawer extends StatelessWidget {
       child: Column(
         children: <Widget>[
           UserAccountsDrawerHeader(
+            
             margin: EdgeInsets.zero,
             accountName: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -39,7 +40,7 @@ class AnaDrawer extends StatelessWidget {
                   NetworkImage('https://ekinabalioglu.com/resimler/ekin.jpg'),
             ),
             decoration: BoxDecoration(
-              color: DanColor.felseDinRenk  ,
+              color: DanColor.anaRenk ,
             ),
           ),
           Expanded(

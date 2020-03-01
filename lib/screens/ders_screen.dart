@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uniapp/screens/dersozel_screen.dart';
 import 'package:uniapp/settings/colors.dart';
 import 'package:uniapp/settings/icons.dart';
 import '../widgets/drawer.dart';
@@ -11,6 +12,7 @@ class DersGenelSecim extends StatelessWidget {
     return Scaffold(
       drawer: AnaDrawer(),
       appBar: AppBar(
+        backgroundColor: DanColor.anaRenk,
         centerTitle: true,
         actions: <Widget>[
           Icon(Icons.search),
@@ -23,7 +25,6 @@ class DersGenelSecim extends StatelessWidget {
           ),
         ],
         elevation: 0,
-        
         title: Text(
           'Genel Dersler',
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -43,7 +44,14 @@ class DersGenelSecim extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               children: <Widget>[
                 DersButonu(
-                    (DanIcons.turkceIcon), 'Tyt Türkçe', DanColor.edebRenk, 0),
+                    (DanIcons.turkceIcon),
+                    'Tyt Türkçe',
+                    DanColor.edebRenk,
+                    0,
+                    ()=>Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => DersOzelScreen()),
+                    )),
                 DersButonu(
                     (DanIcons.matIcon), 'Tyt Matematik', DanColor.matRenk, 0),
                 DersButonu(

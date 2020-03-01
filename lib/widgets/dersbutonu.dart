@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import '../settings/colors.dart';
+
 
 class DersButonu extends StatelessWidget {
   final Icon icon;
   final String text;
   final Color renk;
   final double radius;
-  DersButonu(this.icon, this.text, this.renk, this.radius);
+  final Function btnHandler;
+  DersButonu(this.icon, this.text, this.renk, this.radius,[this.btnHandler]);
   @override
   Widget build(
     BuildContext context,
   ) {
     return RawMaterialButton(
-      onPressed: () {},
+      onPressed:btnHandler??(){},
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(this.radius)),
       splashColor: Colors.deepOrange,

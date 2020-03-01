@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
-import './screens/anaekran.dart';
 import './screens/ders_screen.dart';
+import './screens/ana_screen.dart';
+
 
 void main() => runApp(MyApp());
 
@@ -11,6 +11,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       routes: {
         DersGenelSecim.dersGenelSecimRoute:(ctx)=>DersGenelSecim(),
+       
       },
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',

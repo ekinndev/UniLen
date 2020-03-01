@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:uniapp/widgets/dersbutonu.dart';
+import '../settings/icons.dart';
+import '../widgets/dersbutonu.dart';
 import '../settings/colors.dart';
 import '../widgets/drawer.dart';
 import '../widgets/profilewidget.dart';
@@ -12,23 +13,24 @@ class AnaEkran extends StatelessWidget {
       extendBodyBehindAppBar: true,
       drawer: AnaDrawer(),
       appBar: AppBar(
-      centerTitle: true,
-      actions: <Widget>[
-        Icon(Icons.search),
-        SizedBox(
-          width: 15,
+        centerTitle: true,
+        actions: <Widget>[
+          Icon(Icons.search),
+          SizedBox(
+            width: 15,
+          ),
+          Icon(Icons.notifications_none),
+          SizedBox(
+            width: 5,
+          ),
+        ],
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        title: Text(
+          'Danışman Akademi',
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        Icon(Icons.notifications_none),
-        SizedBox(
-          width: 5,
-        ),
-      ],
-      elevation: 0,
-      backgroundColor: Colors.transparent,
-      title: Text(
-        'Danışman Akademi',style: TextStyle(fontWeight: FontWeight.bold),
       ),
-    ),
       body: anaKolon(context),
     );
   }
@@ -44,7 +46,7 @@ class AnaEkran extends StatelessWidget {
               height: ekranBoy * 0.34,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: DanColor.felseDinRenk,
+                color: DanColor.anaRenk,
               ),
             ),
             Positioned(
@@ -83,53 +85,16 @@ class AnaEkran extends StatelessWidget {
                   runSpacing: 15,
                   children: <Widget>[
                     DersButonu(
-                        Icon(
-                          FontAwesome5Solid.atom,
-                          color: DanColor.fizikRenk,
-                          size: 35,
-                        ),
-                        'Fizik',
-                        DanColor.fizikRenk,10),
+                        DanIcons.fizikIcon, 'Fizik', DanColor.fizikRenk, 10),
                     DersButonu(
-                        Icon(
-                          MaterialCommunityIcons.calculator_variant,
-                          color: DanColor.matRenk,
-                          size: 35,
-                        ),
-                        'Matematik',
-                        DanColor.matRenk,10),
+                        DanIcons.matIcon, 'Matematik', DanColor.matRenk, 10),
                     DersButonu(
-                        Icon(
-                          MaterialCommunityIcons.microscope,
-                          color: DanColor.bioRenk,
-                          size: 35,
-                        ),
-                        'Biyoloji',
-                        DanColor.bioRenk,10),
+                        DanIcons.bioIcon, 'Biyoloji', DanColor.bioRenk, 10),
+                    DersButonu(DanIcons.kimIcon, 'Kimya', DanColor.kimRenk, 10),
                     DersButonu(
-                        Icon(
-                          Fontisto.test_tube,
-                          color: DanColor.kimRenk,
-                          size: 35,
-                        ),
-                        'Kimya',
-                        DanColor.kimRenk,10),
+                        DanIcons.tarihIcon, 'Tarih', DanColor.tarihRenk, 10),
                     DersButonu(
-                        Icon(
-                          SimpleLineIcons.book_open,
-                          color: DanColor.tarihRenk,
-                          size: 35,
-                        ),
-                        'Türkçe',
-                        DanColor.tarihRenk,10),
-                    DersButonu(
-                        Icon(
-                          MaterialCommunityIcons.thought_bubble_outline,
-                          color: DanColor.edebRenk,
-                          size: 35,
-                        ),
-                        'Din Felsefe',
-                        DanColor.edebRenk,10),
+                        DanIcons.turkceIcon, 'Türkçe', DanColor.edebRenk, 10),
                   ],
                 ),
               ),
@@ -206,8 +171,8 @@ class AnaEkran extends StatelessWidget {
           child: SizedBox(
               width: 56,
               height: 56,
-              child:
-                  Icon(AntDesign.linechart, size: 30, color: DanColor.felseDinRenk)),
+              child: Icon(AntDesign.linechart,
+                  size: 30, color: DanColor.anaRenk)),
           onTap: () {},
         ),
       ),

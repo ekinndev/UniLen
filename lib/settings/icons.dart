@@ -10,7 +10,7 @@ class DanIcons {
     size: 35,
   );
   static const Icon fizikIcon = Icon(
-    FontAwesome5Solid.atom,
+    Fontisto.atom,
     color: DanColor.fizikRenk,
     size: 35,
   );
