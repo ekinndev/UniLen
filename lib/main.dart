@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './screens/ders_screen.dart';
 import './screens/ana_screen.dart';
+import './screens/uni_screen.dart';
 
 
 void main() => runApp(MyApp());
@@ -11,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       routes: {
         DersGenelSecim.dersGenelSecimRoute:(ctx)=>DersGenelSecim(),
-       
+        UniScreen.uniScreenRoute:(ctx)=>UniScreen(),
       },
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',

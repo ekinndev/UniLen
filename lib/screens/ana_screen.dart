@@ -43,7 +43,7 @@ class AnaEkran extends StatelessWidget {
         Stack(
           children: <Widget>[
             Container(
-              height: ekranBoy * 0.34,
+              height: ekranBoy * 0.32,
               width: double.infinity,
               decoration: BoxDecoration(
                 color: DanColor.anaRenk,
@@ -106,7 +106,7 @@ class AnaEkran extends StatelessWidget {
                 child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'Popüler Üniversiteler',
+                      'Sitedeki Son Yazılar',
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                     )),
@@ -115,7 +115,7 @@ class AnaEkran extends StatelessWidget {
                 height: 15,
               ),
               Container(
-                height: ekranBoy * 0.25,
+                height: ekranBoy * 0.3,
                 child: ListView.builder(
                   shrinkWrap: true,
                   itemBuilder: (ctx, i) => Container(
@@ -131,20 +131,22 @@ class AnaEkran extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: Image.network(
-                            'https://www.kanalben.com/images/resize/100/656x400/haberler/2018/10/izmir_ekonomi_universitesi_nde_deprem_o_isimden_flas_istifa_h504033_e30b1.jpg',
+                            'https://danismanakademi.org/wp-content/uploads/2020/03/2020yksprovalari21-01.03.2020.png',
                             fit: BoxFit.fill,
                             width: ekranEn * 0.85,
                           ),
                         ),
                         Container(
                             decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.5),
+                                color: Colors.black.withOpacity(0.6),
                                 borderRadius: BorderRadius.circular(10)),
                             width: ekranEn * 0.85),
                         Center(
                             child: Text(
-                          'Ege Üniversitesi',
-                          style: TextStyle(color: Colors.white, fontSize: 25),
+                          'YKS DENEMESİ (01.03.2020)',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(color: Colors.white, fontSize: 20),
                         ))
                       ],
                     ),
@@ -171,8 +173,8 @@ class AnaEkran extends StatelessWidget {
           child: SizedBox(
               width: 56,
               height: 56,
-              child: Icon(AntDesign.linechart,
-                  size: 30, color: DanColor.anaRenk)),
+              child:
+                  Icon(AntDesign.linechart, size: 30, color: DanColor.anaRenk)),
           onTap: () {},
         ),
       ),

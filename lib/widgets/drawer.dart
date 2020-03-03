@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import '../screens/uni_screen.dart';
 import '../settings/colors.dart';
 import '../screens/ders_screen.dart';
 
@@ -48,15 +49,15 @@ class AnaDrawer extends StatelessWidget {
               padding: EdgeInsets.zero,
               children: <Widget>[
                 ListTile(
-                    onTap: () => Navigator.pushReplacementNamed(context, "/"),
+                    onTap: () => Navigator.pushNamed(context, "/"),
                     leading: Icon(SimpleLineIcons.home),
                     title: Text('Anasayfa')),
                 ListTile(
-                    onTap: () =>Navigator.pushReplacementNamed(context, DersGenelSecim.dersGenelSecimRoute),
+                    onTap: () =>Navigator.pushNamed(context, DersGenelSecim.dersGenelSecimRoute),
                     leading: Icon(SimpleLineIcons.note),
                     title: Text('Dersler')),
                 ListTile(
-                    onTap: () {},
+                    onTap: () =>Navigator.pushNamed(context, UniScreen.uniScreenRoute),
                     leading: Icon(SimpleLineIcons.graduation),
                     title: Text('Üniversiteler')),
                 ListTile(

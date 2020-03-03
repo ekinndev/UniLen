@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:uniapp/settings/colors.dart';
 import 'package:uniapp/settings/icons.dart';
+import 'package:uniapp/widgets/ustanakart.dart';
 
 class DersOzelScreen extends StatelessWidget {
   @override
@@ -11,51 +12,14 @@ class DersOzelScreen extends StatelessWidget {
       appBar: dersOzelAppBar(),
       body: Column(
         children: <Widget>[
-          ustKart(context),
+          UstAnaKart(subtitle: '10 Konu',title: 'TYT Fizik',icon:DanIcons.fizikIcon.icon ,),
           konularListView(),
         ],
       ),
     );
   }
 
-  Stack ustKart(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Container(
-          height: MediaQuery.of(context).size.height * 0.32,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: DanColor.anaRenk,
-          ),
-        ),
-        Positioned(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                'TYT Fizik',
-                style: TextStyle(color: Colors.white, fontSize: 35),
-              ),
-              Text('10 Konu',
-                  style: TextStyle(color: Colors.white, fontSize: 20)),
-            ],
-          ),
-          left: 20,
-          bottom: 20,
-        ),
-        Positioned(
-          child: Icon(
-            DanIcons.fizikIcon.icon,
-            size: 100,
-            color: Colors.white12,
-          ),
-          right: 20,
-          bottom: 20,
-        )
-      ],
-    );
-  }
+  
 
   Expanded konularListView() {
     return Expanded(
