@@ -11,7 +11,6 @@ class AnaDrawer extends StatelessWidget {
       child: Column(
         children: <Widget>[
           UserAccountsDrawerHeader(
-            
             margin: EdgeInsets.zero,
             accountName: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -41,7 +40,7 @@ class AnaDrawer extends StatelessWidget {
                   NetworkImage('https://ekinabalioglu.com/resimler/ekin.jpg'),
             ),
             decoration: BoxDecoration(
-              color: DanColor.anaRenk ,
+              color: DanColor.anaRenk,
             ),
           ),
           Expanded(
@@ -53,17 +52,15 @@ class AnaDrawer extends StatelessWidget {
                     leading: Icon(SimpleLineIcons.home),
                     title: Text('Anasayfa')),
                 ListTile(
-                    onTap: () =>Navigator.pushNamed(context, DersGenelSecim.dersGenelSecimRoute),
+                    onTap: () => Navigator.pushNamed(
+                        context, DersGenelSecim.dersGenelSecimRoute),
                     leading: Icon(SimpleLineIcons.note),
                     title: Text('Dersler')),
                 ListTile(
-                    onTap: () =>Navigator.pushNamed(context, UniScreen.uniScreenRoute),
+                    onTap: () =>
+                        Navigator.pushNamed(context, UniScreen.uniScreenRoute),
                     leading: Icon(SimpleLineIcons.graduation),
                     title: Text('Üniversiteler')),
-                ListTile(
-                    onTap: () {},
-                    leading: Icon(SimpleLineIcons.pencil),
-                    title: Text('Sınavlarım')),
               ],
             ),
           ),
@@ -77,8 +74,8 @@ class AnaDrawer extends StatelessWidget {
                       height: 0,
                     ),
                     ListTile(
-                      leading: Icon(SimpleLineIcons.settings),
-                      title: Text('Ayarlar'),
+                      leading: Icon(MaterialCommunityIcons.exit_to_app),
+                      title: Text('Çıkış Yap'),
                       onTap: () {},
                     ),
                     ListTile(
