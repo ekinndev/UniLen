@@ -22,7 +22,7 @@ class ProfileWidget extends StatelessWidget {
                     fontSize: 18),
               ),
               Text(
-                'SAY/12. Sınıf',
+                'abaliogluekin@gmail.com',
                 textAlign: TextAlign.start,
                 style: TextStyle(
                   color: Colors.white,

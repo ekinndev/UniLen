@@ -7,19 +7,23 @@ import 'package:uniapp/widgets/ustanakart.dart';
 class DersOzelScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final key = ModalRoute.of(context).settings.arguments;
+    print(key);
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: dersOzelAppBar(),
       body: Column(
         children: <Widget>[
-          UstAnaKart(subtitle: '10 Konu',title: 'TYT Fizik',icon:DanIcons.fizikIcon.icon ,),
+          UstAnaKart(
+            subtitle: '10 Konu',
+            title: 'TYT Fizik',
+            icon: DanIcons.fizikIcon.icon,
+          ),
           konularListView(),
         ],
       ),
     );
   }
-
-  
 
   Expanded konularListView() {
     return Expanded(
@@ -43,22 +47,25 @@ class DersOzelScreen extends StatelessWidget {
       child: ListTile(
         leading: Icon(
           DanIcons.fizikIcon.icon,
-          color: i%2==0 ? Colors.black:DanColor.anaRenk,
+          color: i % 2 == 0 ? Colors.black : DanColor.anaRenk,
           size: 35,
         ),
         title: Text(
           'Atom Fiziğine Giriş',
           textAlign: TextAlign.center,
-          style:
-              TextStyle(color: i%2==0 ? Colors.black:DanColor.anaRenk, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              color: i % 2 == 0 ? Colors.black : DanColor.anaRenk,
+              fontWeight: FontWeight.bold),
         ),
         trailing: IconButton(
             onPressed: () {},
-            icon: Icon(SimpleLineIcons.check, color: i%2==0 ? Colors.black:DanColor.anaRenk)),
+            icon: Icon(SimpleLineIcons.check,
+                color: i % 2 == 0 ? Colors.black : DanColor.anaRenk)),
       ),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
-         side:i%2==0 ?BorderSide(): BorderSide(color:  DanColor.anaRenk)),
+          side:
+              i % 2 == 0 ? BorderSide() : BorderSide(color: DanColor.anaRenk)),
     );
   }
 

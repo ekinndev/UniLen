@@ -4,6 +4,7 @@ import 'package:uniapp/settings/colors.dart';
 import 'package:uniapp/settings/icons.dart';
 import '../widgets/drawer.dart';
 import '../widgets/dersbutonu.dart';
+import '../settings/lessname.dart';
 
 class DersGenelSecim extends StatelessWidget {
   static const dersGenelSecimRoute = '/dersgenel';
@@ -45,27 +46,100 @@ class DersGenelSecim extends StatelessWidget {
               children: <Widget>[
                 DersButonu(
                     (DanIcons.turkceIcon),
-                    'Tyt Türkçe',
+                    LessName.tytturkce['ad'],
                     DanColor.edebRenk,
                     0,
-                    ()=>Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => DersOzelScreen()),
-                    )),
+                    () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DersOzelScreen(),
+                              settings: RouteSettings(
+                                  arguments: LessName.tytturkce['kod'])),
+                        )),
                 DersButonu(
-                    (DanIcons.matIcon), 'Tyt Matematik', DanColor.matRenk, 0),
+                    (DanIcons.matIcon),
+                    LessName.tytmat['ad'],
+                    DanColor.matRenk,
+                    0,
+                    () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DersOzelScreen(),
+                              settings: RouteSettings(
+                                  arguments: LessName.tytmat['kod'])),
+                        )),
                 DersButonu(
-                    (DanIcons.fizikIcon), 'Tyt Fizik', DanColor.fizikRenk, 0),
+                    (DanIcons.fizikIcon),
+                    LessName.tytfizik['ad'],
+                    DanColor.fizikRenk,
+                    0,
+                    () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DersOzelScreen(),
+                              settings: RouteSettings(
+                                  arguments: LessName.tytfizik['kod'])),
+                        )),
                 DersButonu(
-                    (DanIcons.kimIcon), 'Tyt Kimya', DanColor.kimRenk, 0),
+                    (DanIcons.kimIcon),
+                    LessName.tytkimya['ad'],
+                    DanColor.kimRenk,
+                    0,
+                    () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DersOzelScreen(),
+                              settings: RouteSettings(
+                                  arguments: LessName.tytkimya['kod'])),
+                        )),
                 DersButonu(
-                    (DanIcons.bioIcon), 'Tyt Biyoloji', DanColor.bioRenk, 0),
+                    (DanIcons.bioIcon),
+                    LessName.tytbio['ad'],
+                    DanColor.bioRenk,
+                    0,
+                    () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DersOzelScreen(),
+                              settings: RouteSettings(
+                                  arguments: LessName.tytbio['kod'])),
+                        )),
                 DersButonu(
-                    (DanIcons.tarihIcon), 'Tyt Tarih', DanColor.tarihRenk, 0),
+                    (DanIcons.tarihIcon),
+                    LessName.tyttarih['ad'],
+                    DanColor.tarihRenk,
+                    0,
+                    () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DersOzelScreen(),
+                              settings: RouteSettings(
+                                  arguments: LessName.tyttarih['kod'])),
+                        )),
                 DersButonu(
-                    (DanIcons.cogIcon), 'Tyt Coğrafya', DanColor.cogRenk, 0),
-                DersButonu((DanIcons.felseDinIcon), 'Tyt Felsefe ve Din',
-                    DanColor.felseDinRenk, 0),
+                    (DanIcons.cogIcon),
+                    LessName.tytcog['ad'],
+                    DanColor.cogRenk,
+                    0,
+                    () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DersOzelScreen(),
+                              settings: RouteSettings(
+                                  arguments: LessName.tytcog['kod'])),
+                        )),
+                DersButonu(
+                    (DanIcons.felseDinIcon),
+                    LessName.tytfel['ad'],
+                    DanColor.felseDinRenk,
+                    0,
+                    () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DersOzelScreen(),
+                              settings: RouteSettings(
+                                  arguments: LessName.tytfel['kod'])),
+                        )),
               ],
             ),
           ),
@@ -79,13 +153,53 @@ class DersGenelSecim extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               children: <Widget>[
                 DersButonu(
-                    (DanIcons.matIcon), 'AYT Matematik', DanColor.matRenk, 0),
+                    (DanIcons.matIcon),
+                    LessName.aytmat['ad'],
+                    DanColor.matRenk,
+                    0,
+                    () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DersOzelScreen(),
+                              settings: RouteSettings(
+                                  arguments: LessName.aytmat['kod'])),
+                        )),
                 DersButonu(
-                    (DanIcons.fizikIcon), 'Ayt Fizik', DanColor.fizikRenk, 0),
+                    (DanIcons.fizikIcon),
+                    LessName.aytfiz['ad'],
+                    DanColor.fizikRenk,
+                    0,
+                    () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DersOzelScreen(),
+                              settings: RouteSettings(
+                                  arguments: LessName.aytfiz['kod'])),
+                        )),
                 DersButonu(
-                    (DanIcons.kimIcon), 'Ayt Kimya', DanColor.kimRenk, 0),
+                    (DanIcons.kimIcon),
+                    LessName.aytkim['ad'],
+                    DanColor.kimRenk,
+                    0,
+                    () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DersOzelScreen(),
+                              settings: RouteSettings(
+                                  arguments: LessName.aytkim['kod'])),
+                        )),
                 DersButonu(
-                    (DanIcons.bioIcon), 'Ayt Biyoloji', DanColor.bioRenk, 0),
+                    (DanIcons.bioIcon),
+                    LessName.aytbio['ad'],
+                    DanColor.bioRenk,
+                    0,
+                    () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DersOzelScreen(),
+                              settings: RouteSettings(
+                                  arguments: LessName.aytbio['kod'])),
+                        )),
               ],
             ),
           ),
@@ -98,16 +212,54 @@ class DersGenelSecim extends StatelessWidget {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: <Widget>[
-                DersButonu((DanIcons.turkceIcon), 'Ayt Edebiyat',
-                    DanColor.edebRenk, 0),
                 DersButonu(
-                    (DanIcons.cogIcon), 'Ayt Coğrafya-1', DanColor.cogRenk, 0),
+                    (DanIcons.turkceIcon),
+                    LessName.aytedeb['ad'],
+                    DanColor.edebRenk,
+                    0,
+                    () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DersOzelScreen(),
+                              settings: RouteSettings(
+                                  arguments: LessName.aytedeb['kod'])),
+                        )),
                 DersButonu(
-                    (DanIcons.tarihIcon), 'Ayt Tarih', DanColor.tarihRenk, 0),
+                    (DanIcons.cogIcon),
+                    LessName.aytcog1['ad'],
+                    DanColor.cogRenk,
+                    0,
+                    () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DersOzelScreen(),
+                              settings: RouteSettings(
+                                  arguments: LessName.aytcog1['kod'])),
+                        )),
                 DersButonu(
-                    (DanIcons.cogIcon), 'Ayt Coğrafya-2', DanColor.cogRenk, 0),
-                DersButonu((DanIcons.felseDinIcon), 'Ayt Felsefe ve Din',
-                    DanColor.felseDinRenk, 0),
+                    (DanIcons.tarihIcon),
+                    LessName.ayttar1['ad'],
+                    DanColor.tarihRenk,
+                    0,
+                    () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DersOzelScreen(),
+                              settings: RouteSettings(
+                                  arguments: LessName.ayttar1['kod'])),
+                        )),
+                DersButonu(
+                    (DanIcons.matIcon),
+                    LessName.aytmat['ad'],
+                    DanColor.matRenk,
+                    0,
+                    () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DersOzelScreen(),
+                              settings: RouteSettings(
+                                  arguments: LessName.aytmat['kod'])),
+                        )),
               ],
             ),
           ),
@@ -120,16 +272,58 @@ class DersGenelSecim extends StatelessWidget {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: <Widget>[
-                DersButonu((DanIcons.turkceIcon), 'Ayt Edebiyat',
+                DersButonu((DanIcons.turkceIcon), LessName.aytedeb['ad'],
                     DanColor.edebRenk, 0),
                 DersButonu(
-                    (DanIcons.cogIcon), 'Ayt Coğrafya-1', DanColor.cogRenk, 0),
+                    (DanIcons.cogIcon),
+                    LessName.aytcog1['ad'],
+                    DanColor.cogRenk,
+                    0,
+                    () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DersOzelScreen(),
+                              settings: RouteSettings(
+                                  arguments: LessName.aytcog1['kod'])),
+                        )),
                 DersButonu(
-                    (DanIcons.tarihIcon), 'Ayt Tarih', DanColor.tarihRenk, 0),
+                    (DanIcons.tarihIcon),
+                    LessName.ayttar1['ad'],
+                    DanColor.tarihRenk,
+                    0,
+                    () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DersOzelScreen(),
+                              settings: RouteSettings(
+                                  arguments: LessName.ayttar1['kod'])),
+                        )),
                 DersButonu(
-                    (DanIcons.cogIcon), 'Ayt Coğrafya-2', DanColor.cogRenk, 0),
-                DersButonu((DanIcons.felseDinIcon), 'Ayt Felsefe ve Din',
+                    (DanIcons.cogIcon),
+                    LessName.aytcog2['ad'],
+                    DanColor.cogRenk,
+                    0,
+                    () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DersOzelScreen(),
+                              settings: RouteSettings(
+                                  arguments: LessName.aytcog2['kod'])),
+                        )),
+                DersButonu((DanIcons.felseDinIcon), LessName.aytfel['ad'],
                     DanColor.felseDinRenk, 0),
+                DersButonu(
+                    (DanIcons.tarihIcon),
+                    LessName.ayttar2['ad'],
+                    DanColor.tarihRenk,
+                    0,
+                    () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DersOzelScreen(),
+                              settings: RouteSettings(
+                                  arguments: LessName.ayttar2['kod'])),
+                        )),
               ],
             ),
           )

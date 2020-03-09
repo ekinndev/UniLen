@@ -12,29 +12,11 @@ class AnaDrawer extends StatelessWidget {
         children: <Widget>[
           UserAccountsDrawerHeader(
             margin: EdgeInsets.zero,
-            accountName: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  'Ekin Abalıoğlu',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: Text('SAY'),
-                ),
-              ],
+            accountName: Text(
+              'Ekin Abalıoğlu',
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            accountEmail: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text('ekinabalioglu@gmail.com'),
-                Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: Text('Mezun'),
-                ),
-              ],
-            ),
+            accountEmail: Text('ekinabalioglu@gmail.com'),
             currentAccountPicture: CircleAvatar(
               backgroundImage:
                   NetworkImage('https://ekinabalioglu.com/resimler/ekin.jpg'),
