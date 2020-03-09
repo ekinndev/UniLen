@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:uniapp/settings/colors.dart';
-import 'package:uniapp/settings/icons.dart';
 
 class UstAnaKart extends StatelessWidget {
   final String title;
@@ -29,7 +28,7 @@ class UstAnaKart extends StatelessWidget {
                 style: TextStyle(color: Colors.white, fontSize: 35),
               ),
               Text(subtitle,
-                  style: TextStyle(color: Colors.white, fontSize: 20)),
+                  style: TextStyle(color: Colors.white, fontSize: 15)),
             ],
           ),
           left: 20,

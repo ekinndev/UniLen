@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:uniapp/screens/grafik_screen.dart';
 import './screens/ders_screen.dart';
 import './screens/ana_screen.dart';
 import './screens/uni_screen.dart';
@@ -14,7 +13,6 @@ class MyApp extends StatelessWidget {
       routes: {
         DersGenelSecim.dersGenelSecimRoute:(ctx)=>DersGenelSecim(),
         UniScreen.uniScreenRoute:(ctx)=>UniScreen(),
-        GrafikScreen.grafikScreenRoute:(ctx)=>GrafikScreen(),
       },
       debugShowCheckedModeBanner: false,
       title: 'Danışman Akademi',

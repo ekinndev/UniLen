@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import '../settings/icons.dart';
 import '../widgets/dersbutonu.dart';
 import '../settings/colors.dart';
 import '../widgets/drawer.dart';
 import '../widgets/profilewidget.dart';
-import '../screens/grafik_screen.dart';
 
 class AnaEkran extends StatelessWidget {
   @override
@@ -55,11 +53,6 @@ class AnaEkran extends StatelessWidget {
               left: 15,
               child: ProfileWidget(),
             ),
-            Positioned(
-              bottom: 10,
-              right: 5,
-              child: graphButton(context),
-            )
           ],
         ),
         Expanded(
@@ -161,21 +154,6 @@ class AnaEkran extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-
-  ClipOval graphButton(BuildContext context) {
-    return ClipOval(
-      child: Material(
-        color: Colors.white, // button color
-        child: InkWell(
-          splashColor: Colors.transparent,
-          // inkwell color
-          child: SizedBox(width: 56, height: 56, child: DanIcons.grafikIcon),
-          onTap: () => Navigator.of(context)
-              .pushReplacementNamed(GrafikScreen.grafikScreenRoute),
-        ),
-      ),
     );
   }
 }
