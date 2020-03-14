@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:provider/provider.dart';
 import 'package:uniapp/settings/colors.dart';
 import 'package:uniapp/settings/icons.dart';
 import 'package:uniapp/widgets/ustanakart.dart';
+import '../providers/konu.dart';
 
-class DersOzelScreen extends StatelessWidget {
+class DersOzelScreen extends StatefulWidget {
+  @override
+  _DersOzelScreenState createState() => _DersOzelScreenState();
+}
+
+class _DersOzelScreenState extends State<DersOzelScreen> {
   @override
   Widget build(BuildContext context) {
+    final liste = Provider.of<KonuProvider>(context).degerleriCek;
     final key = ModalRoute.of(context).settings.arguments;
-    print(key);
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: dersOzelAppBar(),
@@ -19,25 +27,25 @@ class DersOzelScreen extends StatelessWidget {
             title: 'TYT Fizik',
             icon: DanIcons.fizikIcon.icon,
           ),
-          konularListView(),
+          konularListView(liste),
         ],
       ),
     );
   }
 
-  Expanded konularListView() {
+  Expanded konularListView(List<Map<String, Object>> konular) {
     return Expanded(
       child: ListView.builder(
         padding: EdgeInsets.zero,
         itemBuilder: (ctx, i) {
-          return konuKart(i);
+          return konuKart(i, konular[i]);
         },
-        itemCount: 10,
+        itemCount: konular.length,
       ),
     );
   }
 
-  Card konuKart(int i) {
+  Card konuKart(int i, Map<String, Object> ders) {
     return Card(
       margin: EdgeInsets.only(
           left: 8,
@@ -47,25 +55,31 @@ class DersOzelScreen extends StatelessWidget {
       child: ListTile(
         leading: Icon(
           DanIcons.fizikIcon.icon,
-          color: i % 2 == 0 ? Colors.black : DanColor.anaRenk,
+          color: ders['durum'] == false ? Colors.black : DanColor.anaRenk,
           size: 35,
         ),
         title: Text(
-          'Atom Fiziğine Giriş',
+          ders['konu'],
           textAlign: TextAlign.center,
           style: TextStyle(
-              color: i % 2 == 0 ? Colors.black : DanColor.anaRenk,
+              color: ders['durum'] == false ? Colors.black : DanColor.anaRenk,
               fontWeight: FontWeight.bold),
         ),
         trailing: IconButton(
-            onPressed: () {},
-            icon: Icon(SimpleLineIcons.check,
-                color: i % 2 == 0 ? Colors.black : DanColor.anaRenk)),
+            onPressed: () {
+              Provider.of<KonuProvider>(context, listen: false)
+                  .durumuGuncelle(i);
+            },
+            icon: Icon(
+              SimpleLineIcons.check,
+              color: ders['durum'] == false ? Colors.black : DanColor.anaRenk,
+            )),
       ),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
-          side:
-              i % 2 == 0 ? BorderSide() : BorderSide(color: DanColor.anaRenk)),
+          side: ders['durum'] == false
+              ? BorderSide()
+              : BorderSide(color: DanColor.anaRenk)),
     );
   }
 
