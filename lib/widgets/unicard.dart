@@ -1,68 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:uniapp/models/universite.dart';
 
 class UniCard extends StatelessWidget {
+  final Universite uni;
+
+  const UniCard({this.uni});
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 15, horizontal: 8),
-      height: MediaQuery.of(context).size.height * 0.36,
+      height: MediaQuery.of(context).size.height * 0.37,
       child: Stack(
         children: <Widget>[
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Image.network(
-              'https://www.gercekgundem.com/images/posts/201809/88b7df178ff775ad_480x270.jpg',
+              'https://images.contentful.com/wqz0jxyfamgk/1JQnDmQbZWkGaiCyaG4EkK/b87ee9e9a100d85b06ddbe55bf97a78c/shutterstock_204795163.jpg',
               fit: BoxFit.cover,
-              height: MediaQuery.of(context).size.height * 0.36,
+              height: MediaQuery.of(context).size.height * 0.37,
             ),
           ),
           Container(
-            height: MediaQuery.of(context).size.height * 0.36,
+            height: MediaQuery.of(context).size.height * 0.37,
             decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.6),
+                color: Colors.black.withOpacity(0.5),
                 borderRadius: BorderRadius.circular(10)),
           ),
-          Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Ege Üniversitesi',
-                  style: TextStyle(color: Colors.white, fontSize: 25,fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                  
-                ),
-                Text(
-                  'webadmin@ege.edu.tr',
-                  style: TextStyle(color: Colors.white, fontSize: 15),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(bottom:8.0),
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Text(
-                'Ege Üniversitesi Rektörlüğü Gençlik Caddesi No:12 PK.35040 Bornova / İzmir',
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Image.asset('assets/logolar/${uni.uniId}.png',
+                    fit: BoxFit.cover),
+                radius: 40,
+              ),
+              Text(
+                uni.uniAd,
+                style: TextStyle(color:Colors.white,fontSize: 20, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                uni.uniMail,
                 style: TextStyle(color: Colors.white, fontSize: 15),
                 textAlign: TextAlign.center,
               ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Align(
-              alignment: Alignment.topLeft,
-              child: CircleAvatar(
-                backgroundImage: NetworkImage(
-                    'https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_Ege_Uni.png'),
-                radius: 40,
+              Text(
+                uni.uniAdres,
+                style: TextStyle(color: Colors.white, fontSize: 15),
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
               ),
-            ),
-          )
+            ],
+          ),
         ],
       ),
     );

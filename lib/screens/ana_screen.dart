@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uniapp/widgets/websitecard.dart';
 import '../settings/icons.dart';
 import '../widgets/dersbutonu.dart';
 import '../settings/colors.dart';
@@ -35,7 +36,6 @@ class AnaEkran extends StatelessWidget {
   }
 
   Column anaKolon(BuildContext context) {
-    final ekranEn = MediaQuery.of(context).size.width;
     final ekranBoy = MediaQuery.of(context).size.height;
     return Column(
       children: <Widget>[
@@ -109,42 +109,14 @@ class AnaEkran extends StatelessWidget {
                 height: 15,
               ),
               Container(
-                height: ekranBoy * 0.3,
+                height: ekranBoy * 0.25,
                 child: ListView.builder(
                   shrinkWrap: true,
-                  itemBuilder: (ctx, i) => Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    margin: EdgeInsets.only(
-                        left: i == 0 ? 8 : 15,
-                        bottom: 15,
-                        right: i == 9 ? 8 : 0),
-                    child: Stack(
-                      children: <Widget>[
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.network(
-                            'https://danismanakademi.org/wp-content/uploads/2020/03/2020yksprovalari21-01.03.2020.png',
-                            fit: BoxFit.fill,
-                            width: ekranEn * 0.85,
-                          ),
-                        ),
-                        Container(
-                            decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.6),
-                                borderRadius: BorderRadius.circular(10)),
-                            width: ekranEn * 0.85),
-                        Center(
-                            child: Text(
-                          'YKS DENEMESİ (01.03.2020)',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        ))
-                      ],
-                    ),
-                    width: ekranEn * 0.85,
+                  itemBuilder: (ctx, i) => WebsiteCart(
+                    baslik: 'Deneme Test Yazı',
+                    imageUrl:
+                        'https://danismanakademi.org/wp-content/uploads/2018/03/Hangi-Derse-Nas%C4%B1l-%C3%87al%C4%B1%C5%9Fmal%C4%B1-Felsefe-Grubu.jpg',
+                    i: i,
                   ),
                   itemCount: 10,
                   scrollDirection: Axis.horizontal,

@@ -22,14 +22,11 @@ class KonuProvider with ChangeNotifier {
   }
 
   void durumuGuncelle(int index) {
-    
-    if(_degerler[index]['durum']!=null)
-    {
+    if (_degerler[index]['durum'] != null) {
       _degerler[index]['durum'] = !_degerler[index]['durum'];
-    }else{
-      _degerler[index]['durum']=true;
+    } else {
+      _degerler[index]['durum'] = true;
     }
-    
     notifyListeners();
   }
 }

@@ -16,6 +16,7 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
   Widget build(BuildContext context) {
     final liste = Provider.of<KonuProvider>(context).degerleriCek;
     final key = ModalRoute.of(context).settings.arguments;
+    // print(key);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -46,6 +47,9 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
   }
 
   Card konuKart(int i, Map<String, Object> ders) {
+    final rengiBelirle = ders['durum'] == null
+        ? Colors.black
+        : ders['durum'] == false ? Colors.black : DanColor.anaRenk;
     return Card(
       margin: EdgeInsets.only(
           left: 8,
@@ -55,15 +59,13 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
       child: ListTile(
         leading: Icon(
           DanIcons.fizikIcon.icon,
-          color: ders['durum'] == false ? Colors.black : DanColor.anaRenk,
+          color: rengiBelirle,
           size: 35,
         ),
         title: Text(
           ders['konu'],
           textAlign: TextAlign.center,
-          style: TextStyle(
-              color: ders['durum'] == false ? Colors.black : DanColor.anaRenk,
-              fontWeight: FontWeight.bold),
+          style: TextStyle(color: rengiBelirle, fontWeight: FontWeight.bold),
         ),
         trailing: IconButton(
             onPressed: () {
@@ -72,14 +74,12 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
             },
             icon: Icon(
               SimpleLineIcons.check,
-              color: ders['durum'] == false ? Colors.black : DanColor.anaRenk,
+              color: rengiBelirle,
             )),
       ),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
-          side: ders['durum'] == false
-              ? BorderSide()
-              : BorderSide(color: DanColor.anaRenk)),
+          side: BorderSide(color: rengiBelirle)),
     );
   }
 
