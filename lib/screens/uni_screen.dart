@@ -13,12 +13,14 @@ class UniScreen extends StatelessWidget {
     final uniJson = await http.get(
         'https://danisman-akademi-94376.firebaseio.com/universiteler.json');
 
-    final List<dynamic>jsonUniJson = jsonDecode(uniJson.body);
-    final List<Universite> uniler = jsonUniJson.map((f) => Universite(
-        uniAd: f['uniad'],
-        uniAdres: f['unimail'],
-        uniMail: f['uniadres'],
-        uniId: f['uniid'])).toList();
+    final List<dynamic> jsonUniJson = jsonDecode(uniJson.body);
+    final List<Universite> uniler = jsonUniJson
+        .map((f) => Universite(
+            uniAd: f['uniad'],
+            uniAdres: f['unimail'],
+            uniMail: f['uniadres'],
+            uniId: f['uniid']))
+        .toList();
     return uniler;
   }
 
@@ -30,31 +32,33 @@ class UniScreen extends StatelessWidget {
         elevation: 0,
       ),
       extendBodyBehindAppBar: true,
-      body: FutureBuilder<List<dynamic>>(
-          future: unileriCek(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            }
-            return Column(
-              children: <Widget>[
-                UstAnaKart(
-                  subtitle: 'Üniversitelere hızlı ulaşım.',
-                  title: 'Üniversiteler',
-                  icon: SimpleLineIcons.graduation,
-                ),
-                Expanded(
-                  child: ListView.builder(
+      body: Column(
+        children: <Widget>[
+          UstAnaKart(
+            subtitle: 'Üniversitelere hızlı ulaşım.',
+            title: 'Üniversiteler',
+            icon: SimpleLineIcons.graduation,
+          ),
+          Expanded(
+            child: FutureBuilder<List<dynamic>>(
+                future: unileriCek(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  return ListView.builder(
                     padding: EdgeInsets.zero,
                     itemBuilder: (ctx, i) {
-                      return UniCard(uni: snapshot.data[i],);
+                      return UniCard(
+                        uni: snapshot.data[i],
+                      );
                     },
-                    itemCount:5,
-                  ),
-                ),
-              ],
-            );
-          }),
+                    itemCount: 5,
+                  );
+                }),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -52,7 +52,7 @@ class DersGenelSecim extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) => DersOzelScreen(),
                             settings: RouteSettings(
-                                arguments: LessName.tytDersler[i]['kod'])),
+                                arguments: LessName.tytDersler[i])),
                       )),
               itemCount: LessName.tytDersler.length,
             ),
@@ -76,7 +76,7 @@ class DersGenelSecim extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) => DersOzelScreen(),
                             settings: RouteSettings(
-                                arguments: LessName.sayDersler[i]['kod'])),
+                                arguments: LessName.sayDersler[i])),
                       )),
             ),
           ),
@@ -99,7 +99,7 @@ class DersGenelSecim extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) => DersOzelScreen(),
                             settings: RouteSettings(
-                                arguments: LessName.eaDersler[i]['kod'])),
+                                arguments: LessName.eaDersler[i])),
                       )),
             ),
           ),
@@ -122,7 +122,7 @@ class DersGenelSecim extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) => DersOzelScreen(),
                             settings: RouteSettings(
-                                arguments: LessName.sozDersler[i]['kod'])),
+                                arguments: LessName.sozDersler[i])),
                       )),
             ),
           )

@@ -1,32 +1,29 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:uniapp/models/konu.dart';
 
 class KonuProvider with ChangeNotifier {
-  List<Map<String, Object>> _degerler = [
-    {"konu": "Temel Kavramlar"},
-    {"konu": "Sayı Basamakları"},
-    {"konu": "Bölme ve Bölünebilme"},
-    {"konu": "OBEB-OKEK"},
-    {"konu": "Rasyonel Sayılar"},
-    {"konu": "Ondalık Sayılar"},
-    {"konu": "Basit Eşitsizlikler"},
-    {"konu": "Mutlak Değer"},
-    {"konu": "Üslü Sayılar"},
-    {"konu": "Köklü Sayılar"},
-    {"konu": "Çarpanlara Ayırma"},
-    {"konu": "Oran Orantı"},
-    {"konu": "Denklem Çözme"},
-  ];
+  final String apiLink = 'https://danisman-akademi-94376.firebaseio.com/';
 
-  List<Map<String, Object>> get degerleriCek {
-    return _degerler;
+  Future<List<Konu>> degerleriCek(String kod) async {
+    final konuApiLink = '${apiLink}konular/$kod.json';
+    print(konuApiLink);
+    final konuJson = await http.get(konuApiLink);
+    final List<dynamic> jsonKonuJson = jsonDecode(konuJson.body);
+    final List<Konu> donusturulmusVeri =
+        jsonKonuJson.map((konu) => Konu(konu['id'], konu['konu'])).toList();
+    
+    return donusturulmusVeri;
   }
 
   void durumuGuncelle(int index) {
-    if (_degerler[index]['durum'] != null) {
-      _degerler[index]['durum'] = !_degerler[index]['durum'];
-    } else {
-      _degerler[index]['durum'] = true;
-    }
-    notifyListeners();
+    // if (_degerler[index]['durum'] != null) {
+    //   _degerler[index]['durum'] = !_degerler[index]['durum'];
+    // } else {
+    //   _degerler[index]['durum'] = true;
+    // }
+    // notifyListeners();
   }
 }

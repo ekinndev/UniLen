@@ -5,6 +5,8 @@ import '../widgets/dersbutonu.dart';
 import '../settings/colors.dart';
 import '../widgets/drawer.dart';
 import '../widgets/profilewidget.dart';
+import '../settings/lessname.dart';
+import 'dersozel_screen.dart';
 
 class AnaEkran extends StatelessWidget {
   @override
@@ -79,16 +81,77 @@ class AnaEkran extends StatelessWidget {
                   runSpacing: 15,
                   children: <Widget>[
                     DersButonu(
-                        DanIcons.fizikIcon, 'Fizik', DanColor.fizikRenk, 10),
+                        LessName.tytturkce['icon'],
+                        LessName.tytturkce['ad'],
+                        LessName.tytturkce['renk'],
+                        10,
+                        () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DersOzelScreen(),
+                                  settings: RouteSettings(
+                                      arguments: LessName.tytturkce)),
+                            )),
                     DersButonu(
-                        DanIcons.matIcon, 'Matematik', DanColor.matRenk, 10),
+                        LessName.tytmat['icon'],
+                        LessName.tytmat['ad'],
+                        LessName.tytmat['renk'],
+                        10,
+                        () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DersOzelScreen(),
+                                  settings: RouteSettings(
+                                      arguments: LessName.tytmat)),
+                            )),
                     DersButonu(
-                        DanIcons.bioIcon, 'Biyoloji', DanColor.bioRenk, 10),
-                    DersButonu(DanIcons.kimIcon, 'Kimya', DanColor.kimRenk, 10),
+                        LessName.aytmat['icon'],
+                        LessName.aytmat['ad'],
+                        LessName.tytmat['renk'],
+                        10,
+                        () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DersOzelScreen(),
+                                  settings: RouteSettings(
+                                      arguments: LessName.aytmat)),
+                            )),
                     DersButonu(
-                        DanIcons.tarihIcon, 'Tarih', DanColor.tarihRenk, 10),
+                        LessName.aytfiz['icon'],
+                        LessName.aytfiz['ad'],
+                        LessName.aytfiz['renk'],
+                        10,
+                        () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DersOzelScreen(),
+                                  settings: RouteSettings(
+                                      arguments: LessName.aytfiz)),
+                            )),
                     DersButonu(
-                        DanIcons.turkceIcon, 'Türkçe', DanColor.edebRenk, 10),
+                        LessName.ayttar1['icon'],
+                        LessName.ayttar1['ad'],
+                        LessName.ayttar1['renk'],
+                        10,
+                        () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DersOzelScreen(),
+                                  settings: RouteSettings(
+                                      arguments: LessName.ayttar1)),
+                            )),
+                    DersButonu(
+                        LessName.aytedeb['icon'],
+                        LessName.aytedeb['ad'],
+                        LessName.aytedeb['renk'],
+                        10,
+                        () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DersOzelScreen(),
+                                  settings: RouteSettings(
+                                      arguments: LessName.aytedeb)),
+                            )),
                   ],
                 ),
               ),
@@ -110,17 +173,24 @@ class AnaEkran extends StatelessWidget {
               ),
               Container(
                 height: ekranBoy * 0.25,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemBuilder: (ctx, i) => WebsiteCart(
-                    baslik: 'Deneme Test Yazı',
-                    imageUrl:
-                        'https://danismanakademi.org/wp-content/uploads/2018/03/Hangi-Derse-Nas%C4%B1l-%C3%87al%C4%B1%C5%9Fmal%C4%B1-Felsefe-Grubu.jpg',
-                    i: i,
-                  ),
-                  itemCount: 10,
-                  scrollDirection: Axis.horizontal,
-                ),
+                child: FutureBuilder<List<dynamic>>(
+                    future: Future.delayed(Duration(seconds: 2)),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemBuilder: (ctx, i) => WebsiteCart(
+                          baslik: 'Deneme Test Yazı',
+                          imageUrl:
+                              'https://danismanakademi.org/wp-content/uploads/2018/03/Hangi-Derse-Nas%C4%B1l-%C3%87al%C4%B1%C5%9Fmal%C4%B1-Felsefe-Grubu.jpg',
+                          i: i,
+                        ),
+                        itemCount: 10,
+                        scrollDirection: Axis.horizontal,
+                      );
+                    }),
               ),
             ],
           ),
