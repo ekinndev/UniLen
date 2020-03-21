@@ -16,7 +16,6 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
   Widget build(BuildContext context) {
     final key =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: dersOzelAppBar(),
@@ -29,13 +28,17 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
           ),
           Expanded(
             child: FutureBuilder<List<Konu>>(
-                future:
-                    Provider.of<KonuProvider>(context).degerleriCek(key['kod']),
+                future: Provider.of<KonuProvider>(context, listen: false)
+                    .degerleriCek(key['kod']),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
                   }
-                  return konularListView(snapshot.data, key['icon'].icon);
+                  return Consumer<KonuProvider>(
+                    builder: (_, prov, child) {
+                      return konularListView(snapshot.data, key['icon'].icon);
+                    },
+                  );
                 }),
           ),
         ],
@@ -75,7 +78,7 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
         trailing: IconButton(
             onPressed: () {
               Provider.of<KonuProvider>(context, listen: false)
-                  .durumuGuncelle(i);
+                  .durumuGuncelle(ders.id);
             },
             icon: Icon(
               SimpleLineIcons.check,

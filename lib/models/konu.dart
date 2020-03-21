@@ -1,6 +1,6 @@
 class Konu {
   final id;
   final konu;
-  final bool durum;
+  bool durum;
   Konu(this.id, this.konu,[this.durum=false]);
 }

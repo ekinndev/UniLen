@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:uniapp/widgets/websitecard.dart';
-import '../settings/icons.dart';
 import '../widgets/dersbutonu.dart';
 import '../settings/colors.dart';
 import '../widgets/drawer.dart';
