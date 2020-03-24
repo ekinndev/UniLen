@@ -12,10 +12,28 @@ class DersOzelScreen extends StatefulWidget {
 }
 
 class _DersOzelScreenState extends State<DersOzelScreen> {
+  List<Konu> _konularVeri;
+  Map<String, dynamic> key;
+  bool flag = true;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // TODO: implement didChangeDependencies
+    if (flag) {
+      key = ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+      Provider.of<KonuProvider>(context, listen: false)
+          .degerleriCek(key['kod'])
+          .then((deger) {
+        setState(() {
+          _konularVeri = deger;
+          flag = false;
+        });
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final key =
-        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: dersOzelAppBar(),
@@ -27,19 +45,13 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
             icon: key['icon'].icon,
           ),
           Expanded(
-            child: FutureBuilder<List<Konu>>(
-                future: Provider.of<KonuProvider>(context, listen: false)
-                    .degerleriCek(key['kod']),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                  return Consumer<KonuProvider>(
+            child: _konularVeri == null
+                ? Center(child: CircularProgressIndicator())
+                : Consumer<KonuProvider>(
                     builder: (_, prov, child) {
-                      return konularListView(snapshot.data, key['icon'].icon);
+                      return konularListView(_konularVeri, key['icon'].icon);
                     },
-                  );
-                }),
+                  ),
           ),
         ],
       ),

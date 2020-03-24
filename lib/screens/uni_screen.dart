@@ -6,8 +6,15 @@ import 'package:uniapp/widgets/ustanakart.dart';
 import '../widgets/unicard.dart';
 import 'package:http/http.dart' as http;
 
-class UniScreen extends StatelessWidget {
+class UniScreen extends StatefulWidget {
   static const uniScreenRoute = '/uniscreen';
+
+  @override
+  _UniScreenState createState() => _UniScreenState();
+}
+
+class _UniScreenState extends State<UniScreen> {
+  List<Universite> _universiteVeriler;
 
   Future<List<Universite>> unileriCek() async {
     final uniJson = await http.get(
@@ -22,6 +29,16 @@ class UniScreen extends StatelessWidget {
             uniId: f['uniid']))
         .toList();
     return uniler;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    unileriCek().then((veriler) {
+      setState(() {
+        _universiteVeriler = veriler;
+      });
+    });
   }
 
   @override
@@ -40,22 +57,19 @@ class UniScreen extends StatelessWidget {
             icon: SimpleLineIcons.graduation,
           ),
           Expanded(
-            child: FutureBuilder<List<dynamic>>(
-                future: unileriCek(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                  return ListView.builder(
+            child: _universiteVeriler == null
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : ListView.builder(
                     padding: EdgeInsets.zero,
                     itemBuilder: (ctx, i) {
                       return UniCard(
-                        uni: snapshot.data[i],
+                        uni: _universiteVeriler[i],
                       );
                     },
                     itemCount: 5,
-                  );
-                }),
+                  ),
           ),
         ],
       ),
