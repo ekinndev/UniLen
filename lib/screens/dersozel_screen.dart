@@ -18,7 +18,6 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // TODO: implement didChangeDependencies
     if (flag) {
       key = ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
       Provider.of<KonuProvider>(context, listen: false)
