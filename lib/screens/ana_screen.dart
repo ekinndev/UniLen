@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:uniapp/models/user.dart';
 import 'package:uniapp/widgets/websitecard.dart';
 import '../widgets/dersbutonu.dart';
 import '../settings/colors.dart';
@@ -6,8 +8,29 @@ import '../widgets/drawer.dart';
 import '../widgets/profilewidget.dart';
 import '../settings/lessname.dart';
 import 'dersozel_screen.dart';
+import '../providers/auth.dart';
 
-class AnaEkran extends StatelessWidget {
+class AnaEkran extends StatefulWidget {
+  @override
+  _AnaEkranState createState() => _AnaEkranState();
+}
+
+class _AnaEkranState extends State<AnaEkran> {
+  bool flag = true;
+  User user;
+  @override
+  void didChangeDependencies() {
+    
+    super.didChangeDependencies();
+    if (flag) {
+      setState(() {
+        this.user = Provider.of<Auth>(context, listen: false).user;
+
+        this.flag = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +75,7 @@ class AnaEkran extends StatelessWidget {
             Positioned(
               top: 100,
               left: 15,
-              child: ProfileWidget(),
+              child: ProfileWidget(user),
             ),
           ],
         ),

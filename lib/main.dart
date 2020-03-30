@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:uniapp/providers/konu.dart';
-import 'package:uniapp/screens/ana_screen.dart';
+import './providers/konu.dart';
+import './screens/ana_screen.dart';
 import './screens/ders_screen.dart';
 import './screens/uni_screen.dart';
 import './screens/login_screen.dart';
@@ -15,7 +15,12 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider.value(value: Auth()),
-          ChangeNotifierProvider.value(value: KonuProvider()),
+          ChangeNotifierProxyProvider<Auth, KonuProvider>(
+            create: (_) => KonuProvider(),
+            update: (ctx, auth, _) {
+              return KonuProvider(auth.user);
+            },
+          ),
         ],
         child: Consumer<Auth>(
           builder: (ctx, auth, _) {

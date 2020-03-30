@@ -1,25 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:provider/provider.dart';
+import 'package:uniapp/models/user.dart';
 import '../screens/uni_screen.dart';
 import '../settings/colors.dart';
 import '../screens/ders_screen.dart';
+import '../providers/auth.dart';
 
 class AnaDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final authProv = Provider.of<Auth>(context, listen: false);
+    final User user = authProv.user;
+
     return Drawer(
       child: Column(
         children: <Widget>[
           UserAccountsDrawerHeader(
             margin: EdgeInsets.zero,
             accountName: Text(
-              'Ekin Abalıoğlu',
+              user.name,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            accountEmail: Text('ekinabalioglu@gmail.com'),
+            accountEmail: Text(user.email),
             currentAccountPicture: CircleAvatar(
-              backgroundImage:
-                  NetworkImage('https://ekinabalioglu.com/resimler/ekin.jpg'),
+              backgroundImage: NetworkImage(user.photoUrl),
             ),
             decoration: BoxDecoration(
               color: DanColor.anaRenk,
@@ -58,7 +63,10 @@ class AnaDrawer extends StatelessWidget {
                     ListTile(
                       leading: Icon(MaterialCommunityIcons.exit_to_app),
                       title: Text('Çıkış Yap'),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pop(context);
+                        authProv.googleSignOut();
+                      },
                     ),
                     ListTile(
                       leading: Icon(SimpleLineIcons.envelope),
