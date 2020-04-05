@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:uniapp/models/firebaseresponse.dart';
 import '../providers/auth.dart';
 
 enum AuthMode { Login, SignUp }
@@ -13,13 +14,18 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
 class _LoginScreenState extends State<LoginScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  TextEditingController email = TextEditingController();
+  TextEditingController pass = TextEditingController();
+  TextEditingController confpass = TextEditingController();
+
   AuthMode _authMode = AuthMode.Login;
   LoginStatus _logStatus = LoginStatus.None;
   @override
   Widget build(BuildContext context) {
+    final authProv = Provider.of<Auth>(context, listen: false);
+
     return SafeArea(
       child: Stack(
         children: <Widget>[
@@ -37,12 +43,11 @@ class _LoginScreenState extends State<LoginScreen> {
           Scaffold(
             key: _scaffoldKey,
             backgroundColor: Colors.transparent,
-            body: Container(
+            body:  _logStatus==LoginStatus.Working?Center(child: CircularProgressIndicator()): Container(
               alignment: Alignment.center,
               margin: EdgeInsets.only(left: 20, right: 20),
               child: SingleChildScrollView(
-                child: _logStatus == LoginStatus.None
-                    ? Column(
+                child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -51,13 +56,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             'https://seeklogo.com/images/S/school-education-inspiration-logo-A8AD603C93-seeklogo.com.png',
                             height: 180,
                           ),
-                          buildTextField(
-                              SimpleLineIcons.envelope, 'Email', false),
+                          buildTextField('Email', false, email),
                           SizedBox(height: 20),
-                          buildTextField(SimpleLineIcons.lock, 'Şifre', true),
+                          buildTextField('Şifre', true, pass),
                           SizedBox(height: 20),
                           if (_authMode == AuthMode.SignUp)
-                            buildTextField(SimpleLineIcons.lock, 'Şifre', true),
+                            buildTextField('Şifre', true, confpass),
                           if (_authMode == AuthMode.SignUp)
                             SizedBox(height: 20),
                           loginButton(
@@ -65,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               _authMode == AuthMode.Login
                                   ? 'Giriş Yap'
                                   : 'Kayıt Ol',
-                              () {}),
+                              girisYaDaKayitOl),
                           SizedBox(height: 10),
                           loginButton(
                               context,
@@ -82,16 +86,15 @@ class _LoginScreenState extends State<LoginScreen> {
                               sosyalMedyaButton(
                                   FontAwesome5Brands.google,
                                   Color(0xFFDD4B39),
-                                  Provider.of<Auth>(context, listen: false)
-                                      .handleSignInGoogle),
+                                  authProv.handleSignInGoogle),
                               sosyalMedyaButton(FontAwesome5Brands.facebook_f,
                                   Color(0xFF4064AD), () {}),
                             ],
                           ),
                           SizedBox(height: 20),
                         ],
-                      )
-                    : CircularProgressIndicator(),
+                      ),
+                   
               ),
             ),
           ),
@@ -140,6 +143,57 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ],
     );
+  }
+
+  void girisYaDaKayitOl() async {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = RegExp(pattern);
+    final authProv = Provider.of<Auth>(context, listen: false);
+    if (pass.text.trim().length < 6 || !regex.hasMatch(email.text)) {
+      _scaffoldKey.currentState.showSnackBar(
+        SnackBar(
+          content: Text('Email ya da şifre geçersiz.'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+
+      return;
+    }
+    if (_authMode == AuthMode.SignUp) {
+
+      if (pass.text.trim() != confpass.text.trim()) {
+        _scaffoldKey.currentState.showSnackBar(
+          SnackBar(
+            content: Text('Şifreleriniz birbiriyle uyuşmuyor.'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+        return;
+      }
+    }
+
+    setState(() {
+      _logStatus = LoginStatus.Working;
+    });
+    try {
+      final response = await authProv.emailleKayitOlYaDaGiris(
+          email: email.text, password: pass.text, regOrLog: _authMode);
+      if (response is FirebaseError) {
+        print(response.error.message);
+        throw FirebaseError.hatayiCevir(response.error.message);
+      }
+    } catch (e) {
+      _scaffoldKey.currentState.showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      setState(() {
+        _logStatus = LoginStatus.None;
+      });
+    }
   }
 
   Material loginButton(BuildContext context, String text, Function fnk) {
@@ -197,8 +251,10 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  TextField buildTextField(IconData iconData, String text, bool secure) {
+  TextField buildTextField(
+      String text, bool secure, TextEditingController textedit) {
     return TextField(
+      controller: textedit,
       obscureText: secure,
       style: TextStyle(color: Colors.grey),
       decoration: InputDecoration(
