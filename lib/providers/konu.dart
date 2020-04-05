@@ -13,10 +13,17 @@ class KonuProvider with ChangeNotifier {
 
   Future<List<Konu>> degerleriCek(String kod) async {
     final konuApiLink = '${_apiLink}konular/$kod';
+    final durumApiLink =
+        '${_apiLink}konulardurum/${_user.uid}/$kod.json?auth=${_user.token}';
+    final durumJson = await http.get(durumApiLink);
     final konuJson = await http.get('$konuApiLink.json?auth=${_user.token}');
+    final jsonDurumJson = jsonDecode(durumJson.body);
+
     final List<dynamic> jsonKonuJson = jsonDecode(konuJson.body);
-    final List<Konu> donusturulmusVeri =
-        jsonKonuJson.map((konu) => Konu(konu['id'], konu['konu'])).toList();
+    final List<Konu> donusturulmusVeri = jsonKonuJson
+        .map((konu) => Konu(konu['id'], konu['konu'],
+            jsonDurumJson==null ?false:jsonDurumJson[konu['id']] ?? false))
+        .toList();
     _konuVeriler = donusturulmusVeri;
     return _konuVeriler;
   }
@@ -25,14 +32,16 @@ class KonuProvider with ChangeNotifier {
     return _konuVeriler;
   }
 
-  void durumuGuncelle(String id) {
-    final link = '${_apiLink}konulardurum/${_user.uid}.json?auth=${_user.token}';
+  void durumuGuncelle(String id, String kod) async {
+    final link =
+        '${_apiLink}konulardurum/${_user.uid}/$kod/$id.json?auth=${_user.token}';
     final konuIndex = _konuVeriler.indexWhere((konu) {
       return konu.id == id;
     });
-    _konuVeriler[konuIndex].durum = !_konuVeriler[konuIndex].durum;
+    final dersDurum = _konuVeriler[konuIndex].durum;
+    _konuVeriler[konuIndex].durum = !dersDurum;
 
-    http.put(link, body: {'id': id, 'durum': !_konuVeriler[konuIndex].durum});
     notifyListeners();
+    final response = await http.put(link, body: jsonEncode(!dersDurum));
   }
 }

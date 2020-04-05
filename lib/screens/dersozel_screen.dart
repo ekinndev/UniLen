@@ -91,7 +91,7 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
         trailing: IconButton(
             onPressed: () {
               Provider.of<KonuProvider>(context, listen: false)
-                  .durumuGuncelle(ders.id);
+                  .durumuGuncelle(ders.id,key['kod']);
             },
             icon: Icon(
               SimpleLineIcons.check,
