@@ -10,8 +10,8 @@ import '../providers/auth.dart';
 class AnaDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final authProv = Provider.of<Auth>(context, listen: false);
-    final User user = authProv.user;
+    final _authProv = Provider.of<Auth>(context, listen: false);
+    final User _user = _authProv.user;
 
     return Drawer(
       child: Column(
@@ -19,12 +19,12 @@ class AnaDrawer extends StatelessWidget {
           UserAccountsDrawerHeader(
             margin: EdgeInsets.zero,
             accountName: Text(
-              user.name,
+              _user.name,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            accountEmail: Text(user.email),
+            accountEmail: Text(_user.email),
             currentAccountPicture: CircleAvatar(
-              backgroundImage: NetworkImage(user.photoUrl),
+              backgroundImage: NetworkImage(_user.photoUrl),
             ),
             decoration: BoxDecoration(
               color: DanColor.anaRenk,
@@ -64,7 +64,7 @@ class AnaDrawer extends StatelessWidget {
                       leading: Icon(MaterialCommunityIcons.exit_to_app),
                       title: Text('Çıkış Yap'),
                       onTap: () {
-                        authProv.signOutAll();
+                        _authProv.signOutAll();
                         Navigator.pop(context);
                       },
                     ),

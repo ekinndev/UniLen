@@ -31,7 +31,7 @@ class UstAnaKart extends StatelessWidget {
                   style: TextStyle(color: Colors.white, fontSize: 15)),
             ],
           ),
-          left: 20,
+          left: 15,
           bottom: 20,
         ),
         Positioned(

@@ -16,9 +16,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  TextEditingController email = TextEditingController();
-  TextEditingController pass = TextEditingController();
-  TextEditingController confpass = TextEditingController();
+  TextEditingController _email = TextEditingController();
+  TextEditingController _pass = TextEditingController();
+  TextEditingController _confpass = TextEditingController();
 
   AuthMode _authMode = AuthMode.Login;
   LoginStatus _logStatus = LoginStatus.None;
@@ -43,25 +43,26 @@ class _LoginScreenState extends State<LoginScreen> {
           Scaffold(
             key: _scaffoldKey,
             backgroundColor: Colors.transparent,
-            body:  _logStatus==LoginStatus.Working?Center(child: CircularProgressIndicator()): Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.only(left: 20, right: 20),
-              child: SingleChildScrollView(
-                child: Column(
+            body: _logStatus == LoginStatus.Working
+                ? Center(child: CircularProgressIndicator())
+                : Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.only(left: 20, right: 20),
+                    child: SingleChildScrollView(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Image.network(
-                            'https://seeklogo.com/images/S/school-education-inspiration-logo-A8AD603C93-seeklogo.com.png',
-                            height: 180,
-                          ),
-                          buildTextField('Email', false, email),
+                              'https://seeklogo.com/images/S/school-education-inspiration-logo-A8AD603C93-seeklogo.com.png',
+                              height: 180),
+                          buildTextField('Email', false, _email),
                           SizedBox(height: 20),
-                          buildTextField('Şifre', true, pass),
+                          buildTextField('Şifre', true, _pass),
                           SizedBox(height: 20),
                           if (_authMode == AuthMode.SignUp)
-                            buildTextField('Şifre', true, confpass),
+                            buildTextField('Şifre', true, _confpass),
                           if (_authMode == AuthMode.SignUp)
                             SizedBox(height: 20),
                           loginButton(
@@ -80,26 +81,27 @@ class _LoginScreenState extends State<LoginScreen> {
                           SizedBox(height: 20),
                           dividerliBaslik(),
                           SizedBox(height: 20),
-                          ButtonBar(
-                            alignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              sosyalMedyaButton(
-                                  FontAwesome5Brands.google,
-                                  Color(0xFFDD4B39),
-                                  authProv.handleSignInGoogle),
-                              sosyalMedyaButton(FontAwesome5Brands.facebook_f,
-                                  Color(0xFF4064AD), () {}),
-                            ],
-                          ),
+                          sosyalMedyaButonlar(authProv),
                           SizedBox(height: 20),
                         ],
                       ),
-                   
-              ),
-            ),
+                    ),
+                  ),
           ),
         ],
       ),
+    );
+  }
+
+  ButtonBar sosyalMedyaButonlar(Auth authProv) {
+    return ButtonBar(
+      alignment: MainAxisAlignment.center,
+      children: <Widget>[
+        sosyalMedyaButton(FontAwesome5Brands.google, Color(0xFFDD4B39),
+            authProv.handleSignInGoogle),
+        sosyalMedyaButton(
+            FontAwesome5Brands.facebook_f, Color(0xFF4064AD), () {}),
+      ],
     );
   }
 
@@ -150,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = RegExp(pattern);
     final authProv = Provider.of<Auth>(context, listen: false);
-    if (pass.text.trim().length < 6 || !regex.hasMatch(email.text)) {
+    if (_pass.text.trim().length < 6 || !regex.hasMatch(_email.text)) {
       _scaffoldKey.currentState.showSnackBar(
         SnackBar(
           content: Text('Email ya da şifre geçersiz.'),
@@ -161,8 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
     if (_authMode == AuthMode.SignUp) {
-
-      if (pass.text.trim() != confpass.text.trim()) {
+      if (_pass.text.trim() != _confpass.text.trim()) {
         _scaffoldKey.currentState.showSnackBar(
           SnackBar(
             content: Text('Şifreleriniz birbiriyle uyuşmuyor.'),
@@ -178,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
     try {
       final response = await authProv.emailleKayitOlYaDaGiris(
-          email: email.text, password: pass.text, regOrLog: _authMode);
+          email: _email.text, password: _pass.text, regOrLog: _authMode);
       if (response is FirebaseError) {
         print(response.error.message);
         throw FirebaseError.hatayiCevir(response.error.message);

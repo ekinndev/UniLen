@@ -16,16 +16,16 @@ class AnaEkran extends StatefulWidget {
 }
 
 class _AnaEkranState extends State<AnaEkran> {
-  bool flag = true;
-  User user;
+  bool _flag = true;
+  User _user;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (flag) {
+    if (_flag) {
       setState(() {
-        this.user = Provider.of<Auth>(context, listen: false).user;
+        this._user = Provider.of<Auth>(context, listen: false).user;
 
-        this.flag = false;
+        this._flag = false;
       });
     }
   }
@@ -74,16 +74,16 @@ class _AnaEkranState extends State<AnaEkran> {
             Positioned(
               top: 100,
               left: 15,
-              child: ProfileWidget(user),
+              child: ProfileWidget(_user),
             ),
           ],
         ),
         Expanded(
           child: ListView(
-            padding: EdgeInsets.zero,
+            padding: EdgeInsets.only(top:15),
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.only(left: 8.0, top: 15.0),
+                padding: const EdgeInsets.only(left: 8.0),
                 child: Align(
                     alignment: Alignment.topLeft,
                     child: Text(

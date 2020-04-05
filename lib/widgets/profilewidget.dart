@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:uniapp/models/user.dart';
 
 class ProfileWidget extends StatelessWidget {
-  final User user;
-  ProfileWidget(this.user);
+  final User _user;
+  ProfileWidget(this._user);
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -11,21 +11,21 @@ class ProfileWidget extends StatelessWidget {
         CircleAvatar(
             minRadius: 25,
             backgroundImage:
-                NetworkImage(user.photoUrl),
+                NetworkImage(_user.photoUrl),
           ),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: <Widget>[
               Text(
-                user.name,
+                _user.name,
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 18),
               ),
               Text(
-                user.email,
+                _user.email,
                 textAlign: TextAlign.start,
                 style: TextStyle(
                   color: Colors.white,

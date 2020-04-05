@@ -13,6 +13,7 @@ class DersOzelScreen extends StatefulWidget {
 
 class _DersOzelScreenState extends State<DersOzelScreen> {
   List<Konu> _konularVeri;
+  String _konuSayisi='';
   Map<String, dynamic> key;
   bool flag = true;
   @override
@@ -25,6 +26,7 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
           .then((deger) {
         setState(() {
           _konularVeri = deger;
+          _konuSayisi='${_konularVeri.length} Konu';
           flag = false;
         });
       });
@@ -39,7 +41,7 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
       body: Column(
         children: <Widget>[
           UstAnaKart(
-            subtitle: '10 Konu',
+            subtitle: _konuSayisi,
             title: key['ad'],
             icon: key['icon'].icon,
           ),

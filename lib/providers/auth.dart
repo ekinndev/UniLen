@@ -46,35 +46,28 @@ class Auth with ChangeNotifier {
       {String email,
       String password,
       AuthMode regOrLog = AuthMode.Login}) async {
-   
-      String registerOrLogin =
-          regOrLog == AuthMode.Login ? 'signInWithPassword' : 'signUp';
-      final apiLink =
-          'https://identitytoolkit.googleapis.com/v1/accounts:$registerOrLogin?key=AIzaSyAlyY7R3qk1SsOEN3v1aouYgoHHyKhbP8k';
+    String registerOrLogin =
+        regOrLog == AuthMode.Login ? 'signInWithPassword' : 'signUp';
+    final apiLink =
+        'https://identitytoolkit.googleapis.com/v1/accounts:$registerOrLogin?key=AIzaSyAlyY7R3qk1SsOEN3v1aouYgoHHyKhbP8k';
 
-      final response = await http.post(apiLink,
-          body: jsonEncode({
-            'email': email,
-            'password': password,
-            'returnSecureToken': true
-          }));
-      final userVeri = jsonDecode(response.body);
-      if (userVeri['error'] != null) {
-        FirebaseError err = FirebaseError.fromJson(userVeri);
-        return err;
-      }
+    final response = await http.post(apiLink,
+        body: jsonEncode(
+            {'email': email, 'password': password, 'returnSecureToken': true}));
+    final userVeri = jsonDecode(response.body);
+    if (userVeri['error'] != null) {
+      FirebaseError err = FirebaseError.fromJson(userVeri);
+      return err;
+    }
 
-      _token = userVeri['idToken'];
-      _userId = userVeri['localId'];
-      _email = userVeri['email'];
-      _photoUrl = 'https://i.ya-webdesign.com/images/empty-avatar-png.png';
-      _name = 'Ekin';
-      _method = LogMethod.Standart;
-      _expiryDate = DateTime.now().add(Duration(minutes: 50));
-      notifyListeners();
-   
-   
-   
+    _token = userVeri['idToken'];
+    _userId = userVeri['localId'];
+    _email = userVeri['email'];
+    _photoUrl = 'https://i.ya-webdesign.com/images/empty-avatar-png.png';
+    _name = 'Ekin';
+    _method = LogMethod.Standart;
+    _expiryDate = DateTime.now().add(Duration(minutes: 50));
+    notifyListeners();
   }
 
   Future<void> handleSignInGoogle() async {
@@ -89,12 +82,6 @@ class Auth with ChangeNotifier {
       );
       final FirebaseUser user =
           (await _auth.signInWithCredential(credential)).user;
-      // print(user.uid);
-      // print("signed in " +
-      //     user.displayName +
-      //     " " +
-      //     "access" +
-      //     googleAuth.accessToken.toString());
 
       _token = (await user.getIdToken()).token;
       _userId = user.uid;

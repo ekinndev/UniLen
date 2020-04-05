@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 
 
 class DersButonu extends StatelessWidget {
-  final Icon icon;
-  final String text;
-  final Color renk;
-  final double radius;
-  final Function btnHandler;
-  DersButonu(this.icon, this.text, this.renk, this.radius,[this.btnHandler]);
+  final Icon _icon;
+  final String _text;
+  final Color _renk;
+  final double _radius;
+  final Function _btnHandler;
+  DersButonu(this._icon, this._text, this._renk, this._radius,[this._btnHandler]);
   @override
   Widget build(
     BuildContext context,
   ) {
     return RawMaterialButton(
-      onPressed:btnHandler??(){},
+      onPressed:_btnHandler??(){},
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(this.radius)),
+          borderRadius: BorderRadius.circular(this._radius)),
       splashColor: Colors.deepOrange,
-      fillColor: renk,
+      fillColor: _renk,
       constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width * 0.46, maxHeight: 70),
       child: Padding(
@@ -26,7 +26,7 @@ class DersButonu extends StatelessWidget {
           children: <Widget>[
             CircleAvatar(
               minRadius: 25,
-              child: icon,
+              child: _icon,
               backgroundColor: Colors.white,
             ),
             SizedBox(
@@ -34,7 +34,7 @@ class DersButonu extends StatelessWidget {
             ),
             Expanded(
               child: Text(
-                text,
+                _text,
                 style: TextStyle(color: Colors.white, fontSize: 18),
                 overflow: TextOverflow.clip,
               ),
