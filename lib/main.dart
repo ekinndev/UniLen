@@ -17,9 +17,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider.value(value: Auth()),
           ChangeNotifierProxyProvider<Auth, KonuProvider>(
             create: (_) => KonuProvider(),
-            update: (ctx, auth, _) {
-              return KonuProvider(auth.user);
-            },
+            update: (ctx, auth, _) => KonuProvider(auth.user),
           ),
         ],
         child: Consumer<Auth>(

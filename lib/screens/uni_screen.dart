@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:provider/provider.dart';
+import '../providers/auth.dart';
 import '../models/universite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -17,8 +19,9 @@ class _UniScreenState extends State<UniScreen> {
   List<Universite> _universiteVeriler;
 
   Future<List<Universite>> unileriCek() async {
+    final token=Provider.of<Auth>(context,listen: false).token;
     final uniJson = await http.get(
-        'https://danisman-akademi-94376.firebaseio.com/universiteler.json');
+        'https://danisman-akademi-94376.firebaseio.com/universiteler.json?auth=$token');
 
     final List<dynamic> jsonUniJson = jsonDecode(uniJson.body);
     final List<Universite> uniler = jsonUniJson

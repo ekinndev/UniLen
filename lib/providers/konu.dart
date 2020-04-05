@@ -13,7 +13,7 @@ class KonuProvider with ChangeNotifier {
 
   Future<List<Konu>> degerleriCek(String kod) async {
     final konuApiLink = '${_apiLink}konular/$kod';
-    final konuJson = await http.get('$konuApiLink.json');
+    final konuJson = await http.get('$konuApiLink.json?auth=${user.token}');
     final List<dynamic> jsonKonuJson = jsonDecode(konuJson.body);
     final List<Konu> donusturulmusVeri =
         jsonKonuJson.map((konu) => Konu(konu['id'], konu['konu'])).toList();

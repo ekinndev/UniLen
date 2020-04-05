@@ -65,7 +65,7 @@ class AnaDrawer extends StatelessWidget {
                       title: Text('Çıkış Yap'),
                       onTap: () {
                         Navigator.pop(context);
-                        authProv.googleSignOut();
+                        authProv.signOutAll();
                       },
                     ),
                     ListTile(
