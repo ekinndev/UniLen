@@ -20,7 +20,9 @@ class DersGenelSecim extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           UstAnaKart(
-              icon: Entypo.open_book, subtitle: 'Tüm dersler bir tık uzağınızda.', title: 'Tüm Dersler'),
+              icon: Entypo.open_book,
+              subtitle: 'Tüm dersler bir tık uzağınızda.',
+              title: 'Tüm Dersler'),
           Expanded(
               child: ListView(
             padding: EdgeInsets.only(top: 15),
@@ -39,7 +41,8 @@ class DersGenelSecim extends StatelessWidget {
               SizedBox(height: 15),
               dersBasligi('AYT SÖZEL KONULARI'),
               SizedBox(height: 15),
-              aytSozelButonlar(context)
+              aytSozelButonlar(context),
+              SizedBox(height: 15),
             ],
           ))
         ],

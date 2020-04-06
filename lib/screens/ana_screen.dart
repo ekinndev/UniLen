@@ -80,7 +80,7 @@ class _AnaEkranState extends State<AnaEkran> {
         ),
         Expanded(
           child: ListView(
-            padding: EdgeInsets.only(top:15),
+            padding: EdgeInsets.only(top: 15),
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
@@ -194,24 +194,24 @@ class _AnaEkranState extends State<AnaEkran> {
               ),
               Container(
                 height: ekranBoy * 0.25,
-                // child: FutureBuilder<List<dynamic>>(
-                //     future: Future.delayed(Duration(seconds: 2)),
-                //     builder: (context, snapshot) {
-                //       if (snapshot.connectionState == ConnectionState.waiting) {
-                //         return Center(child: CircularProgressIndicator());
-                //       }
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemBuilder: (ctx, i) => WebsiteCart(
-                    baslik: 'Deneme Test Yazı',
-                    imageUrl:
-                        'https://danismanakademi.org/wp-content/uploads/2018/03/Hangi-Derse-Nas%C4%B1l-%C3%87al%C4%B1%C5%9Fmal%C4%B1-Felsefe-Grubu.jpg',
-                    i: i,
-                  ),
-                  itemCount: 10,
-                  scrollDirection: Axis.horizontal,
-                ),
-                // }),
+                child: FutureBuilder<List<dynamic>>(
+                    future: Future.delayed(Duration(seconds: 2)),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemBuilder: (ctx, i) => WebsiteCart(
+                          baslik: 'Deneme Test Yazı',
+                          imageUrl:
+                              'https://danismanakademi.org/wp-content/uploads/2018/03/Hangi-Derse-Nas%C4%B1l-%C3%87al%C4%B1%C5%9Fmal%C4%B1-Felsefe-Grubu.jpg',
+                          i: i,
+                        ),
+                        itemCount: 5,
+                        scrollDirection: Axis.horizontal,
+                      );
+                    }),
               ),
             ],
           ),

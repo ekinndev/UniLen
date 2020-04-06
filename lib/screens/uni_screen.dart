@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:provider/provider.dart';
+import 'package:uniapp/widgets/drawer.dart';
 import '../providers/auth.dart';
 import '../models/universite.dart';
 import 'package:flutter/material.dart';
@@ -47,6 +48,7 @@ class _UniScreenState extends State<UniScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: AnaDrawer(),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,

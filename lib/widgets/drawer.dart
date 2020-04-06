@@ -8,11 +8,11 @@ import '../screens/ders_screen.dart';
 import '../providers/auth.dart';
 
 class AnaDrawer extends StatelessWidget {
+  
   @override
   Widget build(BuildContext context) {
-    final _authProv = Provider.of<Auth>(context, listen: false);
-    final User _user = _authProv.user;
-
+  final _authProv=Provider.of<Auth>(context, listen: false);
+  final _user=_authProv.user;
     return Drawer(
       child: Column(
         children: <Widget>[
@@ -35,17 +35,17 @@ class AnaDrawer extends StatelessWidget {
               padding: EdgeInsets.zero,
               children: <Widget>[
                 ListTile(
-                    onTap: () => Navigator.pushNamed(context, "/"),
+                    onTap: () => Navigator.pushReplacementNamed(context, "/"),
                     leading: Icon(SimpleLineIcons.home),
                     title: Text('Anasayfa')),
                 ListTile(
-                    onTap: () => Navigator.pushNamed(
+                    onTap: () => Navigator.popAndPushNamed(
                         context, DersGenelSecim.dersGenelSecimRoute),
                     leading: Icon(SimpleLineIcons.note),
                     title: Text('Dersler')),
                 ListTile(
                     onTap: () =>
-                        Navigator.pushNamed(context, UniScreen.uniScreenRoute),
+                        Navigator.popAndPushNamed(context, UniScreen.uniScreenRoute),
                     leading: Icon(SimpleLineIcons.graduation),
                     title: Text('Üniversiteler')),
               ],
@@ -64,8 +64,8 @@ class AnaDrawer extends StatelessWidget {
                       leading: Icon(MaterialCommunityIcons.exit_to_app),
                       title: Text('Çıkış Yap'),
                       onTap: () {
-                        _authProv.signOutAll();
-                        Navigator.pop(context);
+                        Navigator.pushReplacementNamed(context,'/');
+                        Provider.of<Auth>(context, listen: false).signOutAll();
                       },
                     ),
                     ListTile(
