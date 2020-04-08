@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
-import 'package:uniapp/models/user.dart';
 import '../screens/uni_screen.dart';
 import '../settings/colors.dart';
 import '../screens/ders_screen.dart';

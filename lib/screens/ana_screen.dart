@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:uniapp/models/user.dart';
-import 'package:uniapp/widgets/websitecard.dart';
-import '../widgets/dersbutonu.dart';
-import '../settings/colors.dart';
-import '../widgets/drawer.dart';
-import '../widgets/profilewidget.dart';
-import '../settings/lessname.dart';
-import 'dersozel_screen.dart';
+
+import '../models/user.dart';
 import '../providers/auth.dart';
+import '../settings/colors.dart';
+import '../settings/less_name.dart';
+import '../widgets/ders_butonu.dart';
+import '../widgets/drawer.dart';
+import '../widgets/profile_widget.dart';
+import '../widgets/website_cart.dart';
+import './ders_ozel_screen.dart';
 
 class AnaEkran extends StatefulWidget {
   @override

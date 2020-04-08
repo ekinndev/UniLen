@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:uniapp/settings/colors.dart';
-import 'package:uniapp/widgets/ustanakart.dart';
+import '../widgets/ust_ana_kart.dart';
 import '../providers/konu.dart';
 import '../models/konu.dart';
 

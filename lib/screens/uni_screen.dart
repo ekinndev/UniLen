@@ -5,8 +5,8 @@ import '../providers/auth.dart';
 import '../models/universite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:uniapp/widgets/ustanakart.dart';
-import '../widgets/unicard.dart';
+import '../widgets/ust_ana_kart.dart';
+import '../widgets/uni_cart.dart';
 import 'package:http/http.dart' as http;
 
 class UniScreen extends StatefulWidget {

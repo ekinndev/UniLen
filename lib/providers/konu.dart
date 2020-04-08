@@ -42,6 +42,6 @@ class KonuProvider with ChangeNotifier {
     _konuVeriler[konuIndex].durum = !dersDurum;
 
     notifyListeners();
-    final response = await http.put(link, body: jsonEncode(!dersDurum));
+     await http.put(link, body: jsonEncode(!dersDurum));
   }
 }
