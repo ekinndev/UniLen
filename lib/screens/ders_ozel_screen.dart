@@ -21,6 +21,8 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
     super.didChangeDependencies();
     if (flag) {
       key = ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+      Future.microtask((){
+        
       Provider.of<KonuProvider>(context, listen: false)
           .degerleriCek(key['kod'])
           .then((deger) {
@@ -29,6 +31,7 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
           _konuSayisi='${_konularVeri.length} Konu';
           flag = false;
         });
+      });
       });
     }
   }
