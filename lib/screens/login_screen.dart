@@ -71,12 +71,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ? 'Giriş Yap'
                                   : 'Kayıt Ol',
                               girisYaDaKayitOl),
-                          SizedBox(height: 10),
-                          loginButton(
+                          SizedBox(height: 20),
+                          authDegistirButton(
                               context,
                               _authMode == AuthMode.Login
-                                  ? 'Email ile Kayıt Ol'
-                                  : 'Email ile Giriş Yap',
+                                  ? 'Hesabınız yok mu ?'
+                                  : 'Zaten kayıtlı mısın ?',
                               authDegistir),
                           SizedBox(height: 20),
                           dividerliBaslik(),
@@ -115,6 +115,27 @@ class _LoginScreenState extends State<LoginScreen> {
         _authMode = AuthMode.Login;
       });
     }
+  }
+
+  Widget authDegistirButton(BuildContext context, String text, Function fnk) {
+    final kayitText = ' Şimdi kayıt olun.';
+    final girisText = ' Giriş yap.';
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment:CrossAxisAlignment.center,
+      children: <Widget>[
+        Text(text, style: TextStyle(color: Colors.white)),
+        InkWell(
+          onTap: fnk,
+          child: Text(_authMode == AuthMode.Login ? kayitText : girisText,
+              style: TextStyle(
+                color: Colors.red,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              )),
+        ),
+      ],
+    );
   }
 
   Row dividerliBaslik() {
@@ -200,11 +221,11 @@ class _LoginScreenState extends State<LoginScreen> {
   Material loginButton(BuildContext context, String text, Function fnk) {
     return Material(
       elevation: 5.0,
-      borderRadius: BorderRadius.circular(30.0),
-      color: Color(0xff009cc2),
+      borderRadius: BorderRadius.circular(10.0),
+      color: Color(0xff9586fb),
       child: MaterialButton(
         shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: fnk,
