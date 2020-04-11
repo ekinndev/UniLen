@@ -18,31 +18,55 @@ class UniScreen extends StatefulWidget {
 }
 
 class _UniScreenState extends State<UniScreen> {
-  List<Universite> _universiteVeriler;
+  ScrollController _scrollController = ScrollController();
+  List<Universite> _universiteVeriler = [];
+  bool isLoading = false;
+  bool nextPageLoading = false;
+  final int uniSayisiLimit = 20;
+  int _basIndex = 1;
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+  }
 
-  Future<List<Universite>> unileriCek() async {
+  Future<void> unileriCek() async {
+    setState(() {
+      isLoading = true;
+      nextPageLoading = true;
+    });
+    List<Universite> uniCekilen = [];
     final token = Provider.of<Auth>(context, listen: false).token;
     final uniJson = await http.get(
-        'https://danisman-akademi-94376.firebaseio.com/universiteler.json?auth=$token');
+        'https://danisman-akademi-94376.firebaseio.com/universiteler.json?auth=$token&orderBy="uniId"&startAt=$_basIndex&limitToFirst=$uniSayisiLimit');
+    final Map<String, dynamic> veri = jsonDecode(uniJson.body);
+    veri.forEach((f, s) {
+      final Universite uni = Universite(
+          uniAd: s['uniAd'],
+          uniAdres: s['uniAdres'],
+          uniId: s['uniId'].toString(),
+          uniKod: s['uniKodu'].toString(),
+          uniMail: s['uniMail']);
+      uniCekilen.add(uni);
+    });
 
-    final List<dynamic> jsonUniJson = jsonDecode(uniJson.body);
-    final List<Universite> uniler = jsonUniJson
-        .map((f) => Universite(
-            uniAd: f['uniad'],
-            uniAdres: f['unimail'],
-            uniMail: f['uniadres'],
-            uniId: f['uniid']))
-        .toList();
-    return uniler;
+    setState(() {
+      _universiteVeriler.addAll(uniCekilen);
+      isLoading = false;
+      nextPageLoading = false;
+    });
   }
 
   @override
   void initState() {
     super.initState();
-    unileriCek().then((veriler) {
-      setState(() {
-        _universiteVeriler = veriler;
-      });
+    unileriCek();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        _basIndex += uniSayisiLimit;
+        unileriCek();
+      }
     });
   }
 
@@ -63,11 +87,12 @@ class _UniScreenState extends State<UniScreen> {
             icon: SimpleLineIcons.graduation,
           ),
           Expanded(
-            child: _universiteVeriler == null
+            child: isLoading == true && _basIndex == 1
                 ? Center(
                     child: CircularProgressIndicator(),
                   )
                 : ListView.builder(
+                    controller: _scrollController,
                     padding: EdgeInsets.zero,
                     itemBuilder: (ctx, i) {
                       return InkWell(
@@ -75,9 +100,10 @@ class _UniScreenState extends State<UniScreen> {
                           Navigator.of(context).pushNamed(
                               UniversiteDetail.universiteDetailRoute,
                               arguments: {
-                                "kod":"1086",
-                                "uniAdi":_universiteVeriler[i].uniAd.toString(),
-                                "resimId":_universiteVeriler[i].uniId,
+                                "kod": _universiteVeriler[i].uniKod,
+                                "uniAdi":
+                                    _universiteVeriler[i].uniAd,
+                                "resimId": _universiteVeriler[i].uniId,
                               });
                         },
                         child: UniCard(
@@ -85,9 +111,10 @@ class _UniScreenState extends State<UniScreen> {
                         ),
                       );
                     },
-                    itemCount: 5,
+                    itemCount: _universiteVeriler.length,
                   ),
           ),
+          if (nextPageLoading) CircularProgressIndicator(),
         ],
       ),
     );

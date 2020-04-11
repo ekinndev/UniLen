@@ -26,36 +26,38 @@ class UniCard extends StatelessWidget {
                 color: Colors.black.withOpacity(0.5),
                 borderRadius: BorderRadius.circular(10)),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              CircleAvatar(
-                backgroundColor: Colors.white,
-                child: Hero(
-                  tag:"uniLogo${uni.uniId}",
-                                  child: Image.asset('assets/logolar/${uni.uniId}.png',
-                      fit: BoxFit.cover),
+          Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                CircleAvatar(
+                  backgroundColor: Colors.white,
+                  child: Hero(
+                    tag:"uniLogo${uni.uniId}",
+                                    child: Image.asset('assets/logolar/${uni.uniId}.png',
+                        fit: BoxFit.cover),
+                  ),
+                  radius: 40,
                 ),
-                radius: 40,
-              ),
-              Text(
-                uni.uniAd,
-                style: TextStyle(color:Colors.white,fontSize: 20, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-              Text(
-                uni.uniMail,
-                style: TextStyle(color: Colors.white, fontSize: 15),
-                textAlign: TextAlign.center,
-              ),
-              Text(
-                uni.uniAdres,
-                style: TextStyle(color: Colors.white, fontSize: 15),
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
+                Text(
+                  uni.uniAd,
+                  style: TextStyle(color:Colors.white,fontSize: 20, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+                Text(
+                  uni.uniMail,
+                  style: TextStyle(color: Colors.white, fontSize: 15),
+                  textAlign: TextAlign.center,
+                ),
+                Text(
+                  uni.uniAdres,
+                  style: TextStyle(color: Colors.white, fontSize: 15),
+                  textAlign: TextAlign.center,
+             
+                ),
+              ],
+            ),
           ),
         ],
       ),

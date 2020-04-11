@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:uniapp/settings/colors.dart';
 import '../models/firebase_error.dart';
 import '../providers/auth.dart';
 
@@ -222,7 +223,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(10.0),
-      color: Color(0xff9586fb),
+      color: DanColor.anaRenk,
       child: MaterialButton(
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),

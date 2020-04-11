@@ -42,6 +42,7 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
   }
 
   Future<void> verileriCek() async {
+    print(_uniKod);
     final jsonData = await http.get(
         'https://danisman-akademi-94376.firebaseio.com/unibolumbilgi/$_uniKod.json');
     final veriler = jsonDecode(jsonData.body);
