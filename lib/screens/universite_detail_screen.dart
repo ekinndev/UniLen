@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:json_table/json_table.dart';
 import 'package:json_table/json_table_column.dart';
-import 'package:uniapp/settings/colors.dart';
 import 'package:http/http.dart' as http;
+import '../widgets/ust_uni_ana_kart.dart';
 
 class UniversiteDetail extends StatefulWidget {
   static const universiteDetailRoute = '/unidetail';
@@ -23,29 +23,32 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
   List<dynamic> _ea;
   String _uniKod;
   String _uniAdi;
-  bool flag = true;
+  bool _flag = true;
+  bool _isLoading = true;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (flag) {
+    if (_flag) {
       Map<String, dynamic> verilenler =
           ModalRoute.of(context).settings.arguments;
       _uniKod = verilenler['kod'];
       _uniAdi = verilenler['uniAdi'];
       _resimId = verilenler['resimId'].toString();
-      flag = false;
+      _flag = false;
       verileriCek().then((veriler) {
-        setState(() {});
+        setState(() {
+          _isLoading = false;
+        });
       });
     }
   }
 
   Future<void> verileriCek() async {
-    print(_uniKod);
     final jsonData = await http.get(
         'https://danisman-akademi-94376.firebaseio.com/unibolumbilgi/$_uniKod.json');
     final veriler = jsonDecode(jsonData.body);
+
     _sehir = veriler['sehir'];
     _uniTur = veriler['uniTur'];
     _soz = veriler['söz'];
@@ -72,28 +75,49 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
               id: _resimId,
             ),
             Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: <Widget>[
-                  SizedBox(height: 15),
-                  Text('SAYISAL BÖLÜMLER'),
-                  tablo(_say, context),
-                  SizedBox(height: 15),
-                  Text('EA BÖLÜMLER'),
-                  tablo(_ea, context),
-                  SizedBox(height: 15),
-                  Text('SÖZEL BÖLÜMLER'),
-                  tablo(_soz, context),
-                  SizedBox(height: 15),
-                  Text('DİL BÖLÜMLER'),
-                  tablo(_dil, context),
-                  SizedBox(height: 15),
-                ],
-              ),
+              child: _isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : ListView.builder(
+                      padding: EdgeInsets.only(top: 15),
+                      itemBuilder: (ctx, i) {
+                        switch (i) {
+                          case 0:
+                            return tabloOlustur(
+                                context, _say, "SAYISAL BÖLÜMLER");
+                            break;
+                          case 1:
+                            return tabloOlustur(context, _ea, "EA BÖLÜMLER");
+                            break;
+                          case 2:
+                            return tabloOlustur(
+                                context, _soz, "SÖZEL BÖLÜMLER");
+                            break;
+                          case 3:
+                            return tabloOlustur(context, _dil, "DİL BÖLÜMLER");
+                            break;
+                        }
+                      },
+                      itemCount: 4,
+                    ),
             )
           ],
         ),
       ),
+    );
+  }
+
+  Widget tabloOlustur(
+      BuildContext context, List<dynamic> liste, String baslik) {
+    if (liste == null) {
+      return Container();
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(baslik),
+        tablo(liste, context),
+        SizedBox(height: 15),
+      ],
     );
   }
 
@@ -102,7 +126,7 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
       return Center(child: CircularProgressIndicator());
     }
     return Container(
-      margin:EdgeInsets.only(top:15),
+      margin: EdgeInsets.only(top: 15),
       child: JsonTable(
         json,
         columns: [
@@ -130,8 +154,8 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
           return Container(
             padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
             decoration: BoxDecoration(
-                border:
-                    Border.all(width: 0.5, color: Colors.grey.withOpacity(0.5))),
+                border: Border.all(
+                    width: 0.5, color: Colors.grey.withOpacity(0.5))),
             child: Text(
               value,
               textAlign: TextAlign.left,
@@ -142,53 +166,6 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
             ),
           );
         },
-      ),
-    );
-  }
-}
-
-class UstUniAnaKart extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final IconData icon;
-  final String id;
-
-  UstUniAnaKart({this.title, this.subtitle, this.icon, this.id});
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      height: MediaQuery.of(context).size.height * 0.32,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: DanColor.anaRenk,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          CircleAvatar(
-            backgroundColor: Colors.white,
-            child: Hero(
-                tag: "uniLogo$id",
-                child:
-                    Image.asset('assets/logolar/$id.png', fit: BoxFit.cover)),
-            radius: 55,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: FittedBox(
-              fit: BoxFit.fitWidth,
-              child: Text(
-                title,
-                style: TextStyle(color: Colors.white, fontSize: 30),
-              ),
-            ),
-          ),
-          Text(subtitle ?? "",
-              style: TextStyle(color: Colors.white, fontSize: 15)),
-        ],
       ),
     );
   }

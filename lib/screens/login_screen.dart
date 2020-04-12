@@ -17,9 +17,14 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  TextEditingController _email = TextEditingController();
-  TextEditingController _pass = TextEditingController();
-  TextEditingController _confpass = TextEditingController();
+
+  final TextEditingController _email = TextEditingController();
+  final FocusNode _emailFocus = FocusNode();
+  final TextEditingController _pass = TextEditingController();
+  final FocusNode _passFocus = FocusNode();
+
+  final TextEditingController _confPass = TextEditingController();
+  final FocusNode _confPassFocus = FocusNode();
 
   AuthMode _authMode = AuthMode.Login;
   LoginStatus _logStatus = LoginStatus.None;
@@ -58,32 +63,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           Image.network(
                               'https://seeklogo.com/images/S/school-education-inspiration-logo-A8AD603C93-seeklogo.com.png',
                               height: 180),
-                          buildTextField('Email', false, _email),
-                          SizedBox(height: 20),
-                          buildTextField('Şifre', true, _pass),
-                          SizedBox(height: 20),
-                          if (_authMode == AuthMode.SignUp)
-                            buildTextField('Şifre', true, _confpass),
-                          if (_authMode == AuthMode.SignUp)
-                            SizedBox(height: 20),
-                          loginButton(
-                              context,
-                              _authMode == AuthMode.Login
-                                  ? 'Giriş Yap'
-                                  : 'Kayıt Ol',
-                              girisYaDaKayitOl),
-                          SizedBox(height: 20),
-                          authDegistirButton(
-                              context,
-                              _authMode == AuthMode.Login
-                                  ? 'Hesabınız yok mu ?'
-                                  : 'Zaten kayıtlı mısın ?',
-                              authDegistir),
-                          SizedBox(height: 20),
-                          dividerliBaslik(),
-                          SizedBox(height: 20),
-                          sosyalMedyaButonlar(authProv),
-                          SizedBox(height: 20),
+                          emailLogin(context),
+                          socialMediaLogin(authProv),
                         ],
                       ),
                     ),
@@ -91,6 +72,67 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Column socialMediaLogin(Auth authProv) {
+    return Column(
+      children: <Widget>[
+        dividerliBaslik(),
+        SizedBox(height: 20),
+        sosyalMedyaButonlar(authProv),
+        SizedBox(height: 20),
+      ],
+    );
+  }
+
+  Column emailLogin(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        buildTextField(
+            'Email', false, _email, _emailFocus, TextInputAction.next, () {
+          _emailFocus.unfocus();
+          FocusScope.of(context).requestFocus(_passFocus);
+        }),
+        SizedBox(height: 20),
+        buildTextField(
+            'Şifre',
+            true,
+            _pass,
+            _passFocus,
+            _authMode == AuthMode.Login
+                ? TextInputAction.done
+                : TextInputAction.next, () {
+          if (_authMode == AuthMode.Login) {
+            _passFocus.unfocus();
+            girisYaDaKayitOl();
+          } else {
+            _passFocus.unfocus();
+            FocusScope.of(context).requestFocus(_confPassFocus);
+          }
+        }),
+        SizedBox(height: 20),
+        if (_authMode == AuthMode.SignUp)
+          buildTextField(
+              'Şifre', true, _confPass, _confPassFocus, TextInputAction.done,
+              () {
+            _confPassFocus.unfocus();
+            girisYaDaKayitOl();
+          }),
+        if (_authMode == AuthMode.SignUp) SizedBox(height: 20),
+        loginButton(
+            context,
+            _authMode == AuthMode.Login ? 'Giriş Yap' : 'Kayıt Ol',
+            girisYaDaKayitOl),
+        SizedBox(height: 20),
+        authDegistirButton(
+            context,
+            _authMode == AuthMode.Login
+                ? 'Hesabınız yok mu ?'
+                : 'Zaten kayıtlı mısın ?',
+            authDegistir),
+        SizedBox(height: 20),
+      ],
     );
   }
 
@@ -123,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final girisText = ' Giriş yap.';
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment:CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Text(text, style: TextStyle(color: Colors.white)),
         InkWell(
@@ -185,7 +227,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
     if (_authMode == AuthMode.SignUp) {
-      if (_pass.text.trim() != _confpass.text.trim()) {
+      if (_pass.text.trim() != _confPass.text.trim()) {
         _scaffoldKey.currentState.showSnackBar(
           SnackBar(
             content: Text('Şifreleriniz birbiriyle uyuşmuyor.'),
@@ -275,8 +317,18 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   TextField buildTextField(
-      String text, bool secure, TextEditingController textedit) {
+      String text,
+      bool secure,
+      TextEditingController textedit,
+      FocusNode fNode,
+      TextInputAction txtInputAction,
+      Function fnk) {
     return TextField(
+      textInputAction: txtInputAction,
+      focusNode: fNode,
+      onSubmitted: (val) {
+        fnk();
+      },
       controller: textedit,
       obscureText: secure,
       style: TextStyle(color: Colors.grey),

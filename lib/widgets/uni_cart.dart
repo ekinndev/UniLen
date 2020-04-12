@@ -8,7 +8,7 @@ class UniCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 15),
+      margin: EdgeInsets.only(top: 15,left:8,right:8),
       height: MediaQuery.of(context).size.height * 0.37,
       child: Stack(
         children: <Widget>[

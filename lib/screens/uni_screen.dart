@@ -21,8 +21,8 @@ class _UniScreenState extends State<UniScreen> {
   ScrollController _scrollController = ScrollController();
   List<Universite> _universiteVeriler = [];
   bool isLoading = false;
-  bool nextPageLoading = false;
-  final int uniSayisiLimit = 20;
+  bool isLocked=false;
+  final int uniSayisiLimit = 10;
   int _basIndex = 1;
   @override
   void dispose() {
@@ -33,7 +33,6 @@ class _UniScreenState extends State<UniScreen> {
   Future<void> unileriCek() async {
     setState(() {
       isLoading = true;
-      nextPageLoading = true;
     });
     List<Universite> uniCekilen = [];
     final token = Provider.of<Auth>(context, listen: false).token;
@@ -53,7 +52,7 @@ class _UniScreenState extends State<UniScreen> {
     setState(() {
       _universiteVeriler.addAll(uniCekilen);
       isLoading = false;
-      nextPageLoading = false;
+      isLocked=false;
     });
   }
 
@@ -63,7 +62,8 @@ class _UniScreenState extends State<UniScreen> {
     unileriCek();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
+          _scrollController.position.maxScrollExtent && !isLocked) {
+          isLocked=true;
         _basIndex += uniSayisiLimit;
         unileriCek();
       }
@@ -114,7 +114,7 @@ class _UniScreenState extends State<UniScreen> {
                     itemCount: _universiteVeriler.length,
                   ),
           ),
-          if (nextPageLoading) CircularProgressIndicator(),
+          if (isLoading && _basIndex>1) CircularProgressIndicator(),
         ],
       ),
     );

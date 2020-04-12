@@ -13,7 +13,7 @@ class DersOzelScreen extends StatefulWidget {
 
 class _DersOzelScreenState extends State<DersOzelScreen> {
   List<Konu> _konularVeri;
-  String _konuSayisi='';
+  String _konuSayisi = '';
   Map<String, dynamic> key;
   bool flag = true;
   @override
@@ -21,17 +21,16 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
     super.didChangeDependencies();
     if (flag) {
       key = ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-      Future.microtask((){
-        
-      Provider.of<KonuProvider>(context, listen: false)
-          .degerleriCek(key['kod'])
-          .then((deger) {
-        setState(() {
-          _konularVeri = deger;
-          _konuSayisi='${_konularVeri.length} Konu';
-          flag = false;
+      Future.microtask(() {
+        Provider.of<KonuProvider>(context, listen: false)
+            .degerleriCek(key['kod'])
+            .then((deger) {
+          setState(() {
+            _konularVeri = deger;
+            _konuSayisi = '${_konularVeri.length} Konu';
+            flag = false;
+          });
         });
-      });
       });
     }
   }
@@ -53,22 +52,18 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
                 ? Center(child: CircularProgressIndicator())
                 : Consumer<KonuProvider>(
                     builder: (_, prov, child) {
-                      return konularListView(_konularVeri, key['icon'].icon);
+                      return ListView.builder(
+                        padding: EdgeInsets.zero,
+                        itemBuilder: (ctx, i) {
+                          return konuKart(i, _konularVeri[i], key['icon'].icon);
+                        },
+                        itemCount: _konularVeri.length,
+                      );
                     },
                   ),
           ),
         ],
       ),
-    );
-  }
-
-  ListView konularListView(List<Konu> konular, IconData icon) {
-    return ListView.builder(
-      padding: EdgeInsets.zero,
-      itemBuilder: (ctx, i) {
-        return konuKart(i, konular[i], icon);
-      },
-      itemCount: konular.length,
     );
   }
 
@@ -94,7 +89,7 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
         trailing: IconButton(
             onPressed: () {
               Provider.of<KonuProvider>(context, listen: false)
-                  .durumuGuncelle(ders.id,key['kod']);
+                  .durumuGuncelle(ders.id, key['kod']);
             },
             icon: Icon(
               SimpleLineIcons.check,
