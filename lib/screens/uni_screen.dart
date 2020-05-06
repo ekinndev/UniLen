@@ -18,10 +18,13 @@ class UniScreen extends StatefulWidget {
 }
 
 class _UniScreenState extends State<UniScreen> {
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   List<Universite> _universiteVeriler = [];
+  List<Universite> _searchUniler = [];
+
   bool isLoading = false;
-  bool isLocked=false;
+  bool isLocked = false;
+  var listener;
   final int uniSayisiLimit = 10;
   int _basIndex = 1;
   @override
@@ -30,29 +33,44 @@ class _UniScreenState extends State<UniScreen> {
     _scrollController.dispose();
   }
 
-  Future<void> unileriCek() async {
+  final TextEditingController textCtrl = TextEditingController();
+  final FocusNode textFocus = FocusNode();
+
+  Future<void> unileriCek([bool arama = false]) async {
     setState(() {
       isLoading = true;
     });
     List<Universite> uniCekilen = [];
     final token = Provider.of<Auth>(context, listen: false).token;
-    final uniJson = await http.get(
-        'https://danisman-akademi-94376.firebaseio.com/universiteler.json?auth=$token&orderBy="uniId"&startAt=$_basIndex&limitToFirst=$uniSayisiLimit');
+    http.Response uniJson;
+    if (arama) {
+      uniJson = await http.get(
+          'https://danisman-akademi-94376.firebaseio.com/universiteler.json?orderBy="uniId"&startAt=1');
+    } else {
+      uniJson = await http.get(
+          'https://danisman-akademi-94376.firebaseio.com/universiteler.json?auth=$token&orderBy="uniId"&startAt=$_basIndex&limitToFirst=$uniSayisiLimit');
+    }
+
     final Map<String, dynamic> veri = jsonDecode(uniJson.body);
     veri.forEach((f, s) {
       final Universite uni = Universite(
-          uniAd: s['uniAd'],
-          uniAdres: s['uniAdres'],
+          uniAd: s['uniAd'].toString(),
+          uniAdres: s['uniAdres'].toString(),
           uniId: s['uniId'].toString(),
           uniKod: s['uniKodu'].toString(),
-          uniMail: s['uniMail']);
+          uniMail: s['uniMail'].toString());
       uniCekilen.add(uni);
     });
 
     setState(() {
-      _universiteVeriler.addAll(uniCekilen);
+      if (arama) {
+        _searchUniler.addAll(uniCekilen);
+      } else {
+        _universiteVeriler.addAll(uniCekilen);
+      }
+
       isLoading = false;
-      isLocked=false;
+      isLocked = false;
     });
   }
 
@@ -60,13 +78,31 @@ class _UniScreenState extends State<UniScreen> {
   void initState() {
     super.initState();
     unileriCek();
-    _scrollController.addListener(() {
+    listener = () {
       if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent && !isLocked) {
-          isLocked=true;
+              _scrollController.position.maxScrollExtent &&
+          !isLocked) {
+        isLocked = true;
         _basIndex += uniSayisiLimit;
         unileriCek();
       }
+    };
+    _scrollController.addListener(listener);
+  }
+
+  Future<void> aramaYap() async {
+    textFocus.unfocus();
+    _scrollController.removeListener(listener);
+    if (_searchUniler.length <= 0) {
+      await unileriCek(true);
+    }
+    setState(() {
+      _universiteVeriler = _searchUniler.where((uni) {
+        RegExp regex =
+            RegExp(textCtrl.text.toLowerCase(), caseSensitive: false);
+
+        return regex.hasMatch(uni.uniAd.toLowerCase());
+      }).toList();
     });
   }
 
@@ -74,10 +110,7 @@ class _UniScreenState extends State<UniScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: AnaDrawer(),
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
+      appBar: buildAppBar(),
       extendBodyBehindAppBar: true,
       body: Column(
         children: <Widget>[
@@ -101,8 +134,7 @@ class _UniScreenState extends State<UniScreen> {
                               UniversiteDetail.universiteDetailRoute,
                               arguments: {
                                 "kod": _universiteVeriler[i].uniKod,
-                                "uniAdi":
-                                    _universiteVeriler[i].uniAd,
+                                "uniAdi": _universiteVeriler[i].uniAd,
                                 "resimId": _universiteVeriler[i].uniId,
                               });
                         },
@@ -114,9 +146,48 @@ class _UniScreenState extends State<UniScreen> {
                     itemCount: _universiteVeriler.length,
                   ),
           ),
-          if (isLoading && _basIndex>1) CircularProgressIndicator(),
+          if (isLoading && _basIndex > 1) CircularProgressIndicator(),
         ],
       ),
+    );
+  }
+
+  AppBar buildAppBar() {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      title: TextField(
+        onSubmitted: (val) {
+          aramaYap();
+        },
+        focusNode: textFocus,
+        controller: textCtrl,
+        style: TextStyle(color: Colors.white),
+        decoration: InputDecoration(
+          hintText: 'Üniversite Ara',
+          hintStyle: TextStyle(color: Colors.grey),
+          contentPadding: EdgeInsets.all(5),
+          isDense: true,
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.white),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.white),
+          ),
+        ),
+      ),
+      elevation: 0,
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.search),
+          onPressed: aramaYap,
+        )
+      ],
     );
   }
 }
