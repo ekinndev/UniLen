@@ -14,8 +14,7 @@ class UniCard extends StatelessWidget {
         children: <Widget>[
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            child: Image.network(
-                'https://images.contentful.com/wqz0jxyfamgk/1JQnDmQbZWkGaiCyaG4EkK/b87ee9e9a100d85b06ddbe55bf97a78c/shutterstock_204795163.jpg',
+            child: Image.asset('assets/unicardBg.jpg',
                 fit: BoxFit.cover,
                 height: MediaQuery.of(context).size.height * 0.37,
               ),

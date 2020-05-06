@@ -112,9 +112,9 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
       return Container();
     }
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Text(baslik),
+        Text(baslik,style: TextStyle(fontWeight: FontWeight.bold),),
         tablo(liste, context),
         SizedBox(height: 15),
       ],
@@ -139,7 +139,7 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
           return Container(
             padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
             decoration: BoxDecoration(
-                border: Border.all(width: 0.5), color: Colors.grey[300]),
+                border: Border.all(width: 0.5), color: Colors.amber),
             child: Text(
               header,
               textAlign: TextAlign.center,
