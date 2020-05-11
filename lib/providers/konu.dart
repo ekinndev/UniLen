@@ -25,7 +25,7 @@ class KonuProvider with ChangeNotifier {
             jsonDurumJson==null ?false:jsonDurumJson[konu['id']] ?? false))
         .toList();
     _konuVeriler = donusturulmusVeri;
-    return _konuVeriler;
+    return konulariCek;
   }
 
   List<Konu> get konulariCek {
