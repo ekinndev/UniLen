@@ -40,7 +40,11 @@ class Auth with ChangeNotifier {
           token: _token,
           uid: _userId);
     }
-    return null;
+    return User(
+        email: 'ekin@abalioglu.com',
+        logMethod: LogMethod.Google,
+        name: 'Tekrar Giriş Yap',
+        photoUrl: 'https://picsum.photos/300/300');
   }
 
   Future emailleKayitOlYaDaGiris(

@@ -11,6 +11,7 @@ class AnaDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final _authProv = Provider.of<Auth>(context, listen: false);
     final _user = _authProv.user;
+       
     return Drawer(
       child: Column(
         children: <Widget>[
