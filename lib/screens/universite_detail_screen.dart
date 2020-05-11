@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:json_table/json_table.dart';
 import 'package:json_table/json_table_column.dart';
 import 'package:http/http.dart' as http;
-import '../widgets/ust_uni_ana_kart.dart';
+import '../settings/colors.dart';
 
 class UniversiteDetail extends StatefulWidget {
   static const universiteDetailRoute = '/unidetail';
@@ -95,6 +95,8 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
                           case 3:
                             return tabloOlustur(context, _dil, "DİL BÖLÜMLER");
                             break;
+                          default:
+                            return Container();
                         }
                       },
                       itemCount: 4,
@@ -114,7 +116,10 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Text(baslik,style: TextStyle(fontWeight: FontWeight.bold),),
+        Text(
+          baslik,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         tablo(liste, context),
         SizedBox(height: 15),
       ],
@@ -143,7 +148,7 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
             child: Text(
               header,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.display1.copyWith(
+              style: Theme.of(context).textTheme.bodyText1.copyWith(
                   fontWeight: FontWeight.w700,
                   fontSize: 14.0,
                   color: Colors.black87),
@@ -161,11 +166,58 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
               textAlign: TextAlign.left,
               style: Theme.of(context)
                   .textTheme
-                  .display1
+                  .headline1
                   .copyWith(fontSize: 14.0, color: Colors.grey[900]),
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class UstUniAnaKart extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final IconData icon;
+  final String id;
+
+  UstUniAnaKart({this.title, this.subtitle, this.icon, this.id});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      height: MediaQuery.of(context).size.height * 0.32,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: DanColor.anaRenk,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          CircleAvatar(
+            backgroundColor: Colors.white,
+            child: Hero(
+                tag: "uniLogo$id",
+                child:
+                    Image.asset('assets/logolar/$id.png', fit: BoxFit.cover)),
+            radius: 55,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Text(
+                title,
+                style: TextStyle(color: Colors.white, fontSize: 30),
+              ),
+            ),
+          ),
+          Text(subtitle ?? "",
+              style: TextStyle(color: Colors.white, fontSize: 15)),
+        ],
       ),
     );
   }

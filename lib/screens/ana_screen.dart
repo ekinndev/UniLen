@@ -7,8 +7,6 @@ import '../settings/colors.dart';
 import '../settings/less_name.dart';
 import '../widgets/ders_butonu.dart';
 import '../widgets/drawer.dart';
-import '../widgets/profile_widget.dart';
-import '../widgets/website_cart.dart';
 import './ders_ozel_screen.dart';
 
 class AnaEkran extends StatefulWidget {
@@ -227,6 +225,94 @@ class _AnaEkranState extends State<AnaEkran> {
           child: ProfileWidget(_user),
         ),
       ],
+    );
+  }
+}
+
+class ProfileWidget extends StatelessWidget {
+  final User _user;
+  ProfileWidget(this._user);
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        CircleAvatar(
+          minRadius: 25,
+          backgroundImage: NetworkImage(_user.photoUrl),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: <Widget>[
+              Text(
+                _user.name,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18),
+              ),
+              Text(
+                _user.email,
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class WebsiteCart extends StatelessWidget {
+  final imageUrl;
+  final baslik;
+  final link;
+  final i;
+
+  const WebsiteCart({this.imageUrl, this.baslik, this.link, this.i});
+  @override
+  Widget build(BuildContext context) {
+    final ekranEn = MediaQuery.of(context).size.width;
+    final ekranBoy = MediaQuery.of(context).size.height;
+
+    return Container(
+      width: ekranEn * 0.85,
+      height: ekranBoy * 0.25,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      margin: EdgeInsets.only(
+          left: i == 0 ? 8 : 15, bottom: 15, right: i == 9 ? 8 : 0),
+      child: Stack(
+        children: <Widget>[
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Image.network(
+              imageUrl,
+              fit: BoxFit.fill,
+              width: ekranEn * 0.85,
+              height: ekranBoy * 0.25,
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.6),
+                borderRadius: BorderRadius.circular(10)),
+            width: ekranEn * 0.85,
+            height: ekranBoy * 0.3,
+          ),
+          Center(
+              child: Text(
+            baslik,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ))
+        ],
+      ),
     );
   }
 }
