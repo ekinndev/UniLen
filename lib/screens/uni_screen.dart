@@ -34,7 +34,7 @@ class _UniScreenState extends State<UniScreen> {
 
   final TextEditingController textCtrl = TextEditingController();
   final FocusNode textFocus = FocusNode();
-
+  /////////////////////////////////////////////////////////////////////////////
   Future<void> unileriCek([bool arama = false]) async {
     setState(() {
       isLoading = true;
@@ -111,43 +111,51 @@ class _UniScreenState extends State<UniScreen> {
       drawer: AnaDrawer(),
       appBar: buildAppBar(),
       extendBodyBehindAppBar: true,
-      body: Column(
-        children: <Widget>[
-          UstAnaKart(
-            subtitle: 'Üniversitelere hızlı ulaşım.',
-            title: 'Üniversiteler',
-            icon: SimpleLineIcons.graduation,
-          ),
-          Expanded(
-            child: isLoading == true && _basIndex == 1
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : ListView.builder(
-                    controller: _scrollController,
-                    padding: EdgeInsets.zero,
-                    itemBuilder: (ctx, i) {
-                      return InkWell(
-                        onTap: () {
-                          Navigator.of(context).pushNamed(
-                              UniversiteDetail.universiteDetailRoute,
-                              arguments: {
-                                "kod": _universiteVeriler[i].uniKod,
-                                "uniAdi": _universiteVeriler[i].uniAd,
-                                "resimId": _universiteVeriler[i].uniId,
-                              });
-                        },
-                        child: UniCard(
-                          uni: _universiteVeriler[i],
-                        ),
-                      );
-                    },
-                    itemCount: _universiteVeriler.length,
+      body: buildColumnUniAna(context),
+    );
+  }
+
+  Column buildColumnUniAna(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        UstAnaKart(
+          subtitle: 'Üniversitelere hızlı ulaşım.',
+          title: 'Üniversiteler',
+          icon: SimpleLineIcons.graduation,
+        ),
+        buildExpandedUniList(context),
+        if (isLoading && _basIndex > 1) CircularProgressIndicator(),
+      ],
+    );
+  }
+
+  Expanded buildExpandedUniList(BuildContext context) {
+    return Expanded(
+      child: isLoading == true && _basIndex == 1
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView.builder(
+              controller: _scrollController,
+              padding: EdgeInsets.zero,
+              itemBuilder: (ctx, i) {
+                return InkWell(
+                  onTap: () {
+                    Navigator.of(context).pushNamed(
+                        UniversiteDetail.universiteDetailRoute,
+                        arguments: {
+                          "kod": _universiteVeriler[i].uniKod,
+                          "uniAdi": _universiteVeriler[i].uniAd,
+                          "resimId": _universiteVeriler[i].uniId,
+                        });
+                  },
+                  child: UniCard(
+                    uni: _universiteVeriler[i],
                   ),
-          ),
-          if (isLoading && _basIndex > 1) CircularProgressIndicator(),
-        ],
-      ),
+                );
+              },
+              itemCount: _universiteVeriler.length,
+            ),
     );
   }
 

@@ -16,6 +16,7 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
   String _konuSayisi = '';
   Map<String, dynamic> key;
   bool flag = true;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -40,30 +41,31 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: dersOzelAppBar(),
-      body: Column(
-        children: <Widget>[
-          UstAnaKart(
-            subtitle: _konuSayisi,
-            title: key['ad'],
-            icon: key['icon'].icon,
-          ),
-          Expanded(
-            child: _konularVeri == null
-                ? Center(child: CircularProgressIndicator())
-                : Consumer<KonuProvider>(
-                    builder: (_, prov, child) {
-                      return ListView.builder(
-                        padding: EdgeInsets.zero,
-                        itemBuilder: (ctx, i) {
-                          return konuKart(i, _konularVeri[i], key['icon'].icon);
-                        },
-                        itemCount: _konularVeri.length,
-                      );
-                    },
-                  ),
-          ),
-        ],
-      ),
+      body: buildColumnAnaDers(),
+    );
+  }
+
+  Column buildColumnAnaDers() {
+    return Column(
+      children: <Widget>[
+        UstAnaKart(
+            subtitle: _konuSayisi, title: key['ad'], icon: key['icon'].icon),
+        Expanded(
+          child: _konularVeri == null
+              ? Center(child: CircularProgressIndicator())
+              : Consumer<KonuProvider>(
+                  builder: (_, prov, child) {
+                    return ListView.builder(
+                      padding: EdgeInsets.zero,
+                      itemBuilder: (ctx, i) {
+                        return konuKart(i, _konularVeri[i], key['icon'].icon);
+                      },
+                      itemCount: _konularVeri.length,
+                    );
+                  },
+                ),
+        ),
+      ],
     );
   }
 

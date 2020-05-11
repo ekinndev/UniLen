@@ -28,6 +28,57 @@ class _LoginScreenState extends State<LoginScreen> {
 
   AuthMode _authMode = AuthMode.Login;
   LoginStatus _logStatus = LoginStatus.None;
+
+  void girisYaDaKayitOl() async {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = RegExp(pattern);
+    final authProv = Provider.of<Auth>(context, listen: false);
+    if (_pass.text.trim().length < 6 || !regex.hasMatch(_email.text)) {
+      _scaffoldKey.currentState.showSnackBar(
+        SnackBar(
+          content: Text('Email ya da şifre geçersiz.'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+
+      return;
+    }
+    if (_authMode == AuthMode.SignUp) {
+      if (_pass.text.trim() != _confPass.text.trim()) {
+        _scaffoldKey.currentState.showSnackBar(
+          SnackBar(
+            content: Text('Şifreleriniz birbiriyle uyuşmuyor.'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+        return;
+      }
+    }
+
+    setState(() {
+      _logStatus = LoginStatus.Working;
+    });
+    try {
+      final response = await authProv.emailleKayitOlYaDaGiris(
+          email: _email.text, password: _pass.text, regOrLog: _authMode);
+      if (response is FirebaseError) {
+        print(response.error.message);
+        throw FirebaseError.hatayiCevir(response.error.message);
+      }
+    } catch (e) {
+      _scaffoldKey.currentState.showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      setState(() {
+        _logStatus = LoginStatus.None;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final authProv = Provider.of<Auth>(context, listen: false);
@@ -35,43 +86,55 @@ class _LoginScreenState extends State<LoginScreen> {
     return SafeArea(
       child: Stack(
         children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/login/duvar.jpg"),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(color: Colors.black.withOpacity(0.4)),
-          ),
-          Scaffold(
-            key: _scaffoldKey,
-            backgroundColor: Colors.transparent,
-            body: _logStatus == LoginStatus.Working
-                ? Center(child: CircularProgressIndicator())
-                : Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.only(left: 20, right: 20),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Image.network(
-                              'https://seeklogo.com/images/S/school-education-inspiration-logo-A8AD603C93-seeklogo.com.png',
-                              height: 180),
-                          emailLogin(context),
-                          socialMediaLogin(authProv),
-                        ],
-                      ),
-                    ),
-                  ),
-          ),
+          buildContainerArkaPlan(),
+          buildContainerArkaPlanSiyahlik(),
+          buildScaffoldLoginAna(context, authProv),
         ],
       ),
+    );
+  }
+
+  Container buildContainerArkaPlan() {
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/login/duvar.jpg"),
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+
+  Container buildContainerArkaPlanSiyahlik() {
+    return Container(
+      decoration: BoxDecoration(color: Colors.black.withOpacity(0.4)),
+    );
+  }
+
+  Scaffold buildScaffoldLoginAna(BuildContext context, Auth authProv) {
+    return Scaffold(
+      key: _scaffoldKey,
+      backgroundColor: Colors.transparent,
+      body: _logStatus == LoginStatus.Working
+          ? Center(child: CircularProgressIndicator())
+          : Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(left: 20, right: 20),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Image.network(
+                        'https://seeklogo.com/images/S/school-education-inspiration-logo-A8AD603C93-seeklogo.com.png',
+                        height: 180),
+                    emailLogin(context),
+                    socialMediaLogin(authProv),
+                  ],
+                ),
+              ),
+            ),
     );
   }
 
@@ -209,56 +272,6 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ],
     );
-  }
-
-  void girisYaDaKayitOl() async {
-    Pattern pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = RegExp(pattern);
-    final authProv = Provider.of<Auth>(context, listen: false);
-    if (_pass.text.trim().length < 6 || !regex.hasMatch(_email.text)) {
-      _scaffoldKey.currentState.showSnackBar(
-        SnackBar(
-          content: Text('Email ya da şifre geçersiz.'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-
-      return;
-    }
-    if (_authMode == AuthMode.SignUp) {
-      if (_pass.text.trim() != _confPass.text.trim()) {
-        _scaffoldKey.currentState.showSnackBar(
-          SnackBar(
-            content: Text('Şifreleriniz birbiriyle uyuşmuyor.'),
-            duration: Duration(seconds: 2),
-          ),
-        );
-        return;
-      }
-    }
-
-    setState(() {
-      _logStatus = LoginStatus.Working;
-    });
-    try {
-      final response = await authProv.emailleKayitOlYaDaGiris(
-          email: _email.text, password: _pass.text, regOrLog: _authMode);
-      if (response is FirebaseError) {
-        print(response.error.message);
-        throw FirebaseError.hatayiCevir(response.error.message);
-      }
-    } catch (e) {
-      _scaffoldKey.currentState.showSnackBar(
-        SnackBar(
-          content: Text(e.toString()),
-          duration: Duration(seconds: 2),
-        ),
-      );
-      setState(() {
-        _logStatus = LoginStatus.None;
-      });
-    }
   }
 
   Material loginButton(BuildContext context, String text, Function fnk) {

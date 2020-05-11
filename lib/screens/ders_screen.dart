@@ -16,40 +16,55 @@ class DersGenelSecim extends StatelessWidget {
       extendBodyBehindAppBar: true,
       drawer: AnaDrawer(),
       appBar: dersAppBar(),
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          UstAnaKart(
-              icon: Entypo.open_book,
-              subtitle: 'Tüm dersler bir tık uzağınızda.',
-              title: 'Tüm Dersler'),
-          Expanded(
-              child: ListView(
-            padding: EdgeInsets.only(top: 15),
-            children: <Widget>[
-              tytBolumu(context),
-              SizedBox(height: 15),
-              aytSayBolumu(context),
-              SizedBox(height: 15),
-              aytEaBolumu(context),
-              SizedBox(height: 15),
-              aytSozBolumu(context),
-              SizedBox(height: 15),
-            ],
-          ))
-        ],
-      ),
+      body: buildColumnDersAna(context),
     );
   }
 
-  Column aytSozBolumu(BuildContext context) {
+  Column buildColumnDersAna(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        UstAnaKart(
+            icon: Entypo.open_book,
+            subtitle: 'Tüm dersler bir tık uzağınızda.',
+            title: 'Tüm Dersler'),
+        Expanded(
+            child: ListView(
+          padding: EdgeInsets.only(top: 15),
+          children: <Widget>[
+            tytBolumu(context),
+            SizedBox(height: 15),
+            aytSayBolumu(context),
+            SizedBox(height: 15),
+            aytEaBolumu(context),
+            SizedBox(height: 15),
+            aytSozBolumu(context),
+            SizedBox(height: 15),
+          ],
+        ))
+      ],
+    );
+  }
+
+  Column tytBolumu(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        dersBasligi('AYT SÖZEL KONULARI'),
+        dersBasligi('TYT KONULARI'),
         SizedBox(height: 15),
-        dersButonlar(context, LessName.sozDersler),
+        dersButonlar(context, LessName.tytDersler),
+      ],
+    );
+  }
+
+  Column aytSayBolumu(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        dersBasligi('AYT SAYISAL KONULARI'),
+        SizedBox(height: 15),
+        dersButonlar(context, LessName.sayDersler),
       ],
     );
   }
@@ -64,24 +79,13 @@ class DersGenelSecim extends StatelessWidget {
         ]);
   }
 
-  Column aytSayBolumu(BuildContext context) {
+  Column aytSozBolumu(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        dersBasligi('AYT SAYISAL KONULARI'),
+        dersBasligi('AYT SÖZEL KONULARI'),
         SizedBox(height: 15),
-        dersButonlar(context, LessName.sayDersler),
-      ],
-    );
-  }
-
-  Column tytBolumu(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        dersBasligi('TYT KONULARI'),
-        SizedBox(height: 15),
-        dersButonlar(context, LessName.tytDersler),
+        dersButonlar(context, LessName.sozDersler),
       ],
     );
   }

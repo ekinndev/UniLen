@@ -6,7 +6,7 @@ class UstAnaKart extends StatelessWidget {
   final String subtitle;
   final IconData icon;
 
-  UstAnaKart({this.title, this.subtitle,this.icon});
+  UstAnaKart({this.title, this.subtitle, this.icon});
   @override
   Widget build(BuildContext context) {
     return Stack(

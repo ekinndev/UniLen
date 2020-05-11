@@ -66,45 +66,51 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
           elevation: 0,
         ),
         extendBodyBehindAppBar: true,
-        body: Column(
-          children: <Widget>[
-            UstUniAnaKart(
-              icon: Icons.ac_unit,
-              subtitle: _sehir != null ? '$_sehir - $_uniTur' : '',
-              title: _uniAdi ?? "",
-              id: _resimId,
-            ),
-            Expanded(
-              child: _isLoading
-                  ? Center(child: CircularProgressIndicator())
-                  : ListView.builder(
-                      padding: EdgeInsets.only(top: 15),
-                      itemBuilder: (ctx, i) {
-                        switch (i) {
-                          case 0:
-                            return tabloOlustur(
-                                context, _say, "SAYISAL BÖLÜMLER");
-                            break;
-                          case 1:
-                            return tabloOlustur(context, _ea, "EA BÖLÜMLER");
-                            break;
-                          case 2:
-                            return tabloOlustur(
-                                context, _soz, "SÖZEL BÖLÜMLER");
-                            break;
-                          case 3:
-                            return tabloOlustur(context, _dil, "DİL BÖLÜMLER");
-                            break;
-                          default:
-                            return Container();
-                        }
-                      },
-                      itemCount: 4,
-                    ),
-            )
-          ],
-        ),
+        body: buildColumnUniDetailAna(context),
       ),
+    );
+  }
+
+  Column buildColumnUniDetailAna(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        UstUniAnaKart(
+          icon: Icons.ac_unit,
+          subtitle: _sehir != null ? '$_sehir - $_uniTur' : '',
+          title: _uniAdi ?? "",
+          id: _resimId,
+        ),
+        buildExpandedTablolar(context)
+      ],
+    );
+  }
+
+  Expanded buildExpandedTablolar(BuildContext context) {
+    return Expanded(
+      child: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : ListView.builder(
+              padding: EdgeInsets.only(top: 15),
+              itemBuilder: (ctx, i) {
+                switch (i) {
+                  case 0:
+                    return tabloOlustur(context, _say, "SAYISAL BÖLÜMLER");
+                    break;
+                  case 1:
+                    return tabloOlustur(context, _ea, "EA BÖLÜMLER");
+                    break;
+                  case 2:
+                    return tabloOlustur(context, _soz, "SÖZEL BÖLÜMLER");
+                    break;
+                  case 3:
+                    return tabloOlustur(context, _dil, "DİL BÖLÜMLER");
+                    break;
+                  default:
+                    return Container();
+                }
+              },
+              itemCount: 4,
+            ),
     );
   }
 
