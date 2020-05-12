@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import '../models/firebase_error.dart';
@@ -51,28 +53,37 @@ class Auth with ChangeNotifier {
       {String email,
       String password,
       AuthMode regOrLog = AuthMode.Login}) async {
-    String registerOrLogin =
-        regOrLog == AuthMode.Login ? 'signInWithPassword' : 'signUp';
-    final apiLink =
-        'https://identitytoolkit.googleapis.com/v1/accounts:$registerOrLogin?key=AIzaSyAlyY7R3qk1SsOEN3v1aouYgoHHyKhbP8k';
+    try {
+      String registerOrLogin =
+          regOrLog == AuthMode.Login ? 'signInWithPassword' : 'signUp';
+      final apiLink =
+          'https://identitytoolkit.googleapis.com/v1/accounts:$registerOrLogin?key=AIzaSyAlyY7R3qk1SsOEN3v1aouYgoHHyKhbP8k';
 
-    final response = await http.post(apiLink,
-        body: jsonEncode(
-            {'email': email, 'password': password, 'returnSecureToken': true}));
-    final userVeri = jsonDecode(response.body);
-    if (userVeri['error'] != null) {
-      FirebaseError err = FirebaseError.fromJson(userVeri);
-      return err;
+      final response = await http.post(apiLink,
+          body: jsonEncode({
+            'email': email,
+            'password': password,
+            'returnSecureToken': true
+          }));
+      final userVeri = jsonDecode(response.body);
+      if (userVeri['error'] != null) {
+        FirebaseError err = FirebaseError.fromJson(userVeri);
+        return err;
+      }
+
+      _token = userVeri['idToken'];
+      _userId = userVeri['localId'];
+      _email = userVeri['email'];
+      _photoUrl = 'https://i.ya-webdesign.com/images/empty-avatar-png.png';
+      _name = 'Danışman Akademi Öğrenci';
+      _method = LogMethod.Standart;
+      _expiryDate = DateTime.now().add(Duration(minutes: 50));
+      notifyListeners();
+    } on SocketException {
+      throw "İnternet bağlantısı ya da veri yok.";
+    } catch (e) {
+      throw e.toString();
     }
-
-    _token = userVeri['idToken'];
-    _userId = userVeri['localId'];
-    _email = userVeri['email'];
-    _photoUrl = 'https://i.ya-webdesign.com/images/empty-avatar-png.png';
-    _name = 'Ekin';
-    _method = LogMethod.Standart;
-    _expiryDate = DateTime.now().add(Duration(minutes: 50));
-    notifyListeners();
   }
 
   Future<void> handleSignInGoogle() async {
@@ -99,6 +110,8 @@ class Auth with ChangeNotifier {
       notifyListeners();
     } on NoSuchMethodError {
       throw 'Login başarısız. Lütfen tekrar deneyin.';
+    } on PlatformException {
+      throw "Sunucuya bağlantı sağlanamıyor. Lütfen alternatif yollarla giriş yapın.";
     } catch (e) {
       throw e.toString();
     }

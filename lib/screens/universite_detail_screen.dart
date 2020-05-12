@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:json_table/json_table.dart';
@@ -25,6 +26,7 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
   String _uniAdi;
   bool _flag = true;
   bool _isLoading = true;
+  String hataMesaji;
 
   @override
   void didChangeDependencies() {
@@ -40,21 +42,32 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
         setState(() {
           _isLoading = false;
         });
+      }).catchError((onError) {
+        setState(() {
+          _isLoading = false;
+          hataMesaji = onError;
+        });
       });
     }
   }
 
   Future<void> verileriCek() async {
-    final jsonData = await http.get(
-        'https://danisman-akademi-94376.firebaseio.com/unibolumbilgi/$_uniKod.json');
-    final veriler = jsonDecode(jsonData.body);
+    try {
+      final jsonData = await http.get(
+          'https://danisman-akademi-94376.firebaseio.com/unibolumbilgi/$_uniKod.json');
+      final veriler = jsonDecode(jsonData.body);
 
-    _sehir = veriler['sehir'];
-    _uniTur = veriler['uniTur'];
-    _soz = veriler['söz'];
-    _say = veriler['say'];
-    _dil = veriler['dil'];
-    _ea = veriler['ea'];
+      _sehir = veriler['sehir'];
+      _uniTur = veriler['uniTur'];
+      _soz = veriler['söz'];
+      _say = veriler['say'];
+      _dil = veriler['dil'];
+      _ea = veriler['ea'];
+    } on SocketException {
+      throw 'İnternet bağlantısı ya da veri yok.';
+    } catch (e) {
+      throw e.toString();
+    }
   }
 
   @override
@@ -89,28 +102,30 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
     return Expanded(
       child: _isLoading
           ? Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              padding: EdgeInsets.only(top: 15),
-              itemBuilder: (ctx, i) {
-                switch (i) {
-                  case 0:
-                    return tabloOlustur(context, _say, "SAYISAL BÖLÜMLER");
-                    break;
-                  case 1:
-                    return tabloOlustur(context, _ea, "EA BÖLÜMLER");
-                    break;
-                  case 2:
-                    return tabloOlustur(context, _soz, "SÖZEL BÖLÜMLER");
-                    break;
-                  case 3:
-                    return tabloOlustur(context, _dil, "DİL BÖLÜMLER");
-                    break;
-                  default:
-                    return Container();
-                }
-              },
-              itemCount: 4,
-            ),
+          : hataMesaji != null
+              ? Center(child: Text(hataMesaji))
+              : ListView.builder(
+                  padding: EdgeInsets.only(top: 15),
+                  itemBuilder: (ctx, i) {
+                    switch (i) {
+                      case 0:
+                        return tabloOlustur(context, _say, "SAYISAL BÖLÜMLER");
+                        break;
+                      case 1:
+                        return tabloOlustur(context, _ea, "EA BÖLÜMLER");
+                        break;
+                      case 2:
+                        return tabloOlustur(context, _soz, "SÖZEL BÖLÜMLER");
+                        break;
+                      case 3:
+                        return tabloOlustur(context, _dil, "DİL BÖLÜMLER");
+                        break;
+                      default:
+                        return Container();
+                    }
+                  },
+                  itemCount: 4,
+                ),
     );
   }
 

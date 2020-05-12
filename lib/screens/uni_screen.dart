@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:provider/provider.dart';
 import 'package:uniapp/widgets/drawer.dart';
 import '../providers/auth.dart';
@@ -23,6 +24,7 @@ class _UniScreenState extends State<UniScreen> {
 
   bool isLoading = false;
   bool isLocked = false;
+  String hataMesaji;
   var listener;
   final int uniSayisiLimit = 10;
   int _basIndex = 1;
@@ -36,41 +38,53 @@ class _UniScreenState extends State<UniScreen> {
   final FocusNode textFocus = FocusNode();
   /////////////////////////////////////////////////////////////////////////////
   Future<void> unileriCek([bool arama = false]) async {
-    setState(() {
-      isLoading = true;
-    });
-    List<Universite> uniCekilen = [];
-    final token = Provider.of<Auth>(context, listen: false).token;
-    http.Response uniJson;
-    if (arama) {
-      uniJson = await http.get(
-          'https://danisman-akademi-94376.firebaseio.com/universiteler.json?orderBy="uniId"&startAt=1');
-    } else {
-      uniJson = await http.get(
-          'https://danisman-akademi-94376.firebaseio.com/universiteler.json?auth=$token&orderBy="uniId"&startAt=$_basIndex&limitToFirst=$uniSayisiLimit');
-    }
-
-    final Map<String, dynamic> veri = jsonDecode(uniJson.body);
-    veri.forEach((f, s) {
-      final Universite uni = Universite(
-          uniAd: s['uniAd'].toString(),
-          uniAdres: s['uniAdres'].toString(),
-          uniId: s['uniId'].toString(),
-          uniKod: s['uniKodu'].toString(),
-          uniMail: s['uniMail'].toString());
-      uniCekilen.add(uni);
-    });
-
-    setState(() {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      List<Universite> uniCekilen = [];
+      final token = Provider.of<Auth>(context, listen: false).token;
+      http.Response uniJson;
       if (arama) {
-        _searchUniler.addAll(uniCekilen);
+        uniJson = await http.get(
+            'https://danisman-akademi-94376.firebaseio.com/universiteler.json?orderBy="uniId"&startAt=1');
       } else {
-        _universiteVeriler.addAll(uniCekilen);
+        uniJson = await http.get(
+            'https://danisman-akademi-94376.firebaseio.com/universiteler.json?auth=$token&orderBy="uniId"&startAt=$_basIndex&limitToFirst=$uniSayisiLimit');
       }
 
-      isLoading = false;
-      isLocked = false;
-    });
+      final Map<String, dynamic> veri = jsonDecode(uniJson.body);
+      veri.forEach((f, s) {
+        final Universite uni = Universite(
+            uniAd: s['uniAd'].toString(),
+            uniAdres: s['uniAdres'].toString(),
+            uniId: s['uniId'].toString(),
+            uniKod: s['uniKodu'].toString(),
+            uniMail: s['uniMail'].toString());
+        uniCekilen.add(uni);
+      });
+
+      setState(() {
+        if (arama) {
+          _searchUniler.addAll(uniCekilen);
+        } else {
+          _universiteVeriler.addAll(uniCekilen);
+        }
+
+        isLoading = false;
+        isLocked = false;
+      });
+    } on SocketException {
+      setState(() {
+        hataMesaji = 'İnternet bağlantısı ya da veri yok.';
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        hataMesaji = e.toString();
+        isLoading = false;
+      });
+    }
   }
 
   @override
@@ -135,27 +149,29 @@ class _UniScreenState extends State<UniScreen> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : ListView.builder(
-              controller: _scrollController,
-              padding: EdgeInsets.zero,
-              itemBuilder: (ctx, i) {
-                return InkWell(
-                  onTap: () {
-                    Navigator.of(context).pushNamed(
-                        UniversiteDetail.universiteDetailRoute,
-                        arguments: {
-                          "kod": _universiteVeriler[i].uniKod,
-                          "uniAdi": _universiteVeriler[i].uniAd,
-                          "resimId": _universiteVeriler[i].uniId,
-                        });
+          : _universiteVeriler.isEmpty
+              ? Center(child: Text('İnternet bağlantısı ya da veri yok.'))
+              : ListView.builder(
+                  controller: _scrollController,
+                  padding: EdgeInsets.zero,
+                  itemBuilder: (ctx, i) {
+                    return InkWell(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(
+                            UniversiteDetail.universiteDetailRoute,
+                            arguments: {
+                              "kod": _universiteVeriler[i].uniKod,
+                              "uniAdi": _universiteVeriler[i].uniAd,
+                              "resimId": _universiteVeriler[i].uniId,
+                            });
+                      },
+                      child: UniCard(
+                        uni: _universiteVeriler[i],
+                      ),
+                    );
                   },
-                  child: UniCard(
-                    uni: _universiteVeriler[i],
-                  ),
-                );
-              },
-              itemCount: _universiteVeriler.length,
-            ),
+                  itemCount: _universiteVeriler.length,
+                ),
     );
   }
 

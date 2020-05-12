@@ -16,10 +16,13 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
   String _konuSayisi = '';
   Map<String, dynamic> key;
   bool flag = true;
+  String hataMesaji;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
     if (flag) {
       key = ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
       Future.microtask(() {
@@ -31,6 +34,13 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
             _konuSayisi = '${_konularVeri.length} Konu';
             flag = false;
           });
+        }).catchError((error) {
+          setState(() {
+            hataMesaji = error;
+            _konularVeri = [];
+            _konuSayisi = '0 Konu';
+            flag = false;
+          });
         });
       });
     }
@@ -39,6 +49,7 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       extendBodyBehindAppBar: true,
       appBar: dersOzelAppBar(),
       body: buildColumnAnaDers(),
@@ -53,17 +64,20 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
         Expanded(
           child: _konularVeri == null
               ? Center(child: CircularProgressIndicator())
-              : Consumer<KonuProvider>(
-                  builder: (_, prov, child) {
-                    return ListView.builder(
-                      padding: EdgeInsets.zero,
-                      itemBuilder: (ctx, i) {
-                        return konuKart(i, _konularVeri[i], key['icon'].icon);
+              : hataMesaji != null
+                  ? Center(child: Text(hataMesaji))
+                  : Consumer<KonuProvider>(
+                      builder: (_, prov, child) {
+                        return ListView.builder(
+                          padding: EdgeInsets.zero,
+                          itemBuilder: (ctx, i) {
+                            return konuKart(
+                                i, _konularVeri[i], key['icon'].icon);
+                          },
+                          itemCount: _konularVeri.length,
+                        );
                       },
-                      itemCount: _konularVeri.length,
-                    );
-                  },
-                ),
+                    ),
         ),
       ],
     );
@@ -91,7 +105,11 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
         trailing: IconButton(
             onPressed: () {
               Provider.of<KonuProvider>(context, listen: false)
-                  .durumuGuncelle(ders.id, key['kod']);
+                  .durumuGuncelle(ders.id, key['kod'])
+                  .catchError((e) {
+                _scaffoldKey.currentState
+                    .showSnackBar(SnackBar(content: Text(e.toString())));
+              });
             },
             icon: Icon(
               SimpleLineIcons.check,

@@ -63,7 +63,6 @@ class _LoginScreenState extends State<LoginScreen> {
       final response = await authProv.emailleKayitOlYaDaGiris(
           email: _email.text, password: _pass.text, regOrLog: _authMode);
       if (response is FirebaseError) {
-        print(response.error.message);
         throw FirebaseError.hatayiCevir(response.error.message);
       }
     } catch (e) {
