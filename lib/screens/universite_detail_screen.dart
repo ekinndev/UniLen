@@ -17,7 +17,7 @@ class UniversiteDetail extends StatefulWidget {
 class _UniversiteDetailState extends State<UniversiteDetail> {
   String _sehir;
   String _uniTur;
-  String _resimId;
+  // String _resimId;
   List<dynamic> _soz;
   List<dynamic> _say;
   List<dynamic> _dil;
@@ -36,7 +36,7 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
           ModalRoute.of(context).settings.arguments;
       _uniKod = verilenler['kod'];
       _uniAdi = verilenler['uniAdi'];
-      _resimId = verilenler['resimId'].toString();
+      // _resimId = verilenler['resimId'].toString();
       _flag = false;
       verileriCek().then((veriler) {
         setState(() {
@@ -52,22 +52,24 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
   }
 
   Future<void> verileriCek() async {
-    try {
-      final jsonData = await http.get(
-          'https://danisman-akademi-94376.firebaseio.com/unibolumbilgi/$_uniKod.json');
-      final veriler = jsonDecode(jsonData.body);
+    // try {
+    final jsonData =
+        await http.get('http://192.168.1.34:8080/bolumler/$_uniKod');
+    
+    final veriler = jsonDecode(jsonData.body);
+    print(veriler);
 
-      _sehir = veriler['sehir'];
-      _uniTur = veriler['uniTur'];
-      _soz = veriler['söz'];
-      _say = veriler['say'];
-      _dil = veriler['dil'];
-      _ea = veriler['ea'];
-    } on SocketException {
-      throw 'İnternet bağlantısı ya da veri yok.';
-    } catch (e) {
-      throw e.toString();
-    }
+    _sehir = "anywhere";//TODO
+    _uniTur = "devlet";//TODO
+    _soz = veriler['soz'];
+    _say = veriler['say'];
+    _dil = veriler['dil'];
+    _ea = veriler['ea'];
+    // } on SocketException {
+    //   throw 'İnternet bağlantısı ya da veri yok.';
+    // } catch (e) {
+    //   throw e.toString();
+    // }
   }
 
   @override
@@ -91,7 +93,7 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
           icon: Icons.ac_unit,
           subtitle: _sehir != null ? '$_sehir - $_uniTur' : '',
           title: _uniAdi ?? "",
-          id: _resimId,
+          // id: _resimId,
         ),
         buildExpandedTablolar(context)
       ],
@@ -218,14 +220,14 @@ class UstUniAnaKart extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          CircleAvatar(
-            backgroundColor: Colors.white,
-            child: Hero(
-                tag: "uniLogo$id",
-                child:
-                    Image.asset('assets/logolar/$id.png', fit: BoxFit.cover)),
-            radius: 55,
-          ),
+          // CircleAvatar(
+          //   backgroundColor: Colors.white,
+          //   child: Hero(
+          //       tag: "uniLogo$id",
+          //       child:
+          //           Image.asset('assets/logolar/$id.png', fit: BoxFit.cover)),
+          //   radius: 55,
+          // ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: FittedBox(

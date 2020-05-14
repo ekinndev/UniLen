@@ -39,41 +39,40 @@ class _UniScreenState extends State<UniScreen> {
   /////////////////////////////////////////////////////////////////////////////
   Future<void> unileriCek([bool arama = false]) async {
     try {
-      setState(() {
-        isLoading = true;
-      });
-      List<Universite> uniCekilen = [];
-      final token = Provider.of<Auth>(context, listen: false).token;
-      http.Response uniJson;
+    setState(() {
+      isLoading = true;
+    });
+    List<Universite> uniCekilen = [];
+    final token = Provider.of<Auth>(context, listen: false).token;
+    http.Response uniJson;
+    if (arama) {
+      uniJson = await http.get(
+          'https://danisman-akademi-94376.firebaseio.com/universiteler.json?orderBy="uniId"&startAt=1');
+    } else {
+      uniJson = await http.get('http://192.168.1.34:8080/universiteler/');
+    }
+
+    final Map<String, dynamic> veri = jsonDecode(uniJson.body);
+    veri['universiteler'].forEach((s) {
+      final Universite uni = Universite(
+          uniAd: s['uniAd'].toString(),
+          uniAdres: s['uniAdres'].toString(),
+          uniId: s['uniId'].toString(),
+          uniKod: s['uniKodu'].toString(),
+          uniMail: s['uniMail'].toString());
+      uniCekilen.add(uni);
+    });
+
+    setState(() {
       if (arama) {
-        uniJson = await http.get(
-            'https://danisman-akademi-94376.firebaseio.com/universiteler.json?orderBy="uniId"&startAt=1');
+        _searchUniler.addAll(uniCekilen);
       } else {
-        uniJson = await http.get(
-            'https://danisman-akademi-94376.firebaseio.com/universiteler.json?auth=$token&orderBy="uniId"&startAt=$_basIndex&limitToFirst=$uniSayisiLimit');
+        _universiteVeriler.addAll(uniCekilen);
       }
 
-      final Map<String, dynamic> veri = jsonDecode(uniJson.body);
-      veri.forEach((f, s) {
-        final Universite uni = Universite(
-            uniAd: s['uniAd'].toString(),
-            uniAdres: s['uniAdres'].toString(),
-            uniId: s['uniId'].toString(),
-            uniKod: s['uniKodu'].toString(),
-            uniMail: s['uniMail'].toString());
-        uniCekilen.add(uni);
-      });
-
-      setState(() {
-        if (arama) {
-          _searchUniler.addAll(uniCekilen);
-        } else {
-          _universiteVeriler.addAll(uniCekilen);
-        }
-
-        isLoading = false;
-        isLocked = false;
-      });
+      isLoading = false;
+      isLocked = false;
+    });
     } on SocketException {
       setState(() {
         hataMesaji = 'İnternet bağlantısı ya da veri yok.';
@@ -245,15 +244,15 @@ class UniCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                CircleAvatar(
-                  backgroundColor: Colors.white,
-                  child: Hero(
-                    tag: "uniLogo${uni.uniId}",
-                    child: Image.asset('assets/logolar/${uni.uniId}.png',
-                        fit: BoxFit.cover),
-                  ),
-                  radius: 40,
-                ),
+                // CircleAvatar(
+                //   backgroundColor: Colors.white,
+                //   child: Hero(
+                //     tag: "uniLogo${uni.uniId}",
+                //     child: Image.asset('assets/logolar/${uni.uniId}.png',
+                //         fit: BoxFit.cover),
+                //   ),
+                //   radius: 40,
+                // ),
                 Text(
                   uni.uniAd,
                   style: TextStyle(

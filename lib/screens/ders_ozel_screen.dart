@@ -27,7 +27,7 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
       key = ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
       Future.microtask(() {
         Provider.of<KonuProvider>(context, listen: false)
-            .degerleriCek(key['kod'])
+            .degerleriCek(key['mongoKod'])
             .then((deger) {
           setState(() {
             _konularVeri = deger;

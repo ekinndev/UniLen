@@ -1,14 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
-import '../models/firebase_error.dart';
 import '../models/user.dart';
-import '../screens/login_screen.dart';
 
 class Auth with ChangeNotifier {
   String _token;
@@ -17,11 +10,6 @@ class Auth with ChangeNotifier {
   String _email;
   String _photoUrl;
   String _name;
-  LogMethod _method;
-
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  Future<void> signUp(String email, String password) async {}
 
   bool get isAuth {
     return _token != null;
@@ -46,83 +34,42 @@ class Auth with ChangeNotifier {
         email: 'ekin@abalioglu.com',
         logMethod: LogMethod.Google,
         name: 'Tekrar Giriş Yap',
-        photoUrl: 'https://picsum.photos/300/300');
+        photoUrl: 'https://i.ya-webdesign.com/images/empty-avatar-png.png');
   }
 
-//MongoDb Branch mantığını anlama
-  Future emailleKayitOlYaDaGiris(
-      {String email,
-      String password,
-      AuthMode regOrLog = AuthMode.Login}) async {
-    try {
-      String registerOrLogin =
-          regOrLog == AuthMode.Login ? 'signInWithPassword' : 'signUp';
-      final apiLink =
-          'https://identitytoolkit.googleapis.com/v1/accounts:$registerOrLogin?key=AIzaSyAlyY7R3qk1SsOEN3v1aouYgoHHyKhbP8k';
-
-      final response = await http.post(apiLink,
-          body: jsonEncode({
-            'email': email,
-            'password': password,
-            'returnSecureToken': true
-          }));
-      final userVeri = jsonDecode(response.body);
-      if (userVeri['error'] != null) {
-        FirebaseError err = FirebaseError.fromJson(userVeri);
-        return err;
-      }
-
-      _token = userVeri['idToken'];
-      _userId = userVeri['localId'];
-      _email = userVeri['email'];
-      _photoUrl = 'https://i.ya-webdesign.com/images/empty-avatar-png.png';
-      _name = 'Danışman Akademi Öğrenci';
-      _method = LogMethod.Standart;
-      _expiryDate = DateTime.now().add(Duration(minutes: 50));
-      notifyListeners();
-    } on SocketException {
-      throw "İnternet bağlantısı ya da veri yok.";
-    } catch (e) {
-      throw e.toString();
+  Future<bool> signUp({String email, String password}) async {
+    final apiUrl = 'http://192.168.1.34:8080/user/signup';
+    final response = await http.put(
+      apiUrl,
+      body: jsonEncode({"email": email, "password": password}),
+      headers: {"Content-Type": "application/json"},
+    );
+    final userVeri = jsonDecode(response.body);
+    if (userVeri['message'].toString().toLowerCase() == "yarattım") {
+      return true;
+    } else {
+      return false;
     }
   }
 
-  Future<void> handleSignInGoogle() async {
-    try {
-      final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-
-      final AuthCredential credential = GoogleAuthProvider.getCredential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-      final FirebaseUser user =
-          (await _auth.signInWithCredential(credential)).user;
-
-      _token = (await user.getIdToken()).token;
-      _userId = user.uid;
-      _email = user.email;
-      _photoUrl = user.photoUrl;
-      _name = user.displayName;
-      _method = LogMethod.Google;
-
-      _expiryDate = DateTime.now().add(Duration(minutes: 50));
-      notifyListeners();
-    } on NoSuchMethodError {
-      throw 'Login başarısız. Lütfen tekrar deneyin.';
-    } on PlatformException {
-      throw "Sunucuya bağlantı sağlanamıyor. Lütfen alternatif yollarla giriş yapın.";
-    } catch (e) {
-      throw e.toString();
-    }
+  Future<void> logIn({String email, String password}) async {
+    final apiUrl = 'http://192.168.1.34:8080/user/login';
+    final response = await http.post(
+      apiUrl,
+      body: jsonEncode({"email": email, "password": password}),
+      headers: {"Content-Type": "application/json"},
+    );
+    final userVeri = jsonDecode(response.body);
+    _token = userVeri['token'];
+    _userId = userVeri['userId'];
+    _email = userVeri['email'];
+    _photoUrl = 'https://i.ya-webdesign.com/images/empty-avatar-png.png';
+    _name = 'Öğrenci';
+    _expiryDate = DateTime.now().add(Duration(minutes: 50));
+    notifyListeners();
   }
 
   void signOutAll() {
-    if (_method == LogMethod.Google) {
-      _googleSignIn.signOut();
-    } else if (_method == LogMethod.Facebook) {
-    } else {}
     _token = null;
     _userId = null;
     _expiryDate = null;

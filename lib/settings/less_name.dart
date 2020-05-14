@@ -6,7 +6,7 @@ class LessName {
   static const Map<String,dynamic> tytturkce = {'ad':'TYT Türkçe','kod':'tyt/tytturkce','icon':DanIcons.turkceIcon,'renk':DanColor.edebRenk};
   static const Map<String,dynamic> tytfizik = {'ad':'TYT Fizik','kod':'tyt/tytfiz','icon':DanIcons.fizikIcon,'renk':DanColor.fizikRenk};
   static const Map<String,dynamic> tytkimya = {'ad':'TYT Kimya','kod':'tyt/tytkim','icon':DanIcons.kimIcon,'renk':DanColor.kimRenk};
-  static const Map<String,dynamic> tytbio = {'ad':'TYT Biyoloji','kod':'tyt/tytbio','icon':DanIcons.bioIcon,'renk':DanColor.bioRenk};
+  static const Map<String,dynamic> tytbio = {'ad':'TYT Biyoloji','kod':'tyt/tytbio','icon':DanIcons.bioIcon,'renk':DanColor.bioRenk,'mongoKod':'tytbio'};
   static const Map<String,dynamic> tyttarih= {'ad':'TYT Tarih','kod':'tyt/tyttar','icon':DanIcons.tarihIcon,'renk':DanColor.tarihRenk};
   static const Map<String,dynamic> tytcog = {'ad':'TYT Coğrafya','kod':'tyt/tytcog','icon':DanIcons.cogIcon,'renk':DanColor.cogRenk};
   static const Map<String,dynamic> tytfel = {'ad':'TYT Felsefe ve Din','kod':'tyt/tytfel','icon':DanIcons.felseDinIcon,'renk':DanColor.felseDinRenk};
@@ -14,10 +14,10 @@ class LessName {
   static const List tytDersler=[tytmat,tytturkce,tytfizik,tytkimya,tytbio,tyttarih,tytcog,tytfel];
 
 
-  static const Map<String,dynamic> aytmat = {'ad':'AYT Matematik','kod':'ayt/aytmat','icon':DanIcons.matIcon,'renk':DanColor.matRenk};
+  static const Map<String,dynamic> aytmat = {'ad':'AYT Matematik','kod':'ayt/aytmat','icon':DanIcons.matIcon,'renk':DanColor.matRenk,'mongoKod':'aytmat'};
   static const Map<String,dynamic> aytfiz = {'ad':'AYT Fizik','kod':'ayt/Say/aytfiz','icon':DanIcons.fizikIcon,'renk':DanColor.fizikRenk};
   static const Map<String,dynamic> aytkim = {'ad':'AYT Kimya','kod':'ayt/Say/aytkim','icon':DanIcons.kimIcon,'renk':DanColor.kimRenk};
-  static const Map<String,dynamic> aytbio = {'ad':'AYT Biyoloji','kod':'ayt/Say/aytbio','icon':DanIcons.bioIcon,'renk':DanColor.bioRenk};
+  static const Map<String,dynamic> aytbio = {'ad':'AYT Biyoloji','kod':'ayt/Say/aytbio','icon':DanIcons.bioIcon,'renk':DanColor.bioRenk };
  
   static const List sayDersler=[aytmat,aytfiz,aytkim,aytbio];
 
@@ -29,7 +29,7 @@ class LessName {
 
 
   static const Map<String,dynamic> ayttar2 = {'ad':'AYT Tarih-2','kod':'ayt/soz/ayttar2','icon':DanIcons.tarihIcon,'renk':DanColor.tarihRenk};
-  static const Map<String,dynamic> aytcog2= {'ad':'AYT Coğrafya-2','kod':'ayt/soz/aytcog2','icon':DanIcons.cogIcon,'renk':DanColor.cogRenk};
+  static const Map<String,dynamic> aytcog2= {'ad':'AYT Coğrafya-2','kod':'ayt/soz/aytcog2','icon':DanIcons.cogIcon,'renk':DanColor.cogRenk,'mongoKod':'aytcog2'};
   static const Map<String,dynamic> aytfel = {'ad':'AYT Felsefe ve Din','kod':'ayt/soz/aytfel','icon':DanIcons.felseDinIcon,'renk':DanColor.felseDinRenk};
 
   static const List sozDersler=[aytedeb,aytcog1,ayttar1,aytcog2,ayttar2,aytfel];

@@ -8,28 +8,29 @@ import '../models/user.dart';
 class KonuProvider with ChangeNotifier {
   final User _user;
   KonuProvider([this._user]);
-  final String _apiLink = 'https://danisman-akademi-94376.firebaseio.com/';
 
   List<Konu> _konuVeriler = [];
+ 
 
   Future<List<Konu>> degerleriCek(String kod) async {
     try {
-      final konuApiLink = '${_apiLink}konular/$kod';
-      final durumApiLink =
-          '${_apiLink}konulardurum/${_user.uid}/$kod.json?auth=${_user.token}';
-      final durumJson = await http.get(durumApiLink);
-      final konuJson = await http.get('$konuApiLink.json?auth=${_user.token}');
-      final jsonDurumJson = jsonDecode(durumJson.body);
+      final konuApiLink = 'http://192.168.1.34:8080/ders/$kod';
 
-      final List<dynamic> jsonKonuJson = jsonDecode(konuJson.body);
-      final List<Konu> donusturulmusVeri = jsonKonuJson
-          .map((konu) => Konu(
-              konu['id'],
-              konu['konu'],
-              jsonDurumJson == null
-                  ? false
-                  : jsonDurumJson[konu['id']] ?? false))
-          .toList();
+      final konuJson = await http.get(konuApiLink);
+      final konuDurumJson = await http
+          .get('http://192.168.1.34:8080/user/dersler?auth=${_user.token}');
+      final konuDurumVeri = jsonDecode(konuDurumJson.body);
+      final Map<String, dynamic> jsonKonuJson = jsonDecode(konuJson.body)[0];
+      final List<dynamic> dersVeri = jsonKonuJson['konular'];
+      final List<Konu> donusturulmusVeri = dersVeri.map((konu) {
+        return Konu(
+            konu['id'],
+            konu['konu'],
+            konuDurumVeri[konu['id']] == null
+                ? false
+                : konuDurumVeri[konu['id']]);
+      }).toList();
+
       _konuVeriler = donusturulmusVeri;
       return konulariCek;
     } on SocketException {
@@ -45,8 +46,6 @@ class KonuProvider with ChangeNotifier {
 
   Future<void> durumuGuncelle(String id, String kod) async {
     try {
-      final link =
-          '${_apiLink}konulardurum/${_user.uid}/$kod/$id.json?auth=${_user.token}';
       final konuIndex = _konuVeriler.indexWhere((konu) {
         return konu.id == id;
       });
@@ -54,7 +53,10 @@ class KonuProvider with ChangeNotifier {
       _konuVeriler[konuIndex].durum = !dersDurum;
 
       notifyListeners();
-      await http.put(link, body: jsonEncode(!dersDurum));
+      final link =
+          'http://192.168.1.34:8080/user/dersguncelle/?auth=${_user.token}&durum=${_konuVeriler[konuIndex].durum.toString()}&id=$id';
+      final response = await http.patch(link);
+      print(response.body);
     } on SocketException {
       throw "İnternet bağlantısı ya da veri yok.";
     } catch (e) {

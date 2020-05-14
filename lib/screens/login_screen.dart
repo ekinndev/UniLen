@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
   AuthMode _authMode = AuthMode.Login;
   LoginStatus _logStatus = LoginStatus.None;
 
-  void girisYaDaKayitOl() async {
+  Future<void> girisYaDaKayitOl() async {
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = RegExp(pattern);
@@ -60,10 +60,22 @@ class _LoginScreenState extends State<LoginScreen> {
       _logStatus = LoginStatus.Working;
     });
     try {
-      final response = await authProv.emailleKayitOlYaDaGiris(
-          email: _email.text, password: _pass.text, regOrLog: _authMode);
-      if (response is FirebaseError) {
-        throw FirebaseError.hatayiCevir(response.error.message);
+      if (_authMode == AuthMode.SignUp) {
+        final response =
+            await authProv.signUp(email: _email.text, password: _pass.text);
+        if (response) {
+          _scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text("Başarılı bir şekilde oluştu"),
+              duration: Duration(seconds: 2),
+            ),
+          );
+        }
+        setState(() {
+          _logStatus = LoginStatus.None;
+        });
+      } else {
+        await authProv.logIn(email: _email.text, password: _pass.text);
       }
     } catch (e) {
       _scaffoldKey.currentState.showSnackBar(
@@ -202,8 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return ButtonBar(
       alignment: MainAxisAlignment.center,
       children: <Widget>[
-        sosyalMedyaButton(FontAwesome5Brands.google, Color(0xFFDD4B39),
-            authProv.handleSignInGoogle),
+        sosyalMedyaButton(FontAwesome5Brands.google, Color(0xFFDD4B39), () {}),
         sosyalMedyaButton(
             FontAwesome5Brands.facebook_f, Color(0xFF4064AD), () {}),
       ],
