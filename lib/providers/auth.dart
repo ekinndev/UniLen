@@ -48,7 +48,8 @@ class Auth with ChangeNotifier {
         name: 'Tekrar Giriş Yap',
         photoUrl: 'https://picsum.photos/300/300');
   }
-//MongoDb
+
+//MongoDb Branch mantığını anlama
   Future emailleKayitOlYaDaGiris(
       {String email,
       String password,
