@@ -26,8 +26,9 @@ class _UniScreenState extends State<UniScreen> {
   bool isLocked = false;
   String hataMesaji;
   var listener;
-  final int uniSayisiLimit = 10;
-  int _basIndex = 1;
+  final int uniSayisiLimit = 5;
+  int _sayfa = 1;
+
   @override
   void dispose() {
     super.dispose();
@@ -39,40 +40,40 @@ class _UniScreenState extends State<UniScreen> {
   /////////////////////////////////////////////////////////////////////////////
   Future<void> unileriCek([bool arama = false]) async {
     try {
-    setState(() {
-      isLoading = true;
-    });
-    List<Universite> uniCekilen = [];
-    final token = Provider.of<Auth>(context, listen: false).token;
-    http.Response uniJson;
-    if (arama) {
-      uniJson = await http.get(
-          'https://danisman-akademi-94376.firebaseio.com/universiteler.json?orderBy="uniId"&startAt=1');
-    } else {
-      uniJson = await http.get('http://192.168.1.34:8080/universiteler/');
-    }
-
-    final Map<String, dynamic> veri = jsonDecode(uniJson.body);
-    veri['universiteler'].forEach((s) {
-      final Universite uni = Universite(
-          uniAd: s['uniAd'].toString(),
-          uniAdres: s['uniAdres'].toString(),
-          uniId: s['uniId'].toString(),
-          uniKod: s['uniKodu'].toString(),
-          uniMail: s['uniMail'].toString());
-      uniCekilen.add(uni);
-    });
-
-    setState(() {
+      setState(() {
+        isLoading = true;
+      });
+      List<Universite> uniCekilen = [];
+      http.Response uniJson;
       if (arama) {
-        _searchUniler.addAll(uniCekilen);
+        uniJson = await http
+            .get('http://192.168.1.34:8080/universiteler?search=$arama');
       } else {
-        _universiteVeriler.addAll(uniCekilen);
+        uniJson = await http.get(
+            'http://192.168.1.34:8080/universiteler?total=$uniSayisiLimit&page=$_sayfa');
       }
 
-      isLoading = false;
-      isLocked = false;
-    });
+      final Map<String, dynamic> veri = jsonDecode(uniJson.body);
+      veri['universiteler'].forEach((s) {
+        final Universite uni = Universite(
+            uniAd: s['uniAd'].toString(),
+            uniAdres: s['uniAdres'].toString(),
+            uniId: s['uniId'].toString(),
+            uniKod: s['uniKodu'].toString(),
+            uniMail: s['uniMail'].toString());
+        uniCekilen.add(uni);
+      });
+
+      setState(() {
+        if (arama) {
+          _searchUniler.addAll(uniCekilen);
+        } else {
+          _universiteVeriler.addAll(uniCekilen);
+        }
+
+        isLoading = false;
+        isLocked = false;
+      });
     } on SocketException {
       setState(() {
         hataMesaji = 'İnternet bağlantısı ya da veri yok.';
@@ -95,7 +96,8 @@ class _UniScreenState extends State<UniScreen> {
               _scrollController.position.maxScrollExtent &&
           !isLocked) {
         isLocked = true;
-        _basIndex += uniSayisiLimit;
+        // _basIndex += uniSayisiLimit;
+        _sayfa += 1;
         unileriCek();
       }
     };
@@ -137,14 +139,14 @@ class _UniScreenState extends State<UniScreen> {
           icon: SimpleLineIcons.graduation,
         ),
         buildExpandedUniList(context),
-        if (isLoading && _basIndex > 1) CircularProgressIndicator(),
+        if (isLoading && _sayfa > 1) CircularProgressIndicator(),
       ],
     );
   }
 
   Expanded buildExpandedUniList(BuildContext context) {
     return Expanded(
-      child: isLoading == true && _basIndex == 1
+      child: isLoading == true && _sayfa == 1
           ? Center(
               child: CircularProgressIndicator(),
             )
@@ -244,7 +246,8 @@ class UniCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                // CircleAvatar(
+                //TODO
+                // CircleAvatar
                 //   backgroundColor: Colors.white,
                 //   child: Hero(
                 //     tag: "uniLogo${uni.uniId}",

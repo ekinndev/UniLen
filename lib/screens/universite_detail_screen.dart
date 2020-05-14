@@ -17,7 +17,7 @@ class UniversiteDetail extends StatefulWidget {
 class _UniversiteDetailState extends State<UniversiteDetail> {
   String _sehir;
   String _uniTur;
-  // String _resimId;
+  String _resimId;
   List<dynamic> _soz;
   List<dynamic> _say;
   List<dynamic> _dil;
@@ -52,24 +52,24 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
   }
 
   Future<void> verileriCek() async {
-    // try {
-    final jsonData =
-        await http.get('http://192.168.1.34:8080/bolumler/$_uniKod');
-    
-    final veriler = jsonDecode(jsonData.body);
-    print(veriler);
+    try {
+      final jsonData =
+          await http.get('http://192.168.1.34:8080/bolumler/$_uniKod');
 
-    _sehir = "anywhere";//TODO
-    _uniTur = "devlet";//TODO
-    _soz = veriler['soz'];
-    _say = veriler['say'];
-    _dil = veriler['dil'];
-    _ea = veriler['ea'];
-    // } on SocketException {
-    //   throw 'İnternet bağlantısı ya da veri yok.';
-    // } catch (e) {
-    //   throw e.toString();
-    // }
+      final veriler = jsonDecode(jsonData.body);
+      print(veriler);
+
+      _sehir = veriler['sehir'];
+      _uniTur = veriler['uniTur'];
+      _soz = veriler['soz'];
+      _say = veriler['say'];
+      _dil = veriler['dil'];
+      _ea = veriler['ea'];
+    } on SocketException {
+      throw 'İnternet bağlantısı ya da veri yok.';
+    } catch (e) {
+      throw e.toString();
+    }
   }
 
   @override

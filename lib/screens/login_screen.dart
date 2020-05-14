@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:uniapp/settings/colors.dart';
-import '../models/firebase_error.dart';
 import '../providers/auth.dart';
 
 enum AuthMode { Login, SignUp }
@@ -66,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
         if (response) {
           _scaffoldKey.currentState.showSnackBar(
             SnackBar(
-              content: Text("Başarılı bir şekilde oluştu"),
+              content: Text("Başarılı bir şekilde kayıt oldun. Şimdi giriş yapabilirsin."),
               duration: Duration(seconds: 2),
             ),
           );
