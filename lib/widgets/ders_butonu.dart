@@ -19,7 +19,7 @@ class DersButonu extends StatelessWidget {
       splashColor: Colors.deepOrange,
       fillColor: _renk,
       constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.46, maxHeight: 70),
+          maxWidth: MediaQuery.of(context).size.width * 0.45, maxHeight: 70),
       child: Padding(
         padding: const EdgeInsets.only(top: 8.0, bottom: 8, left: 8),
         child: Row(

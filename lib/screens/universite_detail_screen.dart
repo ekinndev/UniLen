@@ -99,6 +99,12 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
   }
 
   Expanded buildExpandedTablolar(BuildContext context) {
+    final List<Widget> bolumler = [
+      tabloOlustur(context, _say, "SAYISAL BÖLÜMLER"),
+      tabloOlustur(context, _ea, "EA BÖLÜMLER"),
+      tabloOlustur(context, _soz, "SÖZEL BÖLÜMLER"),
+      tabloOlustur(context, _dil, "DİL BÖLÜMLER")
+    ];
     return Expanded(
       child: _isLoading
           ? Center(child: CircularProgressIndicator())
@@ -107,25 +113,8 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
               : ListView.builder(
                   physics: BouncingScrollPhysics(),
                   padding: EdgeInsets.only(top: 15),
-                  itemBuilder: (ctx, i) {
-                    switch (i) {
-                      case 0:
-                        return tabloOlustur(context, _say, "SAYISAL BÖLÜMLER");
-                        break;
-                      case 1:
-                        return tabloOlustur(context, _ea, "EA BÖLÜMLER");
-                        break;
-                      case 2:
-                        return tabloOlustur(context, _soz, "SÖZEL BÖLÜMLER");
-                        break;
-                      case 3:
-                        return tabloOlustur(context, _dil, "DİL BÖLÜMLER");
-                        break;
-                      default:
-                        return Container();
-                    }
-                  },
-                  itemCount: 4,
+                  itemBuilder: (ctx, i) => bolumler[i],
+                  itemCount: bolumler.length,
                 ),
     );
   }
