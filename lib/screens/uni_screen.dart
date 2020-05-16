@@ -185,10 +185,9 @@ class _UniScreenState extends State<UniScreen> {
         },
         focusNode: textFocus,
         controller: textCtrl,
-        style: TextStyle(color: Colors.white,fontSize: 14,height: 1.3),
+        style: TextStyle(color: Colors.white, fontSize: 14, height: 1.3),
         decoration: InputDecoration(
           hintText: 'Üniversite Ara',
-          
           hintStyle: TextStyle(color: Colors.white70),
           contentPadding: const EdgeInsets.all(10),
           isDense: true,

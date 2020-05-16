@@ -7,15 +7,13 @@ class Constants {
   static const Widget aralikHeight15 = SizedBox(height: 15);
   static const Widget aralikHeight20 = SizedBox(height: 20);
 
-
-
   //AnaScreen
-  static const double bosluk15=15;
-  static const double bosluk8=8;
-  static const double fontSize20=20;
-  static const double anaBorderCircular10=10;
+  static const double bosluk15 = 15;
+  static const double bosluk8 = 8;
+  static const double fontSize20 = 20;
+  static const double anaBorderCircular10 = 10;
 
-  //Login 
-  static const double loginBorderCircular10=10;
-  static const double loginFontSize20=20;
+  //Login
+  static const double loginBorderCircular10 = 10;
+  static const double loginFontSize20 = 20;
 }

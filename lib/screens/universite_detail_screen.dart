@@ -105,6 +105,7 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
           : hataMesaji != null
               ? Center(child: Text(hataMesaji))
               : ListView.builder(
+                  physics: BouncingScrollPhysics(),
                   padding: EdgeInsets.only(top: 15),
                   itemBuilder: (ctx, i) {
                     switch (i) {

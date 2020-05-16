@@ -54,6 +54,7 @@ class _AnaEkranState extends State<AnaEkran> {
         anaProfilWidget(ekranBoy),
         Expanded(
           child: ListView(
+            
             padding: EdgeInsets.only(top: Constants.bosluk15),
             children: <Widget>[
               anaDersButonlar(context),
