@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:json_table/json_table.dart';
 import 'package:json_table/json_table_column.dart';
 import 'package:http/http.dart' as http;
+import 'package:uniapp/settings/constants.dart';
 import '../settings/colors.dart';
 
 class UniversiteDetail extends StatefulWidget {
@@ -75,7 +75,7 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: DanColor.transparan,
           elevation: 0,
         ),
         extendBodyBehindAppBar: true,
@@ -142,7 +142,7 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         tablo(liste, context),
-        SizedBox(height: 15),
+        Constants.aralikHeight15,
       ],
     );
   }

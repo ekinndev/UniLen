@@ -69,6 +69,7 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
                   : Consumer<KonuProvider>(
                       builder: (_, prov, child) {
                         return ListView.builder(
+                          physics: BouncingScrollPhysics(),
                           padding: EdgeInsets.zero,
                           itemBuilder: (ctx, i) {
                             return konuKart(
@@ -89,7 +90,7 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
       margin: EdgeInsets.only(
           left: 8,
           right: 8,
-          bottom: i == 10 - 1 ? 15 : 8,
+          bottom: i == 10 - 1 ? 15 : 8, //TODO
           top: i == 0 ? 15 : 8),
       child: ListTile(
         leading: Icon(
@@ -124,19 +125,9 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
 
   AppBar dersOzelAppBar() {
     return AppBar(
-      actions: <Widget>[
-        Icon(Icons.search),
-        SizedBox(
-          width: 15,
-        ),
-        Icon(Icons.notifications_none),
-        SizedBox(
-          width: 5,
-        ),
-      ],
       elevation: 0,
       centerTitle: true,
-      backgroundColor: Colors.transparent,
+      backgroundColor: DanColor.transparan,
     );
   }
 }

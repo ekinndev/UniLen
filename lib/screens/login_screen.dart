@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:uniapp/settings/colors.dart';
+import 'package:uniapp/settings/constants.dart';
 import '../models/firebase_error.dart';
 import '../providers/auth.dart';
 
@@ -34,10 +35,10 @@ class _LoginScreenState extends State<LoginScreen> {
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = RegExp(pattern);
     final authProv = Provider.of<Auth>(context, listen: false);
-    if (_pass.text.trim().length < 6 || !regex.hasMatch(_email.text)) {
+    if (_pass.text.trim().length <= 6 || !regex.hasMatch(_email.text)) {
       _scaffoldKey.currentState.showSnackBar(
         SnackBar(
-          content: Text('Email ya da şifre geçersiz.'),
+          content: Text('Email geçersiz ya da şifre çok kısa.'),
           duration: Duration(seconds: 2),
         ),
       );
@@ -113,12 +114,12 @@ class _LoginScreenState extends State<LoginScreen> {
   Scaffold buildScaffoldLoginAna(BuildContext context, Auth authProv) {
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Colors.transparent,
+      backgroundColor: DanColor.transparan,
       body: _logStatus == LoginStatus.Working
           ? Center(child: CircularProgressIndicator())
           : Container(
               alignment: Alignment.center,
-              margin: EdgeInsets.only(left: 20, right: 20),
+              margin: EdgeInsets.only(left: 8, right: 8),
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -141,9 +142,9 @@ class _LoginScreenState extends State<LoginScreen> {
     return Column(
       children: <Widget>[
         dividerliBaslik(),
-        SizedBox(height: 20),
+        Constants.aralikHeight20,
         sosyalMedyaButonlar(authProv),
-        SizedBox(height: 20),
+        Constants.aralikHeight20,
       ],
     );
   }
@@ -156,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
           _emailFocus.unfocus();
           FocusScope.of(context).requestFocus(_passFocus);
         }),
-        SizedBox(height: 20),
+        Constants.aralikHeight20,
         buildTextField(
             'Şifre',
             true,
@@ -173,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
             FocusScope.of(context).requestFocus(_confPassFocus);
           }
         }),
-        SizedBox(height: 20),
+        Constants.aralikHeight20,
         if (_authMode == AuthMode.SignUp)
           buildTextField(
               'Şifre', true, _confPass, _confPassFocus, TextInputAction.done,
@@ -181,19 +182,19 @@ class _LoginScreenState extends State<LoginScreen> {
             _confPassFocus.unfocus();
             girisYaDaKayitOl();
           }),
-        if (_authMode == AuthMode.SignUp) SizedBox(height: 20),
+        if (_authMode == AuthMode.SignUp) Constants.aralikHeight20,
         loginButton(
             context,
             _authMode == AuthMode.Login ? 'Giriş Yap' : 'Kayıt Ol',
             girisYaDaKayitOl),
-        SizedBox(height: 20),
+        Constants.aralikHeight20,
         authDegistirButton(
             context,
             _authMode == AuthMode.Login
                 ? 'Hesabınız yok mu ?'
                 : 'Zaten kayıtlı mısın ?',
             authDegistir),
-        SizedBox(height: 20),
+        Constants.aralikHeight20,
       ],
     );
   }
@@ -223,8 +224,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget authDegistirButton(BuildContext context, String text, Function fnk) {
-    final kayitText = ' Şimdi kayıt olun.';
-    final girisText = ' Giriş yap.';
+    const kayitText = ' Şimdi kayıt olun.';
+    const girisText = ' Giriş yap.';
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -235,7 +236,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Text(_authMode == AuthMode.Login ? kayitText : girisText,
               style: TextStyle(
                 color: Colors.red,
-                fontSize: 18,
+                fontSize: Constants.loginFontSize20,
                 fontWeight: FontWeight.bold,
               )),
         ),
@@ -252,17 +253,15 @@ class _LoginScreenState extends State<LoginScreen> {
             color: Colors.white,
           ),
         ),
-        SizedBox(
-          width: 10,
-        ),
+        Constants.aralikWidth10,
         Text(
           'Sosyal Medya ile Giriş',
           style: TextStyle(
-              color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+              color: Colors.white,
+              fontSize: Constants.loginFontSize20,
+              fontWeight: FontWeight.bold),
         ),
-        SizedBox(
-          width: 10,
-        ),
+        Constants.aralikWidth10,
         Expanded(
           child: Divider(
             thickness: 1,
@@ -276,18 +275,20 @@ class _LoginScreenState extends State<LoginScreen> {
   Material loginButton(BuildContext context, String text, Function fnk) {
     return Material(
       elevation: 5.0,
-      borderRadius: BorderRadius.circular(10.0),
+      borderRadius: BorderRadius.circular(Constants.loginBorderCircular10),
       color: DanColor.anaRenk,
       child: MaterialButton(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        shape: RoundedRectangleBorder(
+            borderRadius:
+                BorderRadius.circular(Constants.loginBorderCircular10)),
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: fnk,
         child: Text(
           text,
           textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.white, fontSize: 18),
+          style: TextStyle(
+              color: Colors.white, fontSize: Constants.loginFontSize20),
         ),
       ),
     );
@@ -343,19 +344,19 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       controller: textedit,
       obscureText: secure,
-      style: TextStyle(color: Colors.grey),
+      style: TextStyle(color: Colors.white70,height: 1.3),
       decoration: InputDecoration(
         labelText: text,
-        hintStyle: TextStyle(color: Colors.grey),
+        hintStyle: TextStyle(color: Colors.white70),
         labelStyle: TextStyle(color: Colors.white),
-        hintText: text,
-        contentPadding: EdgeInsets.all(12),
+        hintText: secure?'********':'giris@danismanakademi.org',
+        contentPadding: const EdgeInsets.all(10),
         isDense: true,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(Constants.loginBorderCircular10),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(Constants.loginBorderCircular10),
           borderSide: BorderSide(color: Colors.white),
         ),
       ),

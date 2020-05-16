@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../models/user.dart';
 import '../providers/auth.dart';
 import '../settings/colors.dart';
@@ -8,6 +7,7 @@ import '../settings/less_name.dart';
 import '../widgets/ders_butonu.dart';
 import '../widgets/drawer.dart';
 import './ders_ozel_screen.dart';
+import '../settings/constants.dart';
 
 class AnaEkran extends StatefulWidget {
   @override
@@ -37,14 +37,8 @@ class _AnaEkranState extends State<AnaEkran> {
       drawer: AnaDrawer(),
       appBar: AppBar(
         centerTitle: true,
-        actions: <Widget>[
-          Icon(Icons.search),
-          SizedBox(width: 15),
-          Icon(Icons.notifications_none),
-          SizedBox(width: 5),
-        ],
         elevation: 0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: DanColor.transparan,
         title: Text(
           'Danışman Akademi',
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -60,10 +54,10 @@ class _AnaEkranState extends State<AnaEkran> {
         anaProfilWidget(ekranBoy),
         Expanded(
           child: ListView(
-            padding: EdgeInsets.only(top: 15),
+            padding: EdgeInsets.only(top: Constants.bosluk15),
             children: <Widget>[
               anaDersButonlar(context),
-              SizedBox(height: 15),
+              Constants.aralikHeight15,
               anaSiteYazilar(ekranBoy)
             ],
           ),
@@ -84,8 +78,8 @@ class _AnaEkranState extends State<AnaEkran> {
         ),
         Positioned(
           top: 100,
-          left: 15,
-          child: ProfileWidget(_user),
+          left: Constants.bosluk15,
+          child: profileWidget(_user),
         ),
       ],
     );
@@ -96,28 +90,28 @@ Column anaDersButonlar(BuildContext context) {
   return Column(
     children: <Widget>[
       Padding(
-        padding: const EdgeInsets.only(left: 8.0),
+        padding: const EdgeInsets.only(left: Constants.bosluk8),
         child: Align(
             alignment: Alignment.topLeft,
             child: Text(
               'Hangi Dersin Konusunu Bitirdin ?',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, fontSize: Constants.fontSize20),
             )),
       ),
-      SizedBox(
-        height: 15,
-      ),
+      Constants.aralikHeight15,
       Padding(
-        padding: const EdgeInsets.only(left: 8.0),
+        padding: const EdgeInsets.only(
+            left: Constants.bosluk8, right: Constants.bosluk8),
         child: Wrap(
-          spacing: 15,
-          runSpacing: 15,
+          spacing: Constants.bosluk15,
+          runSpacing: Constants.bosluk15,
           children: <Widget>[
             DersButonu(
                 LessName.tytturkce['icon'],
                 LessName.tytturkce['ad'],
                 LessName.tytturkce['renk'],
-                10,
+                Constants.anaBorderCircular10,
                 () => Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -129,7 +123,7 @@ Column anaDersButonlar(BuildContext context) {
                 LessName.tytmat['icon'],
                 LessName.tytmat['ad'],
                 LessName.tytmat['renk'],
-                10,
+                Constants.anaBorderCircular10,
                 () => Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -140,7 +134,7 @@ Column anaDersButonlar(BuildContext context) {
                 LessName.aytmat['icon'],
                 LessName.aytmat['ad'],
                 LessName.tytmat['renk'],
-                10,
+                Constants.anaBorderCircular10,
                 () => Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -151,7 +145,7 @@ Column anaDersButonlar(BuildContext context) {
                 LessName.aytfiz['icon'],
                 LessName.aytfiz['ad'],
                 LessName.aytfiz['renk'],
-                10,
+                Constants.anaBorderCircular10,
                 () => Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -162,7 +156,7 @@ Column anaDersButonlar(BuildContext context) {
                 LessName.ayttar1['icon'],
                 LessName.ayttar1['ad'],
                 LessName.ayttar1['renk'],
-                10,
+                Constants.anaBorderCircular10,
                 () => Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -173,7 +167,7 @@ Column anaDersButonlar(BuildContext context) {
                 LessName.aytedeb['icon'],
                 LessName.aytedeb['ad'],
                 LessName.aytedeb['renk'],
-                10,
+                Constants.anaBorderCircular10,
                 () => Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -192,17 +186,16 @@ Column anaSiteYazilar(double ekranBoy) {
     mainAxisSize: MainAxisSize.min,
     children: <Widget>[
       Padding(
-        padding: const EdgeInsets.only(left: 8.0),
+        padding: const EdgeInsets.only(left: Constants.bosluk8),
         child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
               'Sitedeki Son Yazılar',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, fontSize: Constants.fontSize20),
             )),
       ),
-      SizedBox(
-        height: 15,
-      ),
+      Constants.aralikHeight15,
       Container(
         height: ekranBoy * 0.25,
         child: FutureBuilder<List<dynamic>>(
@@ -212,13 +205,13 @@ Column anaSiteYazilar(double ekranBoy) {
                 return Center(child: CircularProgressIndicator());
               }
               return ListView.builder(
-                shrinkWrap: true,
-                itemBuilder: (ctx, i) => WebsiteCart(
-                  baslik: 'Deneme Test Yazı',
-                  imageUrl:
-                      'https://danismanakademi.org/wp-content/uploads/2018/03/Hangi-Derse-Nas%C4%B1l-%C3%87al%C4%B1%C5%9Fmal%C4%B1-Felsefe-Grubu.jpg',
-                  i: i,
-                ),
+                physics: BouncingScrollPhysics(),
+                itemBuilder: (ctx, i) => websiteCart(
+                    baslik: 'Deneme Test Yazı',
+                    imageUrl:
+                        'https://danismanakademi.org/wp-content/uploads/2018/03/Hangi-Derse-Nas%C4%B1l-%C3%87al%C4%B1%C5%9Fmal%C4%B1-Felsefe-Grubu.jpg',
+                    i: i,
+                    context: context),
                 itemCount: 5,
                 scrollDirection: Axis.horizontal,
               );
@@ -228,90 +221,84 @@ Column anaSiteYazilar(double ekranBoy) {
   );
 }
 
-class ProfileWidget extends StatelessWidget {
-  final User _user;
-  ProfileWidget(this._user);
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        CircleAvatar(
-          minRadius: 25,
-          backgroundImage: NetworkImage(_user.photoUrl),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: <Widget>[
-              Text(
-                _user.name,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18),
-              ),
-              Text(
-                _user.email,
-                textAlign: TextAlign.start,
-                style: TextStyle(
+Widget profileWidget(User _user) {
+  return Row(
+    children: <Widget>[
+      CircleAvatar(
+        minRadius: 25,
+        backgroundImage: NetworkImage(_user.photoUrl),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(Constants.bosluk8),
+        child: Column(
+          children: <Widget>[
+            Text(
+              _user.name,
+              style: TextStyle(
                   color: Colors.white,
-                ),
+                  fontWeight: FontWeight.bold,
+                  fontSize: Constants.fontSize20),
+            ),
+            Text(
+              _user.email,
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                color: Colors.white,
               ),
-            ],
-          ),
-        )
-      ],
-    );
-  }
+            ),
+          ],
+        ),
+      )
+    ],
+  );
 }
 
-class WebsiteCart extends StatelessWidget {
-  final imageUrl;
-  final baslik;
-  final link;
-  final i;
+Widget websiteCart(
+    {String imageUrl,
+    String baslik,
+    String link,
+    int i,
+    BuildContext context}) {
+  final ekranEn = MediaQuery.of(context).size.width;
+  final ekranBoy = MediaQuery.of(context).size.height;
 
-  const WebsiteCart({this.imageUrl, this.baslik, this.link, this.i});
-  @override
-  Widget build(BuildContext context) {
-    final ekranEn = MediaQuery.of(context).size.width;
-    final ekranBoy = MediaQuery.of(context).size.height;
-
-    return Container(
-      width: ekranEn * 0.85,
-      height: ekranBoy * 0.25,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      margin: EdgeInsets.only(
-          left: i == 0 ? 8 : 15, bottom: 15, right: i == 9 ? 8 : 0),
-      child: Stack(
-        children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Image.network(
-              imageUrl,
-              fit: BoxFit.fill,
-              width: ekranEn * 0.85,
-              height: ekranBoy * 0.25,
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.6),
-                borderRadius: BorderRadius.circular(10)),
+  return Container(
+    width: ekranEn * 0.85,
+    height: ekranBoy * 0.25,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(Constants.anaBorderCircular10),
+    ),
+    margin: EdgeInsets.only(
+        left: i == 0 ? 8 : Constants.bosluk15,
+        bottom: Constants.bosluk15,
+        right: i == 9 ? 8 : 0), //TODO
+    child: Stack(
+      children: <Widget>[
+        ClipRRect(
+          borderRadius: BorderRadius.circular(Constants.anaBorderCircular10),
+          child: Image.network(
+            imageUrl,
+            fit: BoxFit.fill,
             width: ekranEn * 0.85,
-            height: ekranBoy * 0.3,
+            height: ekranBoy * 0.25,
           ),
-          Center(
-              child: Text(
-            baslik,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ))
-        ],
-      ),
-    );
-  }
+        ),
+        Container(
+          decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.6),
+              borderRadius:
+                  BorderRadius.circular(Constants.anaBorderCircular10)),
+          width: ekranEn * 0.85,
+          height: ekranBoy * 0.3,
+        ),
+        Center(
+            child: Text(
+          baslik,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(color: Colors.white, fontSize: Constants.fontSize20),
+        ))
+      ],
+    ),
+  );
 }

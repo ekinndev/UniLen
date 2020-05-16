@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:uniapp/settings/constants.dart';
 
 import '../settings/colors.dart';
 import '../settings/less_name.dart';
@@ -34,13 +35,13 @@ class DersGenelSecim extends StatelessWidget {
           padding: EdgeInsets.only(top: 15),
           children: <Widget>[
             tytBolumu(context),
-            SizedBox(height: 15),
+            Constants.aralikHeight15,
             aytSayBolumu(context),
-            SizedBox(height: 15),
+            Constants.aralikHeight15,
             aytEaBolumu(context),
-            SizedBox(height: 15),
+            Constants.aralikHeight15,
             aytSozBolumu(context),
-            SizedBox(height: 15),
+            Constants.aralikHeight15,
           ],
         ))
       ],
@@ -52,7 +53,7 @@ class DersGenelSecim extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         dersBasligi('TYT KONULARI'),
-        SizedBox(height: 15),
+        Constants.aralikHeight15,
         dersButonlar(context, LessName.tytDersler),
       ],
     );
@@ -63,7 +64,7 @@ class DersGenelSecim extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         dersBasligi('AYT SAYISAL KONULARI'),
-        SizedBox(height: 15),
+        Constants.aralikHeight15,
         dersButonlar(context, LessName.sayDersler),
       ],
     );
@@ -74,7 +75,7 @@ class DersGenelSecim extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           dersBasligi('AYT EŞİT AĞIRLIK KONULARI'),
-          SizedBox(height: 15),
+          Constants.aralikHeight15,
           dersButonlar(context, LessName.eaDersler),
         ]);
   }
@@ -84,7 +85,7 @@ class DersGenelSecim extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         dersBasligi('AYT SÖZEL KONULARI'),
-        SizedBox(height: 15),
+        Constants.aralikHeight15,
         dersButonlar(context, LessName.sozDersler),
       ],
     );
@@ -94,7 +95,7 @@ class DersGenelSecim extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 8.0),
       child: Text(text,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
     );
   }
 
@@ -123,16 +124,6 @@ class DersGenelSecim extends StatelessWidget {
     return AppBar(
       backgroundColor: DanColor.anaRenk,
       centerTitle: true,
-      actions: <Widget>[
-        Icon(Icons.search),
-        SizedBox(
-          width: 15,
-        ),
-        Icon(Icons.notifications_none),
-        SizedBox(
-          width: 5,
-        ),
-      ],
       elevation: 0,
       title: Text(
         'Genel Dersler',
