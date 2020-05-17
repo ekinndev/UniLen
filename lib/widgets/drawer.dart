@@ -10,7 +10,7 @@ class AnaDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final _authProv = Provider.of<Auth>(context, listen: false);
     final _user = _authProv.user;
-       
+
     return Drawer(
       child: Column(
         children: <Widget>[
@@ -20,7 +20,10 @@ class AnaDrawer extends StatelessWidget {
               _user.name,
               style: Theme.of(context).textTheme.headline2,
             ),
-            accountEmail: Text(_user.email,style: Theme.of(context).textTheme.headline4,),
+            accountEmail: Text(
+              _user.email,
+              style: Theme.of(context).textTheme.headline4,
+            ),
             currentAccountPicture: CircleAvatar(
               backgroundImage: NetworkImage(_user.photoUrl),
             ),
@@ -35,17 +38,20 @@ class AnaDrawer extends StatelessWidget {
                 ListTile(
                     onTap: () => Navigator.pushReplacementNamed(context, "/"),
                     leading: Icon(SimpleLineIcons.home),
-                    title: Text('Anasayfa')),
+                    title: Text('Anasayfa',
+                        style: Theme.of(context).textTheme.bodyText2)),
                 ListTile(
                     onTap: () => Navigator.popAndPushNamed(
                         context, DersGenelSecim.dersGenelSecimRoute),
                     leading: Icon(SimpleLineIcons.note),
-                    title: Text('Dersler')),
+                    title: Text('Dersler',
+                        style: Theme.of(context).textTheme.bodyText2)),
                 ListTile(
                     onTap: () => Navigator.popAndPushNamed(
                         context, UniScreen.uniScreenRoute),
                     leading: Icon(SimpleLineIcons.graduation),
-                    title: Text('Üniversiteler')),
+                    title: Text('Üniversiteler',
+                        style: Theme.of(context).textTheme.bodyText2)),
               ],
             ),
           ),
@@ -60,7 +66,8 @@ class AnaDrawer extends StatelessWidget {
                     ),
                     ListTile(
                       leading: Icon(MaterialCommunityIcons.exit_to_app),
-                      title: Text('Çıkış Yap'),
+                      title: Text('Çıkış Yap',
+                          style: Theme.of(context).textTheme.bodyText2),
                       onTap: () {
                         Navigator.pushReplacementNamed(context, '/');
                         Provider.of<Auth>(context, listen: false).signOutAll();
@@ -68,7 +75,8 @@ class AnaDrawer extends StatelessWidget {
                     ),
                     ListTile(
                       leading: Icon(SimpleLineIcons.envelope),
-                      title: Text('İletişim'),
+                      title: Text('İletişim',
+                          style: Theme.of(context).textTheme.bodyText2),
                       onTap: () {},
                     ),
                   ],

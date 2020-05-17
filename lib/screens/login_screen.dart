@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
-import 'package:uniapp/settings/colors.dart';
 import 'package:uniapp/settings/constants.dart';
 import '../models/firebase_error.dart';
 import '../providers/auth.dart';
@@ -230,15 +229,18 @@ class _LoginScreenState extends State<LoginScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Text(text, style: TextStyle(color: Colors.white)),
+        Text(text,
+            style: Theme.of(context)
+                .textTheme
+                .bodyText1
+                .copyWith(color: Colors.white, fontWeight: FontWeight.normal)),
         InkWell(
           onTap: fnk,
-          child: Text(_authMode == AuthMode.Login ? kayitText : girisText,
-              style: TextStyle(
-                color: Colors.red,
-                fontSize: Constants.loginFontSize20,
-                fontWeight: FontWeight.bold,
-              )),
+          child: Text(
+            _authMode == AuthMode.Login ? kayitText : girisText,
+            style: Theme.of(context).textTheme.button.copyWith(
+                color: Colors.red, fontWeight: FontWeight.bold, fontSize: 20),
+          ),
         ),
       ],
     );
@@ -256,10 +258,10 @@ class _LoginScreenState extends State<LoginScreen> {
         Constants.aralikWidth10,
         Text(
           'Sosyal Medya ile Giriş',
-          style: TextStyle(
-              color: Colors.white,
-              fontSize: Constants.loginFontSize20,
-              fontWeight: FontWeight.bold),
+          style: Theme.of(context)
+              .textTheme
+              .headline3
+              .copyWith(color: Colors.white),
         ),
         Constants.aralikWidth10,
         Expanded(
@@ -275,20 +277,19 @@ class _LoginScreenState extends State<LoginScreen> {
   Material loginButton(BuildContext context, String text, Function fnk) {
     return Material(
       elevation: 5.0,
-      borderRadius: BorderRadius.circular(Constants.loginBorderCircular10),
+      borderRadius: BorderRadius.circular(10),
       color: Theme.of(context).accentColor,
       child: MaterialButton(
         shape: RoundedRectangleBorder(
             borderRadius:
-                BorderRadius.circular(Constants.loginBorderCircular10)),
+                BorderRadius.circular(10)),
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: fnk,
         child: Text(
           text,
           textAlign: TextAlign.center,
-          style: TextStyle(
-              color: Colors.white, fontSize: Constants.loginFontSize20),
+          style: Theme.of(context).textTheme.button,
         ),
       ),
     );
@@ -337,23 +338,24 @@ class _LoginScreenState extends State<LoginScreen> {
       TextInputAction txtInputAction,
       Function fnk) {
     return TextField(
-        textInputAction: txtInputAction,
-        focusNode: fNode,
-        onSubmitted: (val) {
-          fnk();
-        },
-        controller: textedit,
-        obscureText: secure,
-        style: TextStyle(color: Colors.white70, height: 1.3),
-        decoration: InputDecoration(
-          labelText: text,
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-              color: Colors.deepOrange[300],
-            ),
+      textInputAction: txtInputAction,
+      focusNode: fNode,
+      onSubmitted: (val) {
+        fnk();
+      },
+      controller: textedit,
+      obscureText: secure,
+      style: TextStyle(color: Colors.white70, height: 1.3),
+      decoration: InputDecoration(
+        labelText: text,
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            color: Colors.deepOrange[300],
           ),
-          hintText: secure ? '********' : 'giris@danismanakademi.org',
-        ));
+        ),
+        hintText: secure ? '********' : 'giris@danismanakademi.org',
+      ),
+    );
   }
 }

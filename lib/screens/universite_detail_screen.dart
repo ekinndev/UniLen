@@ -123,10 +123,7 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Text(
-          baslik,
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+        Text(baslik, style: Theme.of(context).textTheme.headline3),
         tablo(liste, context),
         Constants.aralikHeight15,
       ],
@@ -155,10 +152,7 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
             child: Text(
               header,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyText1.copyWith(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 14.0,
-                  color: Colors.black87),
+              style: Theme.of(context).textTheme.bodyText1
             ),
           );
         },
@@ -171,10 +165,7 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
             child: Text(
               value,
               textAlign: TextAlign.left,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline1
-                  .copyWith(fontSize: 14.0, color: Colors.grey[900]),
+              style: Theme.of(context).textTheme.bodyText1.copyWith(fontWeight: FontWeight.normal)
             ),
           );
         },
@@ -196,9 +187,7 @@ class UstUniAnaKart extends StatelessWidget {
       alignment: Alignment.center,
       height: MediaQuery.of(context).size.height * 0.32,
       width: double.infinity,
-      decoration: BoxDecoration(
-        color: Theme.of(context).accentColor,
-      ),
+      decoration: BoxDecoration(color: Theme.of(context).accentColor),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -218,12 +207,11 @@ class UstUniAnaKart extends StatelessWidget {
               fit: BoxFit.fitWidth,
               child: Text(
                 title,
-                style: TextStyle(color: Colors.white, fontSize: 30),
+                style: Theme.of(context).textTheme.headline5,
               ),
             ),
           ),
-          Text(subtitle ?? "",
-              style: TextStyle(color: Colors.white, fontSize: 15)),
+          Text(subtitle ?? "", style: Theme.of(context).textTheme.headline4),
         ],
       ),
     );

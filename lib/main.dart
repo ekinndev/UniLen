@@ -67,17 +67,22 @@ class MyApp extends StatelessWidget {
                 ),
                 buttonTheme: ButtonThemeData(),
                 textTheme: TextTheme(
-                  headline1: TextStyle(color: Colors.white, fontSize: 35),
-                  headline2: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
-                  headline3: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20),
-                  headline4: TextStyle(color: Colors.white, fontSize: 15),
-                ),
+                    headline1: TextStyle(color: Colors.white, fontSize: 35),
+                    headline2: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                    headline3: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20),
+                    headline4: TextStyle(color: Colors.white, fontSize: 15),
+                    headline5: TextStyle(color: Colors.white, fontSize: 30),
+                    button: TextStyle(color: Colors.white, fontSize: 18),
+                    bodyText1: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.black)),
               ),
 
               // home: UniversiteDetail(),

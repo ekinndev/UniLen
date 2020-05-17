@@ -84,7 +84,8 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
   }
 
   Card konuKart(int i, Konu ders, IconData icon) {
-    final rengiBelirle = ders.durum == false ? Colors.black : Theme.of(context).accentColor;
+    final rengiBelirle =
+        ders.durum == false ? Colors.black : Theme.of(context).accentColor;
     return Card(
       margin: EdgeInsets.only(
           left: 8,
@@ -100,7 +101,10 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
         title: Text(
           ders.konu,
           textAlign: TextAlign.center,
-          style: TextStyle(color: rengiBelirle, fontWeight: FontWeight.bold),
+          style: Theme.of(context)
+              .textTheme
+              .bodyText1
+              .copyWith(color: rengiBelirle),
         ),
         trailing: IconButton(
             onPressed: () {

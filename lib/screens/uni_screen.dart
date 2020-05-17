@@ -239,20 +239,26 @@ class UniCard extends StatelessWidget {
                 ),
                 Text(
                   uni.uniAd,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline3
+                      .copyWith(color: Colors.white),
                   textAlign: TextAlign.center,
                 ),
                 Text(
                   uni.uniMail,
-                  style: TextStyle(color: Colors.white, fontSize: 15),
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline4
+                      .copyWith(color: Colors.white),
                   textAlign: TextAlign.center,
                 ),
                 Text(
                   uni.uniAdres,
-                  style: TextStyle(color: Colors.white, fontSize: 15),
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline4
+                      .copyWith(color: Colors.white),
                   textAlign: TextAlign.center,
                 ),
               ],

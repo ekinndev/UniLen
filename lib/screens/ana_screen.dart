@@ -51,7 +51,7 @@ class _AnaEkranState extends State<AnaEkran> {
         anaProfilWidget(ekranBoy, context),
         Expanded(
           child: ListView(
-            padding: EdgeInsets.only(top: Constants.bosluk15),
+            padding: EdgeInsets.only(top: 15),
             children: <Widget>[
               anaDersButonlar(context),
               Constants.aralikHeight15,
@@ -75,7 +75,7 @@ class _AnaEkranState extends State<AnaEkran> {
         ),
         Positioned(
           top: 100,
-          left: Constants.bosluk15,
+          left: 15,
           child: profileWidget(_user, context),
         ),
       ],
@@ -87,7 +87,7 @@ Column anaDersButonlar(BuildContext context) {
   return Column(
     children: <Widget>[
       Padding(
-        padding: const EdgeInsets.only(left: Constants.bosluk8),
+        padding: const EdgeInsets.only(left: 8),
         child: Align(
             alignment: Alignment.topLeft,
             child: Text(
@@ -101,16 +101,16 @@ Column anaDersButonlar(BuildContext context) {
       Constants.aralikHeight15,
       Padding(
         padding: const EdgeInsets.only(
-            left: Constants.bosluk8, right: Constants.bosluk8),
+            left: 8, right: 8),
         child: Wrap(
-          spacing: Constants.bosluk15,
-          runSpacing: Constants.bosluk15,
+          spacing: 15,
+          runSpacing: 15,
           children: <Widget>[
             DersButonu(
                 LessName.tytturkce['icon'],
                 LessName.tytturkce['ad'],
                 LessName.tytturkce['renk'],
-                Constants.anaBorderCircular10,
+                10,
                 () => Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -122,7 +122,7 @@ Column anaDersButonlar(BuildContext context) {
                 LessName.tytmat['icon'],
                 LessName.tytmat['ad'],
                 LessName.tytmat['renk'],
-                Constants.anaBorderCircular10,
+                10,
                 () => Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -133,7 +133,7 @@ Column anaDersButonlar(BuildContext context) {
                 LessName.aytmat['icon'],
                 LessName.aytmat['ad'],
                 LessName.tytmat['renk'],
-                Constants.anaBorderCircular10,
+                10,
                 () => Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -144,7 +144,7 @@ Column anaDersButonlar(BuildContext context) {
                 LessName.aytfiz['icon'],
                 LessName.aytfiz['ad'],
                 LessName.aytfiz['renk'],
-                Constants.anaBorderCircular10,
+                10,
                 () => Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -155,7 +155,7 @@ Column anaDersButonlar(BuildContext context) {
                 LessName.ayttar1['icon'],
                 LessName.ayttar1['ad'],
                 LessName.ayttar1['renk'],
-                Constants.anaBorderCircular10,
+                10,
                 () => Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -166,7 +166,7 @@ Column anaDersButonlar(BuildContext context) {
                 LessName.aytedeb['icon'],
                 LessName.aytedeb['ad'],
                 LessName.aytedeb['renk'],
-                Constants.anaBorderCircular10,
+                10,
                 () => Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -185,7 +185,7 @@ Column anaSiteYazilar(double ekranBoy, BuildContext context) {
     mainAxisSize: MainAxisSize.min,
     children: <Widget>[
       Padding(
-        padding: const EdgeInsets.only(left: Constants.bosluk8),
+        padding: const EdgeInsets.only(left: 8),
         child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -230,7 +230,7 @@ Widget profileWidget(User _user, BuildContext context) {
         backgroundImage: NetworkImage(_user.photoUrl),
       ),
       Padding(
-        padding: const EdgeInsets.all(Constants.bosluk8),
+        padding: const EdgeInsets.all(8),
         child: Column(
           children: <Widget>[
             Text(_user.name, style: Theme.of(context).textTheme.headline2),
@@ -259,16 +259,16 @@ Widget websiteCart(
     width: ekranEn * 0.85,
     height: ekranBoy * 0.25,
     decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(Constants.anaBorderCircular10),
+      borderRadius: BorderRadius.circular(10),
     ),
     margin: EdgeInsets.only(
-        left: i == 0 ? 8 : Constants.bosluk15,
-        bottom: Constants.bosluk15,
+        left: i == 0 ? 8 : 15,
+        bottom: 15,
         right: i == 9 ? 8 : 0), //TODO
     child: Stack(
       children: <Widget>[
         ClipRRect(
-          borderRadius: BorderRadius.circular(Constants.anaBorderCircular10),
+          borderRadius: BorderRadius.circular(10),
           child: Image.network(
             imageUrl,
             fit: BoxFit.fill,
@@ -280,7 +280,7 @@ Widget websiteCart(
           decoration: BoxDecoration(
               color: Colors.black.withOpacity(0.6),
               borderRadius:
-                  BorderRadius.circular(Constants.anaBorderCircular10)),
+                  BorderRadius.circular(10)),
           width: ekranEn * 0.85,
           height: ekranBoy * 0.3,
         ),

@@ -35,7 +35,7 @@ class DersButonu extends StatelessWidget {
             Expanded(
               child: Text(
                 _text,
-                style: TextStyle(color: Colors.white, fontSize: 18),
+                style: Theme.of(context).textTheme.button,
                 overflow: TextOverflow.clip,
               ),
             ),
