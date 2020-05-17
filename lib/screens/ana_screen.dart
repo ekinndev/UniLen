@@ -255,6 +255,7 @@ Widget profileWidget(User _user, BuildContext context) {
       Padding(
         padding: const EdgeInsets.all(8),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(_user.name, style: Theme.of(context).textTheme.headline2),
             Text(
@@ -316,8 +317,8 @@ Widget websiteCart(
           ),
         ),
         Positioned(
-          top:10,
-          right:10,
+          top: 10,
+          right: 10,
           child: Image.asset(
             'assets/login/logotek.png',
             width: 60,

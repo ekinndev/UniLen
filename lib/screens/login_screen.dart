@@ -145,53 +145,58 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Column emailLogin(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        buildTextField(
-            'Email', false, _email, _emailFocus, TextInputAction.next, () {
-          _emailFocus.unfocus();
-          FocusScope.of(context).requestFocus(_passFocus);
-        }),
-        Constants.aralikHeight20,
-        buildTextField(
-            'Şifre',
-            true,
-            _pass,
-            _passFocus,
-            _authMode == AuthMode.Login
-                ? TextInputAction.done
-                : TextInputAction.next, () {
-          if (_authMode == AuthMode.Login) {
-            _passFocus.unfocus();
-            girisYaDaKayitOl();
-          } else {
-            _passFocus.unfocus();
-            FocusScope.of(context).requestFocus(_confPassFocus);
-          }
-        }),
-        Constants.aralikHeight20,
-        if (_authMode == AuthMode.SignUp)
+  Widget emailLogin(BuildContext context) {
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 300),
+      decoration: BoxDecoration(color: Colors.transparent),
+      height: _authMode==AuthMode.Login ? 250:310,
+      child: ListView(
+        children: <Widget>[
           buildTextField(
-              'Şifre', true, _confPass, _confPassFocus, TextInputAction.done,
-              () {
-            _confPassFocus.unfocus();
-            girisYaDaKayitOl();
+              'Email', false, _email, _emailFocus, TextInputAction.next, () {
+            _emailFocus.unfocus();
+            FocusScope.of(context).requestFocus(_passFocus);
           }),
-        if (_authMode == AuthMode.SignUp) Constants.aralikHeight20,
-        loginButton(
-            context,
-            _authMode == AuthMode.Login ? 'Giriş Yap' : 'Kayıt Ol',
-            girisYaDaKayitOl),
-        Constants.aralikHeight20,
-        authDegistirButton(
-            context,
-            _authMode == AuthMode.Login
-                ? 'Hesabınız yok mu ?'
-                : 'Zaten kayıtlı mısın ?',
-            authDegistir),
-        Constants.aralikHeight20,
-      ],
+          Constants.aralikHeight20,
+          buildTextField(
+              'Şifre',
+              true,
+              _pass,
+              _passFocus,
+              _authMode == AuthMode.Login
+                  ? TextInputAction.done
+                  : TextInputAction.next, () {
+            if (_authMode == AuthMode.Login) {
+              _passFocus.unfocus();
+              girisYaDaKayitOl();
+            } else {
+              _passFocus.unfocus();
+              FocusScope.of(context).requestFocus(_confPassFocus);
+            }
+          }),
+          Constants.aralikHeight20,
+          if (_authMode == AuthMode.SignUp)
+            buildTextField(
+                'Şifre', true, _confPass, _confPassFocus, TextInputAction.done,
+                () {
+              _confPassFocus.unfocus();
+              girisYaDaKayitOl();
+            }),
+          if (_authMode == AuthMode.SignUp) Constants.aralikHeight20,
+          loginButton(
+              context,
+              _authMode == AuthMode.Login ? 'Giriş Yap' : 'Kayıt Ol',
+              girisYaDaKayitOl),
+          Constants.aralikHeight20,
+          authDegistirButton(
+              context,
+              _authMode == AuthMode.Login
+                  ? 'Hesabınız yok mu ?'
+                  : 'Zaten kayıtlı mısın ?',
+              authDegistir),
+          Constants.aralikHeight20,
+        ],
+      ),
     );
   }
 
