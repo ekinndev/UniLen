@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:uniapp/settings/constants.dart';
 import '../widgets/ust_ana_kart.dart';
 import '../providers/konu.dart';
 import '../models/konu.dart';
@@ -62,7 +63,7 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
             subtitle: _konuSayisi, title: key['ad'], icon: key['icon'].icon),
         Expanded(
           child: _konularVeri == null
-              ? Center(child: CircularProgressIndicator())
+              ? Center(child: Constants.progressIndicator)
               : hataMesaji != null
                   ? Center(child: Text(hataMesaji))
                   : Consumer<KonuProvider>(

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:provider/provider.dart';
+import 'package:uniapp/settings/constants.dart';
 import 'package:uniapp/widgets/drawer.dart';
 import '../providers/auth.dart';
 import '../models/universite.dart';
@@ -138,7 +139,7 @@ class _UniScreenState extends State<UniScreen> {
           icon: SimpleLineIcons.graduation,
         ),
         buildExpandedUniList(context),
-        if (isLoading && _basIndex > 1) CircularProgressIndicator(),
+        if (isLoading && _basIndex > 1) Constants.progressIndicator,
       ],
     );
   }
@@ -147,7 +148,7 @@ class _UniScreenState extends State<UniScreen> {
     return Expanded(
       child: isLoading == true && _basIndex == 1
           ? Center(
-              child: CircularProgressIndicator(),
+              child: Constants.progressIndicator,
             )
           : _universiteVeriler.isEmpty
               ? Center(child: Text('İnternet bağlantısı ya da veri yok.'))

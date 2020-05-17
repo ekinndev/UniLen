@@ -103,7 +103,7 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
     ];
     return Expanded(
       child: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? Center(child: Constants.progressIndicator)
           : hataMesaji != null
               ? Center(child: Text(hataMesaji))
               : ListView.builder(
@@ -132,7 +132,7 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
 
   Widget tablo(List<dynamic> json, BuildContext context) {
     if (json == null) {
-      return Center(child: CircularProgressIndicator());
+      return Center(child: Constants.progressIndicator);
     }
     return Container(
       margin: EdgeInsets.only(top: 15),

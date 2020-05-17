@@ -115,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
       key: _scaffoldKey,
       backgroundColor: Colors.transparent,
       body: _logStatus == LoginStatus.Working
-          ? Center(child: CircularProgressIndicator())
+          ? Center(child: Constants.progressIndicator)
           : Container(
               alignment: Alignment.center,
               margin: EdgeInsets.only(left: 8, right: 8),

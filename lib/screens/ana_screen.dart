@@ -203,7 +203,7 @@ Column anaSiteYazilar(double ekranBoy, BuildContext context) {
             future: Future.delayed(Duration(seconds: 2)),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+                return Center(child: Constants.progressIndicator);
               }
               return ListView.builder(
                 physics: BouncingScrollPhysics(),
