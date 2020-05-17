@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class Constants {
   //SizedBox Aralıklar
@@ -6,5 +7,6 @@ class Constants {
   static const Widget aralikWidth15 = SizedBox(width: 15);
   static const Widget aralikHeight15 = SizedBox(height: 15);
   static const Widget aralikHeight20 = SizedBox(height: 20);
-  static const Widget progressIndicator=CircularProgressIndicator();
+
+  static final Widget progressIndicator=Lottie.asset('assets/lottie/progress.json',height: 150,width: 150);
 }

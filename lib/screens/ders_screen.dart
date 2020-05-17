@@ -27,7 +27,7 @@ class DersGenelSecim extends StatelessWidget {
         UstAnaKart(
             icon: Entypo.open_book,
             subtitle: 'Tüm dersler bir tık uzağınızda.',
-            title: 'Tüm Dersler'),
+            title: 'Tüm Dersler',lottie: 'assets/lottie/study.json',),
         Expanded(
             child: ListView(
           padding: EdgeInsets.only(top: 15),

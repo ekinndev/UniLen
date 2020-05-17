@@ -60,7 +60,7 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
     return Column(
       children: <Widget>[
         UstAnaKart(
-            subtitle: _konuSayisi, title: key['ad'], icon: key['icon'].icon),
+            subtitle: _konuSayisi, title: key['ad'], icon: key['icon'].icon,lottie: key['lottie'],),
         Expanded(
           child: _konularVeri == null
               ? Center(child: Constants.progressIndicator)

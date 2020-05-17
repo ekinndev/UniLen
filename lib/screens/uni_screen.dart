@@ -136,7 +136,7 @@ class _UniScreenState extends State<UniScreen> {
         UstAnaKart(
           subtitle: 'Üniversitelere hızlı ulaşım.',
           title: 'Üniversiteler',
-          icon: SimpleLineIcons.graduation,
+          icon: SimpleLineIcons.graduation,lottie: 'assets/lottie/university.json',
         ),
         buildExpandedUniList(context),
         if (isLoading && _basIndex > 1) Constants.progressIndicator,

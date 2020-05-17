@@ -3,14 +3,14 @@ import 'package:uniapp/settings/icons.dart';
 
 class LessName {
   
-  static const Map<String,dynamic> tytmat = {'ad':'TYT Matematik','kod':'tyt/tytmat','icon':DanIcons.matIcon,'renk':DanColor.matRenk};
-  static const Map<String,dynamic> tytturkce = {'ad':'TYT Türkçe','kod':'tyt/tytturkce','icon':DanIcons.turkceIcon,'renk':DanColor.edebRenk};
-  static const Map<String,dynamic> tytfizik = {'ad':'TYT Fizik','kod':'tyt/tytfiz','icon':DanIcons.fizikIcon,'renk':DanColor.fizikRenk};
-  static const Map<String,dynamic> tytkimya = {'ad':'TYT Kimya','kod':'tyt/tytkim','icon':DanIcons.kimIcon,'renk':DanColor.kimRenk};
-  static const Map<String,dynamic> tytbio = {'ad':'TYT Biyoloji','kod':'tyt/tytbio','icon':DanIcons.bioIcon,'renk':DanColor.bioRenk};
-  static const Map<String,dynamic> tyttarih= {'ad':'TYT Tarih','kod':'tyt/tyttar','icon':DanIcons.tarihIcon,'renk':DanColor.tarihRenk};
-  static const Map<String,dynamic> tytcog = {'ad':'TYT Coğrafya','kod':'tyt/tytcog','icon':DanIcons.cogIcon,'renk':DanColor.cogRenk};
-  static const Map<String,dynamic> tytfel = {'ad':'TYT Felsefe ve Din','kod':'tyt/tytfel','icon':DanIcons.felseDinIcon,'renk':DanColor.felseDinRenk};
+  static const Map<String,dynamic> tytmat = {'ad':'TYT Matematik','kod':'tyt/tytmat','icon':DanIcons.matIcon,'renk':DanColor.matRenk,'lottie':'assets/lottie/mat.json'};
+  static const Map<String,dynamic> tytturkce = {'ad':'TYT Türkçe','kod':'tyt/tytturkce','icon':DanIcons.turkceIcon,'renk':DanColor.edebRenk,'lottie':'assets/lottie/turkce.json'};
+  static const Map<String,dynamic> tytfizik = {'ad':'TYT Fizik','kod':'tyt/tytfiz','icon':DanIcons.fizikIcon,'renk':DanColor.fizikRenk,'lottie':'assets/lottie/fizik.json'};
+  static const Map<String,dynamic> tytkimya = {'ad':'TYT Kimya','kod':'tyt/tytkim','icon':DanIcons.kimIcon,'renk':DanColor.kimRenk,'lottie':'assets/lottie/kimya.json'};
+  static const Map<String,dynamic> tytbio = {'ad':'TYT Biyoloji','kod':'tyt/tytbio','icon':DanIcons.bioIcon,'renk':DanColor.bioRenk,'lottie':'assets/lottie/bio.json'};
+  static const Map<String,dynamic> tyttarih= {'ad':'TYT Tarih','kod':'tyt/tyttar','icon':DanIcons.tarihIcon,'renk':DanColor.tarihRenk,'lottie':'assets/lottie/history.json'};
+  static const Map<String,dynamic> tytcog = {'ad':'TYT Coğrafya','kod':'tyt/tytcog','icon':DanIcons.cogIcon,'renk':DanColor.cogRenk,'lottie':'assets/lottie/cog.json'};
+  static const Map<String,dynamic> tytfel = {'ad':'TYT Felsefe ve Din','kod':'tyt/tytfel','icon':DanIcons.felseDinIcon,'renk':DanColor.felseDinRenk,'lottie':'assets/lottie/feldin.json'};
   
   static const List tytDersler=[tytmat,tytturkce,tytfizik,tytkimya,tytbio,tyttarih,tytcog,tytfel];
 
