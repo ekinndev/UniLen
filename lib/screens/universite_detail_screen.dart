@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:json_table/json_table.dart';
-import 'package:json_table/json_table_column.dart';
 import 'package:http/http.dart' as http;
 import 'package:uniapp/settings/constants.dart';
 
