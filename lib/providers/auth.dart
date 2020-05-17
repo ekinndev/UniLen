@@ -1,89 +1,66 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart' as http;
-import '../models/firebase_error.dart';
 import '../models/user.dart';
 import '../screens/login_screen.dart';
 
 class Auth with ChangeNotifier {
   String _token;
-  DateTime _expiryDate;
   String _userId;
   String _email;
   String _photoUrl;
   String _name;
-  LogMethod _method;
+  User currentUser;
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  Future<void> signUp(String email, String password) async {}
-
-  bool get isAuth {
-    return _token != null;
-  }
 
   String get token {
     return _token;
   }
 
   User get user {
-    if (_expiryDate != null &&
-        _expiryDate.isAfter(DateTime.now()) &&
-        _token != null) {
-      return User(
+    if (_token != null && currentUser == null) {
+      currentUser = User(
           email: _email,
           name: _name,
           photoUrl: _photoUrl,
           token: _token,
           uid: _userId);
     }
-    return User(
-        email: 'ekin@abalioglu.com',
-        logMethod: LogMethod.Google,
-        name: 'Tekrar Giriş Yap',
-        photoUrl: 'https://picsum.photos/300/300');
+    return currentUser;
   }
 
-  Future emailleKayitOlYaDaGiris(
+  void setUser(User newUser) {
+    _token = newUser.token;
+    _userId = newUser.uid;
+    _email = newUser.email;
+    _photoUrl = newUser.photoUrl;
+    _name = newUser.name;
+
+    currentUser = newUser;
+  }
+
+  Future<void> emailLoginOrSignUp(
       {String email,
       String password,
       AuthMode regOrLog = AuthMode.Login}) async {
-    try {
-      String registerOrLogin =
-          regOrLog == AuthMode.Login ? 'signInWithPassword' : 'signUp';
-      final apiLink =
-          'https://identitytoolkit.googleapis.com/v1/accounts:$registerOrLogin?key=AIzaSyAlyY7R3qk1SsOEN3v1aouYgoHHyKhbP8k';
-
-      final response = await http.post(apiLink,
-          body: jsonEncode({
-            'email': email,
-            'password': password,
-            'returnSecureToken': true
-          }));
-      final userVeri = jsonDecode(response.body);
-      if (userVeri['error'] != null) {
-        FirebaseError err = FirebaseError.fromJson(userVeri);
-        return err;
-      }
-
-      _token = userVeri['idToken'];
-      _userId = userVeri['localId'];
-      _email = userVeri['email'];
-      _photoUrl = 'https://i.ya-webdesign.com/images/empty-avatar-png.png';
-      _name = 'Danışman Akademi Öğrenci';
-      _method = LogMethod.Standart;
-      _expiryDate = DateTime.now().add(Duration(minutes: 50));
-      notifyListeners();
-    } on SocketException {
-      throw "İnternet bağlantısı ya da veri yok.";
-    } catch (e) {
-      throw e.toString();
+    AuthResult result;
+    if (regOrLog == AuthMode.SignUp) {
+      result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+    } else {
+      result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
     }
+    final FirebaseUser userMail = result.user;
+    _token = (await userMail.getIdToken()).token;
+    _userId = userMail.uid;
+    _email = userMail.email;
+    _photoUrl = "https://i.ya-webdesign.com/images/empty-avatar-png.png";
+    _name = "Danışman Akademi Öğrenci";
+    notifyListeners();
   }
 
   Future<void> handleSignInGoogle() async {
@@ -96,17 +73,14 @@ class Auth with ChangeNotifier {
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-      final FirebaseUser user =
+      final FirebaseUser userGoogle =
           (await _auth.signInWithCredential(credential)).user;
 
-      _token = (await user.getIdToken()).token;
-      _userId = user.uid;
-      _email = user.email;
-      _photoUrl = user.photoUrl;
-      _name = user.displayName;
-      _method = LogMethod.Google;
-
-      _expiryDate = DateTime.now().add(Duration(minutes: 50));
+      _token = (await userGoogle.getIdToken()).token;
+      _userId = userGoogle.uid;
+      _email = userGoogle.email;
+      _photoUrl = userGoogle.photoUrl;
+      _name = userGoogle.displayName;
       notifyListeners();
     } on NoSuchMethodError {
       throw 'Login başarısız. Lütfen tekrar deneyin.';
@@ -118,13 +92,13 @@ class Auth with ChangeNotifier {
   }
 
   void signOutAll() {
-    if (_method == LogMethod.Google) {
-      _googleSignIn.signOut();
-    } else if (_method == LogMethod.Facebook) {
-    } else {}
+    _auth.signOut();
+    _googleSignIn.signOut();
     _token = null;
     _userId = null;
-    _expiryDate = null;
+    _email = null;
+    _photoUrl = null;
+    _name = null;
     notifyListeners();
   }
 }

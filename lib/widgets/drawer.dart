@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:uniapp/screens/ana_screen.dart';
 import '../screens/uni_screen.dart';
 import '../screens/ders_screen.dart';
 import '../providers/auth.dart';
@@ -36,7 +37,8 @@ class AnaDrawer extends StatelessWidget {
               padding: EdgeInsets.zero,
               children: <Widget>[
                 ListTile(
-                    onTap: () => Navigator.pushReplacementNamed(context, "/"),
+                    onTap: () => Navigator.popAndPushNamed(
+                        context, AnaEkran.anaEkranRoute),
                     leading: Icon(SimpleLineIcons.home),
                     title: Text('Anasayfa',
                         style: Theme.of(context).textTheme.bodyText2)),

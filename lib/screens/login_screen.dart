@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:uniapp/settings/constants.dart';
-import '../models/firebase_error.dart';
 import '../providers/auth.dart';
 
 enum AuthMode { Login, SignUp }
@@ -60,11 +59,11 @@ class _LoginScreenState extends State<LoginScreen> {
       _logStatus = LoginStatus.Working;
     });
     try {
-      final response = await authProv.emailleKayitOlYaDaGiris(
+      final response = await authProv.emailLoginOrSignUp(
           email: _email.text, password: _pass.text, regOrLog: _authMode);
-      if (response is FirebaseError) {
-        throw FirebaseError.hatayiCevir(response.error.message);
-      }
+      // if (response is FirebaseError) {
+      //   throw FirebaseError.hatayiCevir(response.error.message);
+      // }
     } catch (e) {
       _scaffoldKey.currentState.showSnackBar(
         SnackBar(
@@ -280,9 +279,7 @@ class _LoginScreenState extends State<LoginScreen> {
       borderRadius: BorderRadius.circular(10),
       color: Theme.of(context).accentColor,
       child: MaterialButton(
-        shape: RoundedRectangleBorder(
-            borderRadius:
-                BorderRadius.circular(10)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: fnk,

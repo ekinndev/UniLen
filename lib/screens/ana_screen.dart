@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/user.dart';
@@ -11,6 +12,9 @@ import '../settings/constants.dart';
 class AnaEkran extends StatefulWidget {
   @override
   _AnaEkranState createState() => _AnaEkranState();
+  static const anaEkranRoute = '/anaekran';
+  final FirebaseUser user;
+  AnaEkran([this.user]);
 }
 
 class _AnaEkranState extends State<AnaEkran> {
@@ -19,12 +23,30 @@ class _AnaEkranState extends State<AnaEkran> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    final prov = Provider.of<Auth>(context, listen: false);
     if (_flag) {
-      setState(() {
-        this._user = Provider.of<Auth>(context, listen: false).user;
+      if (widget.user != null) {
+        widget.user.getIdToken().then((data) {
+          setState(() {
+            this._user = User(
+                email: widget.user.email,
+                name: widget.user.displayName ?? 'Danışman Akademi Öğrenci',
+                photoUrl: widget.user.photoUrl ??
+                    'https://i.ya-webdesign.com/images/empty-avatar-png.png',
+                token: data.token,
+                uid: widget.user.uid);
 
-        this._flag = false;
-      });
+            this._flag = false;
+            prov.setUser(this._user);
+          });
+        });
+      } else {
+        setState(() {
+          this._user = prov.user;
+
+          this._flag = false;
+        });
+      }
     }
   }
 
@@ -76,7 +98,9 @@ class _AnaEkranState extends State<AnaEkran> {
         Positioned(
           top: 100,
           left: 15,
-          child: profileWidget(_user, context),
+          child: _user == null
+              ? CircularProgressIndicator()
+              : profileWidget(_user, context),
         ),
       ],
     );
@@ -100,8 +124,7 @@ Column anaDersButonlar(BuildContext context) {
       ),
       Constants.aralikHeight15,
       Padding(
-        padding: const EdgeInsets.only(
-            left: 8, right: 8),
+        padding: const EdgeInsets.only(left: 8, right: 8),
         child: Wrap(
           spacing: 15,
           runSpacing: 15,
@@ -262,9 +285,7 @@ Widget websiteCart(
       borderRadius: BorderRadius.circular(10),
     ),
     margin: EdgeInsets.only(
-        left: i == 0 ? 8 : 15,
-        bottom: 15,
-        right: i == 9 ? 8 : 0), //TODO
+        left: i == 0 ? 8 : 15, bottom: 15, right: i == 9 ? 8 : 0), //TODO
     child: Stack(
       children: <Widget>[
         ClipRRect(
@@ -279,8 +300,7 @@ Widget websiteCart(
         Container(
           decoration: BoxDecoration(
               color: Colors.black.withOpacity(0.6),
-              borderRadius:
-                  BorderRadius.circular(10)),
+              borderRadius: BorderRadius.circular(10)),
           width: ekranEn * 0.85,
           height: ekranBoy * 0.3,
         ),
