@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/user.dart';
 import '../providers/auth.dart';
-import '../settings/colors.dart';
 import '../settings/less_name.dart';
 import '../widgets/ders_butonu.dart';
 import '../widgets/drawer.dart';
@@ -37,11 +36,9 @@ class _AnaEkranState extends State<AnaEkran> {
       drawer: AnaDrawer(),
       appBar: AppBar(
         centerTitle: true,
-        elevation: 0,
-        backgroundColor: DanColor.transparan,
         title: Text(
           'Danışman Akademi',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: Theme.of(context).appBarTheme.textTheme.headline3,
         ),
       ),
       body: buildColumnAnaSayfa(ekranBoy, context),
@@ -51,15 +48,14 @@ class _AnaEkranState extends State<AnaEkran> {
   Column buildColumnAnaSayfa(double ekranBoy, BuildContext context) {
     return Column(
       children: <Widget>[
-        anaProfilWidget(ekranBoy),
+        anaProfilWidget(ekranBoy, context),
         Expanded(
           child: ListView(
-            
             padding: EdgeInsets.only(top: Constants.bosluk15),
             children: <Widget>[
               anaDersButonlar(context),
               Constants.aralikHeight15,
-              anaSiteYazilar(ekranBoy)
+              anaSiteYazilar(ekranBoy, context)
             ],
           ),
         ),
@@ -67,20 +63,20 @@ class _AnaEkranState extends State<AnaEkran> {
     );
   }
 
-  Stack anaProfilWidget(double ekranBoy) {
+  Stack anaProfilWidget(double ekranBoy, BuildContext context) {
     return Stack(
       children: <Widget>[
         Container(
           height: ekranBoy * 0.32,
           width: double.infinity,
           decoration: BoxDecoration(
-            color: DanColor.anaRenk,
+            color: Theme.of(context).accentColor,
           ),
         ),
         Positioned(
           top: 100,
           left: Constants.bosluk15,
-          child: profileWidget(_user),
+          child: profileWidget(_user, context),
         ),
       ],
     );
@@ -96,8 +92,10 @@ Column anaDersButonlar(BuildContext context) {
             alignment: Alignment.topLeft,
             child: Text(
               'Hangi Dersin Konusunu Bitirdin ?',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: Constants.fontSize20),
+              style: Theme.of(context)
+                  .textTheme
+                  .headline3
+                  .copyWith(color: Colors.black),
             )),
       ),
       Constants.aralikHeight15,
@@ -182,7 +180,7 @@ Column anaDersButonlar(BuildContext context) {
   );
 }
 
-Column anaSiteYazilar(double ekranBoy) {
+Column anaSiteYazilar(double ekranBoy, BuildContext context) {
   return Column(
     mainAxisSize: MainAxisSize.min,
     children: <Widget>[
@@ -192,8 +190,10 @@ Column anaSiteYazilar(double ekranBoy) {
             alignment: Alignment.centerLeft,
             child: Text(
               'Sitedeki Son Yazılar',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: Constants.fontSize20),
+              style: Theme.of(context)
+                  .textTheme
+                  .headline3
+                  .copyWith(color: Colors.black),
             )),
       ),
       Constants.aralikHeight15,
@@ -222,7 +222,7 @@ Column anaSiteYazilar(double ekranBoy) {
   );
 }
 
-Widget profileWidget(User _user) {
+Widget profileWidget(User _user, BuildContext context) {
   return Row(
     children: <Widget>[
       CircleAvatar(
@@ -233,19 +233,11 @@ Widget profileWidget(User _user) {
         padding: const EdgeInsets.all(Constants.bosluk8),
         child: Column(
           children: <Widget>[
-            Text(
-              _user.name,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: Constants.fontSize20),
-            ),
+            Text(_user.name, style: Theme.of(context).textTheme.headline2),
             Text(
               _user.email,
               textAlign: TextAlign.start,
-              style: TextStyle(
-                color: Colors.white,
-              ),
+              style: Theme.of(context).textTheme.headline4,
             ),
           ],
         ),
@@ -297,7 +289,10 @@ Widget websiteCart(
           baslik,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(color: Colors.white, fontSize: Constants.fontSize20),
+          style: Theme.of(context)
+              .textTheme
+              .headline3
+              .copyWith(fontWeight: FontWeight.normal, color: Colors.white),
         ))
       ],
     ),

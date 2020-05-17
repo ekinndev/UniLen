@@ -5,7 +5,6 @@ import 'package:json_table/json_table.dart';
 import 'package:json_table/json_table_column.dart';
 import 'package:http/http.dart' as http;
 import 'package:uniapp/settings/constants.dart';
-import '../settings/colors.dart';
 
 class UniversiteDetail extends StatefulWidget {
   static const universiteDetailRoute = '/unidetail';
@@ -74,10 +73,7 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: DanColor.transparan,
-          elevation: 0,
-        ),
+        appBar: AppBar(),
         extendBodyBehindAppBar: true,
         body: buildColumnUniDetailAna(context),
       ),
@@ -201,7 +197,7 @@ class UstUniAnaKart extends StatelessWidget {
       height: MediaQuery.of(context).size.height * 0.32,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: DanColor.anaRenk,
+        color: Theme.of(context).accentColor,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,

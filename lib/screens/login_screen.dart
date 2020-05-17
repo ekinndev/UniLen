@@ -114,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Scaffold buildScaffoldLoginAna(BuildContext context, Auth authProv) {
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: DanColor.transparan,
+      backgroundColor: Colors.transparent,
       body: _logStatus == LoginStatus.Working
           ? Center(child: CircularProgressIndicator())
           : Container(
@@ -276,7 +276,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(Constants.loginBorderCircular10),
-      color: DanColor.anaRenk,
+      color: Theme.of(context).accentColor,
       child: MaterialButton(
         shape: RoundedRectangleBorder(
             borderRadius:
@@ -337,29 +337,23 @@ class _LoginScreenState extends State<LoginScreen> {
       TextInputAction txtInputAction,
       Function fnk) {
     return TextField(
-      textInputAction: txtInputAction,
-      focusNode: fNode,
-      onSubmitted: (val) {
-        fnk();
-      },
-      controller: textedit,
-      obscureText: secure,
-      style: TextStyle(color: Colors.white70,height: 1.3),
-      decoration: InputDecoration(
-        labelText: text,
-        hintStyle: TextStyle(color: Colors.white70),
-        labelStyle: TextStyle(color: Colors.white),
-        hintText: secure?'********':'giris@danismanakademi.org',
-        contentPadding: const EdgeInsets.all(10),
-        isDense: true,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(Constants.loginBorderCircular10),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(Constants.loginBorderCircular10),
-          borderSide: BorderSide(color: Colors.white),
-        ),
-      ),
-    );
+        textInputAction: txtInputAction,
+        focusNode: fNode,
+        onSubmitted: (val) {
+          fnk();
+        },
+        controller: textedit,
+        obscureText: secure,
+        style: TextStyle(color: Colors.white70, height: 1.3),
+        decoration: InputDecoration(
+          labelText: text,
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(
+              color: Colors.deepOrange[300],
+            ),
+          ),
+          hintText: secure ? '********' : 'giris@danismanakademi.org',
+        ));
   }
 }

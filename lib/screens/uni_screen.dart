@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:provider/provider.dart';
-import 'package:uniapp/settings/colors.dart';
 import 'package:uniapp/widgets/drawer.dart';
 import '../providers/auth.dart';
 import '../models/universite.dart';
@@ -178,7 +177,6 @@ class _UniScreenState extends State<UniScreen> {
 
   AppBar buildAppBar() {
     return AppBar(
-      backgroundColor: DanColor.transparan,
       title: TextField(
         onSubmitted: (val) {
           aramaYap();
@@ -188,24 +186,8 @@ class _UniScreenState extends State<UniScreen> {
         style: TextStyle(color: Colors.white, fontSize: 14, height: 1.3),
         decoration: InputDecoration(
           hintText: 'Üniversite Ara',
-          hintStyle: TextStyle(color: Colors.white70),
-          contentPadding: const EdgeInsets.all(10),
-          isDense: true,
-          border: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: Colors.white),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: Colors.white),
-          ),
         ),
       ),
-      elevation: 0,
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.search),

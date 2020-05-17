@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:uniapp/settings/colors.dart';
 
 class UstAnaKart extends StatelessWidget {
   final String title;
@@ -15,7 +14,7 @@ class UstAnaKart extends StatelessWidget {
           height: MediaQuery.of(context).size.height * 0.32,
           width: double.infinity,
           decoration: BoxDecoration(
-            color: DanColor.anaRenk,
+            color: Theme.of(context).accentColor,
           ),
         ),
         Positioned(
@@ -25,10 +24,12 @@ class UstAnaKart extends StatelessWidget {
             children: <Widget>[
               Text(
                 title,
-                style: TextStyle(color: Colors.white, fontSize: 35),
+                style: Theme.of(context).textTheme.headline1,
               ),
-              Text(subtitle,
-                  style: TextStyle(color: Colors.white, fontSize: 15)),
+              Text(
+                subtitle,
+                style: Theme.of(context).textTheme.headline4,
+              ),
             ],
           ),
           left: 15,

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:uniapp/settings/constants.dart';
-
-import '../settings/colors.dart';
 import '../settings/less_name.dart';
 import '../widgets/ders_butonu.dart';
 import '../widgets/drawer.dart';
@@ -16,7 +14,7 @@ class DersGenelSecim extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       drawer: AnaDrawer(),
-      appBar: dersAppBar(),
+      appBar: dersAppBar(context),
       body: buildColumnDersAna(context),
     );
   }
@@ -52,7 +50,7 @@ class DersGenelSecim extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        dersBasligi('TYT KONULARI'),
+        dersBasligi('TYT KONULARI', context),
         Constants.aralikHeight15,
         dersButonlar(context, LessName.tytDersler),
       ],
@@ -63,7 +61,7 @@ class DersGenelSecim extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        dersBasligi('AYT SAYISAL KONULARI'),
+        dersBasligi('AYT SAYISAL KONULARI', context),
         Constants.aralikHeight15,
         dersButonlar(context, LessName.sayDersler),
       ],
@@ -74,7 +72,7 @@ class DersGenelSecim extends StatelessWidget {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          dersBasligi('AYT EŞİT AĞIRLIK KONULARI'),
+          dersBasligi('AYT EŞİT AĞIRLIK KONULARI', context),
           Constants.aralikHeight15,
           dersButonlar(context, LessName.eaDersler),
         ]);
@@ -84,18 +82,21 @@ class DersGenelSecim extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        dersBasligi('AYT SÖZEL KONULARI'),
+        dersBasligi('AYT SÖZEL KONULARI', context),
         Constants.aralikHeight15,
         dersButonlar(context, LessName.sozDersler),
       ],
     );
   }
 
-  Padding dersBasligi(String text) {
+  Padding dersBasligi(String text, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 8.0),
       child: Text(text,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+          style: Theme.of(context)
+              .textTheme
+              .headline3
+              .copyWith(color: Colors.black)),
     );
   }
 
@@ -120,14 +121,12 @@ class DersGenelSecim extends StatelessWidget {
     );
   }
 
-  AppBar dersAppBar() {
+  AppBar dersAppBar(BuildContext context) {
     return AppBar(
-      backgroundColor: DanColor.anaRenk,
       centerTitle: true,
-      elevation: 0,
       title: Text(
         'Genel Dersler',
-        style: TextStyle(fontWeight: FontWeight.bold),
+        style: Theme.of(context).appBarTheme.textTheme.headline3,
       ),
     );
   }

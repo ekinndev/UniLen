@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
 import '../screens/uni_screen.dart';
-import '../settings/colors.dart';
 import '../screens/ders_screen.dart';
 import '../providers/auth.dart';
 
@@ -19,14 +18,14 @@ class AnaDrawer extends StatelessWidget {
             margin: EdgeInsets.zero,
             accountName: Text(
               _user.name,
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.headline2,
             ),
-            accountEmail: Text(_user.email),
+            accountEmail: Text(_user.email,style: Theme.of(context).textTheme.headline4,),
             currentAccountPicture: CircleAvatar(
               backgroundImage: NetworkImage(_user.photoUrl),
             ),
             decoration: BoxDecoration(
-              color: DanColor.anaRenk,
+              color: Theme.of(context).accentColor,
             ),
           ),
           Expanded(

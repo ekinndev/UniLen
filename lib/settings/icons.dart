@@ -12,7 +12,7 @@ class DanIcons {
   static const grafikIcon = Icon(
     AntDesign.linechart,
     size: 30,
-    color: DanColor.anaRenk,
+    color: Color(0xfffe864a),
   );
   static const Icon fizikIcon = Icon(
     Fontisto.atom,

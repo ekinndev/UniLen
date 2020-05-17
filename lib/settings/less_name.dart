@@ -2,6 +2,7 @@ import 'package:uniapp/settings/colors.dart';
 import 'package:uniapp/settings/icons.dart';
 
 class LessName {
+  
   static const Map<String,dynamic> tytmat = {'ad':'TYT Matematik','kod':'tyt/tytmat','icon':DanIcons.matIcon,'renk':DanColor.matRenk};
   static const Map<String,dynamic> tytturkce = {'ad':'TYT Türkçe','kod':'tyt/tytturkce','icon':DanIcons.turkceIcon,'renk':DanColor.edebRenk};
   static const Map<String,dynamic> tytfizik = {'ad':'TYT Fizik','kod':'tyt/tytfiz','icon':DanIcons.fizikIcon,'renk':DanColor.fizikRenk};

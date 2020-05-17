@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
-import 'package:uniapp/settings/colors.dart';
 import '../widgets/ust_ana_kart.dart';
 import '../providers/konu.dart';
 import '../models/konu.dart';
@@ -51,7 +50,7 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
     return Scaffold(
       key: _scaffoldKey,
       extendBodyBehindAppBar: true,
-      appBar: dersOzelAppBar(),
+      appBar: AppBar(),
       body: buildColumnAnaDers(),
     );
   }
@@ -85,7 +84,7 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
   }
 
   Card konuKart(int i, Konu ders, IconData icon) {
-    final rengiBelirle = ders.durum == false ? Colors.black : DanColor.anaRenk;
+    final rengiBelirle = ders.durum == false ? Colors.black : Theme.of(context).accentColor;
     return Card(
       margin: EdgeInsets.only(
           left: 8,
@@ -120,14 +119,6 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
           side: BorderSide(color: rengiBelirle)),
-    );
-  }
-
-  AppBar dersOzelAppBar() {
-    return AppBar(
-      elevation: 0,
-      centerTitle: true,
-      backgroundColor: DanColor.transparan,
     );
   }
 }
