@@ -207,6 +207,7 @@ class UniCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 15, left: 8, right: 8),
+      width: double.infinity,
       height: MediaQuery.of(context).size.height * 0.37,
       child: Stack(
         children: <Widget>[
@@ -214,8 +215,9 @@ class UniCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             child: Image.asset(
               'assets/unicardBg.jpg',
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
               height: MediaQuery.of(context).size.height * 0.37,
+              width: double.infinity,
             ),
           ),
           Container(
@@ -229,14 +231,16 @@ class UniCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                CircleAvatar(
-                  backgroundColor: Colors.white,
-                  child: Hero(
-                    tag: "uniLogo${uni.uniId}",
-                    child: Image.asset('assets/logolar/${uni.uniId}.png',
-                        fit: BoxFit.cover),
+                Flexible(
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white,
+                    child: Hero(
+                      tag: "uniLogo${uni.uniId}",
+                      child: Image.asset('assets/logolar/${uni.uniId}.png',
+                          fit: BoxFit.cover),
+                    ),
+                    radius: 40,
                   ),
-                  radius: 40,
                 ),
                 Text(
                   uni.uniAd,
