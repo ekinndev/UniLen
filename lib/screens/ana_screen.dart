@@ -30,7 +30,9 @@ class _AnaEkranState extends State<AnaEkran> {
           setState(() {
             this._user = User(
                 email: widget.user.email,
-                name: widget.user.displayName ?? 'Danışman Akademi Öğrenci',
+                name: widget.user.displayName.isEmpty
+                    ? 'Danışman Akademi Öğrenci'
+                    : widget.user.displayName,
                 photoUrl: widget.user.photoUrl ??
                     'https://i.ya-webdesign.com/images/empty-avatar-png.png',
                 token: data.token,

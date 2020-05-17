@@ -14,7 +14,8 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen>
+    with SingleTickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final TextEditingController _email = TextEditingController();
@@ -27,6 +28,23 @@ class _LoginScreenState extends State<LoginScreen> {
 
   AuthMode _authMode = AuthMode.Login;
   LoginStatus _logStatus = LoginStatus.None;
+
+  AnimationController _controller;
+
+  Animation<double> _animation;
+  @override
+  void initState() {
+    super.initState();
+    _controller =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    _animation = Tween(begin: 0.0, end: 1.0).animate(_controller);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
 
   void girisYaDaKayitOl() async {
     Pattern pattern =
@@ -124,7 +142,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Image.asset('assets/login/logo.png',height: 150,),
+                    Image.asset(
+                      'assets/login/logo.png',
+                      height: 150,
+                    ),
                     emailLogin(context),
                     socialMediaLogin(authProv),
                   ],
@@ -149,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return AnimatedContainer(
       duration: Duration(milliseconds: 300),
       decoration: BoxDecoration(color: Colors.transparent),
-      height: _authMode==AuthMode.Login ? 250:310,
+      height: _authMode == AuthMode.Login ? 250 : 310,
       child: ListView(
         children: <Widget>[
           buildTextField(
@@ -176,12 +197,14 @@ class _LoginScreenState extends State<LoginScreen> {
           }),
           Constants.aralikHeight20,
           if (_authMode == AuthMode.SignUp)
-            buildTextField(
-                'Şifre', true, _confPass, _confPassFocus, TextInputAction.done,
-                () {
-              _confPassFocus.unfocus();
-              girisYaDaKayitOl();
-            }),
+            FadeTransition(
+              opacity: _animation,
+              child: buildTextField('Tekrar şifre', true, _confPass, _confPassFocus,
+                  TextInputAction.done, () {
+                _confPassFocus.unfocus();
+                girisYaDaKayitOl();
+              }),
+            ),
           if (_authMode == AuthMode.SignUp) Constants.aralikHeight20,
           loginButton(
               context,
@@ -216,10 +239,12 @@ class _LoginScreenState extends State<LoginScreen> {
     if (_authMode == AuthMode.Login) {
       setState(() {
         _authMode = AuthMode.SignUp;
+        _controller.forward();
       });
     } else {
       setState(() {
         _authMode = AuthMode.Login;
+        _controller.reverse();
       });
     }
   }
