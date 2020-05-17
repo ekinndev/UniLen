@@ -305,15 +305,24 @@ Widget websiteCart(
           height: ekranBoy * 0.3,
         ),
         Center(
-            child: Text(
-          baslik,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: Theme.of(context)
-              .textTheme
-              .headline3
-              .copyWith(fontWeight: FontWeight.normal, color: Colors.white),
-        ))
+          child: Text(
+            baslik,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context)
+                .textTheme
+                .headline3
+                .copyWith(fontWeight: FontWeight.normal, color: Colors.white),
+          ),
+        ),
+        Positioned(
+          top:10,
+          right:10,
+          child: Image.asset(
+            'assets/login/logotek.png',
+            width: 60,
+          ),
+        )
       ],
     ),
   );

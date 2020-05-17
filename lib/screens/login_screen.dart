@@ -124,9 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Image.network(
-                        'https://seeklogo.com/images/S/school-education-inspiration-logo-A8AD603C93-seeklogo.com.png',
-                        height: 180),
+                    Image.asset('assets/login/logo.png',height: 150,),
                     emailLogin(context),
                     socialMediaLogin(authProv),
                   ],
