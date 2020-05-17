@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -101,7 +102,7 @@ class _AnaEkranState extends State<AnaEkran> {
           top: 100,
           left: 15,
           child: _user == null
-              ? CircularProgressIndicator()
+              ? Constants.progressIndicator
               : profileWidget(_user, context),
         ),
       ],
@@ -252,7 +253,7 @@ Widget profileWidget(User _user, BuildContext context) {
     children: <Widget>[
       CircleAvatar(
         minRadius: 25,
-        backgroundImage: NetworkImage(_user.photoUrl),
+        backgroundImage: CachedNetworkImageProvider(_user.photoUrl),
       ),
       Padding(
         padding: const EdgeInsets.all(8),
@@ -293,8 +294,8 @@ Widget websiteCart(
       children: <Widget>[
         ClipRRect(
           borderRadius: BorderRadius.circular(10),
-          child: Image.network(
-            imageUrl,
+          child: CachedNetworkImage(
+            imageUrl: imageUrl,
             fit: BoxFit.fill,
             width: ekranEn * 0.85,
             height: ekranBoy * 0.25,
