@@ -60,7 +60,11 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
     return Column(
       children: <Widget>[
         UstAnaKart(
-            subtitle: _konuSayisi, title: key['ad'], icon: key['icon'].icon,lottie: key['lottie'],),
+          subtitle: _konuSayisi,
+          title: key['ad'],
+          icon: key['icon'].icon,
+          lottie: key['lottie'],
+        ),
         Expanded(
           child: _konularVeri == null
               ? Center(child: Constants.progressIndicator)
@@ -73,7 +77,10 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
                           padding: EdgeInsets.zero,
                           itemBuilder: (ctx, i) {
                             return konuKart(
-                                i, _konularVeri[i], key['icon'].icon);
+                                i == 0,
+                                _konularVeri[i],
+                                key['icon'].icon,
+                                i == (_konularVeri.length - 1));
                           },
                           itemCount: _konularVeri.length,
                         );
@@ -84,15 +91,15 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
     );
   }
 
-  Card konuKart(int i, Konu ders, IconData icon) {
+  Card konuKart(bool ilkMi, Konu ders, IconData icon, bool sonMu) {
     final rengiBelirle =
         ders.durum == false ? Colors.black : Theme.of(context).accentColor;
     return Card(
       margin: EdgeInsets.only(
           left: 8,
           right: 8,
-          bottom: i == 10 - 1 ? 15 : 8, //TODO
-          top: i == 0 ? 15 : 8),
+          bottom: sonMu ? 15 : 8, 
+          top: ilkMi ? 15 : 8),
       child: ListTile(
         leading: Icon(
           icon,
