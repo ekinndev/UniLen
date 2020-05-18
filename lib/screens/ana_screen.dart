@@ -35,7 +35,7 @@ class _AnaEkranState extends State<AnaEkran> {
 
       return jsonDecode(veriCek.body);
     } catch (e) {
-      postlar = [];//TODO
+      postlar = []; //TODO
     }
   }
 
@@ -308,7 +308,7 @@ Widget websiteCart(
   final ekranBoy = MediaQuery.of(context).size.height;
 
   return Container(
-    width: ekranEn * 0.85 /1.25,
+    width: ekranEn * 0.85 / 1.25,
     height: ekranBoy * 0.25,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10),

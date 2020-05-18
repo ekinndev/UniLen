@@ -1,14 +1,11 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:provider/provider.dart';
+import 'package:uniapp/providers/uni.dart';
 import 'package:uniapp/settings/constants.dart';
 import 'package:uniapp/widgets/drawer.dart';
-import '../providers/auth.dart';
 import '../models/universite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import '../widgets/ust_ana_kart.dart';
-import 'package:http/http.dart' as http;
 import './universite_detail_screen.dart';
 
 class UniScreen extends StatefulWidget {
@@ -21,14 +18,14 @@ class UniScreen extends StatefulWidget {
 class _UniScreenState extends State<UniScreen> {
   final ScrollController _scrollController = ScrollController();
   List<Universite> _universiteVeriler = [];
-  List<Universite> _searchUniler = [];
 
-  bool isLoading = false;
+  bool isLoading = true;
+  bool isSearch = false;
   bool isLocked = false;
   String hataMesaji;
+  bool flag = true;
   var listener;
-  final int uniSayisiLimit = 10;
-  int _basIndex = 1;
+
   @override
   void dispose() {
     super.dispose();
@@ -38,67 +35,25 @@ class _UniScreenState extends State<UniScreen> {
   final TextEditingController textCtrl = TextEditingController();
   final FocusNode textFocus = FocusNode();
   /////////////////////////////////////////////////////////////////////////////
-  Future<void> unileriCek([bool arama = false]) async {
-    try {
-      setState(() {
-        isLoading = true;
-      });
-      List<Universite> uniCekilen = [];
-      final token = Provider.of<Auth>(context, listen: false).token;
-      http.Response uniJson;
-      if (arama) {
-        uniJson = await http.get(
-            'https://danisman-akademi-94376.firebaseio.com/universiteler.json?orderBy="uniId"&startAt=1');
-      } else {
-        uniJson = await http.get(
-            'https://danisman-akademi-94376.firebaseio.com/universiteler.json?auth=$token&orderBy="uniId"&startAt=$_basIndex&limitToFirst=$uniSayisiLimit');
-      }
-
-      final Map<String, dynamic> veri = jsonDecode(uniJson.body);
-      veri.forEach((f, s) {
-        final Universite uni = Universite(
-            uniAd: s['uniAd'].toString(),
-            uniAdres: s['uniAdres'].toString(),
-            uniId: s['uniId'].toString(),
-            uniKod: s['uniKodu'].toString(),
-            uniMail: s['uniMail'].toString());
-        uniCekilen.add(uni);
-      });
-
-      setState(() {
-        if (arama) {
-          _searchUniler.addAll(uniCekilen);
-        } else {
-          _universiteVeriler.addAll(uniCekilen);
-        }
-
-        isLoading = false;
-        isLocked = false;
-      });
-    } on SocketException {
-      setState(() {
-        hataMesaji = 'İnternet bağlantısı ya da veri yok.';
-        isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        hataMesaji = e.toString();
-        isLoading = false;
-      });
-    }
-  }
 
   @override
   void initState() {
     super.initState();
-    unileriCek();
+    // unileriCek();
     listener = () {
       if (_scrollController.position.pixels ==
               _scrollController.position.maxScrollExtent &&
           !isLocked) {
+        setState(() {
+          isLoading = true;
+        });
         isLocked = true;
-        _basIndex += uniSayisiLimit;
-        unileriCek();
+        Provider.of<Uni>(context, listen: false)
+            .universiteleriCek()
+            .then((value) {
+          isLocked = false;
+          isLoading = false;
+        });
       }
     };
     _scrollController.addListener(listener);
@@ -107,21 +62,35 @@ class _UniScreenState extends State<UniScreen> {
   Future<void> aramaYap() async {
     textFocus.unfocus();
     _scrollController.removeListener(listener);
-    if (_searchUniler.length <= 0) {
-      await unileriCek(true);
-    }
     setState(() {
-      _universiteVeriler = _searchUniler.where((uni) {
-        RegExp regex =
-            RegExp(textCtrl.text.toLowerCase(), caseSensitive: false);
-
-        return regex.hasMatch(uni.uniAd.toLowerCase());
-      }).toList();
+      _universiteVeriler = [];
+      isLoading = true;
+      isSearch = true;
     });
+    await Provider.of<Uni>(context, listen: false).aramaYap(textCtrl.text);
+    isLoading = false;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (flag) {
+      Provider.of<Uni>(context, listen: false)
+          .universiteleriCek()
+          .then((value) {
+        isLoading = false;
+      });
+
+      flag = false;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    _universiteVeriler = isSearch
+        ? Provider.of<Uni>(context).searchResult
+        : Provider.of<Uni>(context).universiteler;
+
     return Scaffold(
       drawer: AnaDrawer(),
       appBar: buildAppBar(),
@@ -136,22 +105,24 @@ class _UniScreenState extends State<UniScreen> {
         UstAnaKart(
           subtitle: 'Üniversitelere hızlı ulaşım.',
           title: 'Üniversiteler',
-          icon: SimpleLineIcons.graduation,lottie: 'assets/lottie/university.json',
+          icon: SimpleLineIcons.graduation,
+          lottie: 'assets/lottie/university.json',
         ),
         buildExpandedUniList(context),
-        if (isLoading && _basIndex > 1) LinearProgressIndicator(),
+        if (isLoading && _universiteVeriler.isNotEmpty && !isSearch)
+          LinearProgressIndicator(),
       ],
     );
   }
 
   Expanded buildExpandedUniList(BuildContext context) {
     return Expanded(
-      child: isLoading == true && _basIndex == 1
+      child: isLoading && _universiteVeriler.isEmpty
           ? Center(
               child: Constants.progressIndicator,
             )
           : _universiteVeriler.isEmpty
-              ? Center(child: Text('İnternet bağlantısı ya da veri yok.'))
+              ? Center(child: Text('Veri yok.'))
               : ListView.builder(
                   controller: _scrollController,
                   padding: EdgeInsets.zero,
