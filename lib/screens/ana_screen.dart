@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,7 @@ import '../widgets/ders_butonu.dart';
 import '../widgets/drawer.dart';
 import './ders_ozel_screen.dart';
 import '../settings/constants.dart';
+import 'package:http/http.dart' as http;
 
 class AnaEkran extends StatefulWidget {
   @override
@@ -21,26 +24,43 @@ class AnaEkran extends StatefulWidget {
 class _AnaEkranState extends State<AnaEkran> {
   bool _flag = true;
   User _user;
+  List postlar = [];
+  Future<List> postlariCek() async {
+    var veriCek = await http.get(
+        Uri.encodeFull(
+            "https://danismanakademi.org/wp-json/wp/v2/posts?_embed"),
+        headers: {"Accept": "application/json"});
+
+    return jsonDecode(veriCek.body);
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final prov = Provider.of<Auth>(context, listen: false);
     if (_flag) {
+      postlariCek().then((value) => Future.microtask(() {
+            setState(() {
+              postlar = value;
+            });
+          }));
       if (widget.user != null) {
         widget.user.getIdToken().then((data) {
-          setState(() {
-            this._user = User(
-                email: widget.user.email,
-                name: widget.user.displayName.isEmpty
-                    ? 'Danışman Akademi Öğrenci'
-                    : widget.user.displayName,
-                photoUrl: widget.user.photoUrl ??
-                    'https://i.ya-webdesign.com/images/empty-avatar-png.png',
-                token: data.token,
-                uid: widget.user.uid);
+          Future.microtask(() {
+            setState(() {
+              this._user = User(
+                  email: widget.user.email,
+                  name: widget.user.displayName.isEmpty
+                      ? 'Danışman Akademi Öğrenci'
+                      : widget.user.displayName,
+                  photoUrl: widget.user.photoUrl ??
+                      'https://i.ya-webdesign.com/images/empty-avatar-png.png',
+                  token: data.token,
+                  uid: widget.user.uid);
 
-            this._flag = false;
-            prov.setUser(this._user);
+              this._flag = false;
+              prov.setUser(this._user);
+            });
           });
         });
       } else {
@@ -80,7 +100,9 @@ class _AnaEkranState extends State<AnaEkran> {
             children: <Widget>[
               anaDersButonlar(context),
               Constants.aralikHeight15,
-              anaSiteYazilar(ekranBoy, context)
+              postlar.isEmpty
+                  ? Constants.progressIndicator
+                  : anaSiteYazilar(ekranBoy, context, postlar)
             ],
           ),
         ),
@@ -102,7 +124,7 @@ class _AnaEkranState extends State<AnaEkran> {
           top: 100,
           left: 15,
           child: _user == null
-              ? Constants.progressIndicator
+              ? CircularProgressIndicator()
               : profileWidget(_user, context),
         ),
       ],
@@ -206,7 +228,7 @@ Column anaDersButonlar(BuildContext context) {
   );
 }
 
-Column anaSiteYazilar(double ekranBoy, BuildContext context) {
+Column anaSiteYazilar(double ekranBoy, BuildContext context, List postlar) {
   return Column(
     mainAxisSize: MainAxisSize.min,
     children: <Widget>[
@@ -225,24 +247,18 @@ Column anaSiteYazilar(double ekranBoy, BuildContext context) {
       Constants.aralikHeight15,
       Container(
         height: ekranBoy * 0.25,
-        child: FutureBuilder<List<dynamic>>(
-            future: Future.delayed(Duration(seconds: 2)),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: Constants.progressIndicator);
-              }
-              return ListView.builder(
-                physics: BouncingScrollPhysics(),
-                itemBuilder: (ctx, i) => websiteCart(
-                    baslik: 'Deneme Test Yazı',
-                    imageUrl:
-                        'https://danismanakademi.org/wp-content/uploads/2018/03/Hangi-Derse-Nas%C4%B1l-%C3%87al%C4%B1%C5%9Fmal%C4%B1-Felsefe-Grubu.jpg',
-                    i: i,
-                    context: context),
-                itemCount: 5,
-                scrollDirection: Axis.horizontal,
-              );
-            }),
+        child: ListView.builder(
+          physics: BouncingScrollPhysics(),
+          itemBuilder: (ctx, i) => websiteCart(
+              baslik: postlar[i]["title"]["rendered"],
+              imageUrl: postlar[i]["_embedded"]["wp:featuredmedia"][0]
+                  ["source_url"],
+              ilkMi: i == 0,
+              sonMu: i == (postlar.length - 1),
+              context: context),
+          itemCount: postlar.length,
+          scrollDirection: Axis.horizontal,
+        ),
       ),
     ],
   );
@@ -277,8 +293,9 @@ Widget websiteCart(
     {String imageUrl,
     String baslik,
     String link,
-    int i,
-    BuildContext context}) {
+    bool ilkMi,
+    BuildContext context,
+    bool sonMu}) {
   final ekranEn = MediaQuery.of(context).size.width;
   final ekranBoy = MediaQuery.of(context).size.height;
 
@@ -288,8 +305,8 @@ Widget websiteCart(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10),
     ),
-    margin: EdgeInsets.only(
-        left: i == 0 ? 8 : 15, bottom: 15, right: i == 9 ? 8 : 0), //TODO
+    margin:
+        EdgeInsets.only(left: ilkMi ? 8 : 15, bottom: 15, right: sonMu ? 8 : 0),
     child: Stack(
       children: <Widget>[
         ClipRRect(

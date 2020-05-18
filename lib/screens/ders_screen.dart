@@ -14,7 +14,7 @@ class DersGenelSecim extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       drawer: AnaDrawer(),
-      appBar: dersAppBar(context),
+      appBar: AppBar(),
       body: buildColumnDersAna(context),
     );
   }
@@ -25,9 +25,11 @@ class DersGenelSecim extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         UstAnaKart(
-            icon: Entypo.open_book,
-            subtitle: 'Tüm dersler bir tık uzağınızda.',
-            title: 'Tüm Dersler',lottie: 'assets/lottie/study.json',),
+          icon: Entypo.open_book,
+          subtitle: 'Tüm dersler bir tık uzağınızda.',
+          title: 'Tüm Dersler',
+          lottie: 'assets/lottie/study.json',
+        ),
         Expanded(
             child: ListView(
           padding: EdgeInsets.only(top: 15),
@@ -50,7 +52,7 @@ class DersGenelSecim extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        dersBasligi('TYT KONULARI', context),
+        dersBasligi('TYT DERSLERİ', context),
         Constants.aralikHeight15,
         dersButonlar(context, LessName.tytDersler),
       ],
@@ -61,7 +63,7 @@ class DersGenelSecim extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        dersBasligi('AYT SAYISAL KONULARI', context),
+        dersBasligi('AYT SAYISAL DERSLERİ', context),
         Constants.aralikHeight15,
         dersButonlar(context, LessName.sayDersler),
       ],
@@ -72,7 +74,7 @@ class DersGenelSecim extends StatelessWidget {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          dersBasligi('AYT EŞİT AĞIRLIK KONULARI', context),
+          dersBasligi('AYT EŞİT AĞIRLIK DERSLERİ', context),
           Constants.aralikHeight15,
           dersButonlar(context, LessName.eaDersler),
         ]);
@@ -82,7 +84,7 @@ class DersGenelSecim extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        dersBasligi('AYT SÖZEL KONULARI', context),
+        dersBasligi('AYT SÖZEL DERSLERİ', context),
         Constants.aralikHeight15,
         dersButonlar(context, LessName.sozDersler),
       ],
@@ -117,16 +119,6 @@ class DersGenelSecim extends StatelessWidget {
                       builder: (context) => DersOzelScreen(),
                       settings: RouteSettings(arguments: ders[i])),
                 )),
-      ),
-    );
-  }
-
-  AppBar dersAppBar(BuildContext context) {
-    return AppBar(
-      centerTitle: true,
-      title: Text(
-        'Genel Dersler',
-        style: Theme.of(context).appBarTheme.textTheme.headline3,
       ),
     );
   }

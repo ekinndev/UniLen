@@ -17,7 +17,6 @@ class _UstAnaKartState extends State<UstAnaKart> with TickerProviderStateMixin {
   AnimationController _controller;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _controller = AnimationController(vsync: this);
   }
