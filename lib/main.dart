@@ -80,7 +80,7 @@ class MyApp extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           fontSize: 20),
                       headline4: TextStyle(color: Colors.white, fontSize: 15),
-                      headline5: TextStyle(color: Colors.white, fontSize: 30),
+           
                       button: TextStyle(color: Colors.white, fontSize: 18),
                       bodyText1: TextStyle(
                           fontWeight: FontWeight.bold,

@@ -10,7 +10,7 @@ class LessName {
   static const Map<String,dynamic> tytbio = {'ad':'TYT Biyoloji','kod':'tyt/tytbio','icon':DanIcons.bioIcon,'renk':DanColor.bioRenk,'lottie':'assets/lottie/bio.json'};
   static const Map<String,dynamic> tyttarih= {'ad':'TYT Tarih','kod':'tyt/tyttar','icon':DanIcons.tarihIcon,'renk':DanColor.tarihRenk,'lottie':'assets/lottie/history.json'};
   static const Map<String,dynamic> tytcog = {'ad':'TYT Coğrafya','kod':'tyt/tytcog','icon':DanIcons.cogIcon,'renk':DanColor.cogRenk,'lottie':'assets/lottie/cog.json'};
-  static const Map<String,dynamic> tytfel = {'ad':'TYT Felsefe ve Din','kod':'tyt/tytfel','icon':DanIcons.felseDinIcon,'renk':DanColor.felseDinRenk,'lottie':'assets/lottie/feldin.json'};
+  static const Map<String,dynamic> tytfel = {'ad':'TYT Fel. ve Din','kod':'tyt/tytfel','icon':DanIcons.felseDinIcon,'renk':DanColor.felseDinRenk,'lottie':'assets/lottie/feldin.json'};
   
   static const List tytDersler=[tytmat,tytturkce,tytfizik,tytkimya,tytbio,tyttarih,tytcog,tytfel];
 
@@ -31,7 +31,7 @@ class LessName {
 
   static const Map<String,dynamic> ayttar2 = {'ad':'AYT Tarih-2','kod':'ayt/soz/ayttar2','icon':DanIcons.tarihIcon,'renk':DanColor.tarihRenk};
   static const Map<String,dynamic> aytcog2= {'ad':'AYT Coğrafya-2','kod':'ayt/soz/aytcog2','icon':DanIcons.cogIcon,'renk':DanColor.cogRenk};
-  static const Map<String,dynamic> aytfel = {'ad':'AYT Felsefe ve Din','kod':'ayt/soz/aytfel','icon':DanIcons.felseDinIcon,'renk':DanColor.felseDinRenk};
+  static const Map<String,dynamic> aytfel = {'ad':'AYT Fel. ve Din','kod':'ayt/soz/aytfel','icon':DanIcons.felseDinIcon,'renk':DanColor.felseDinRenk};
 
   static const List sozDersler=[aytedeb,aytcog1,ayttar1,aytcog2,ayttar2,aytfel];
 }

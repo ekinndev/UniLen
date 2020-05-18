@@ -206,7 +206,7 @@ class UstUniAnaKart extends StatelessWidget {
               fit: BoxFit.fitWidth,
               child: Text(
                 title,
-                style: Theme.of(context).textTheme.headline5,
+                style: Theme.of(context).textTheme.headline1,
               ),
             ),
           ),
