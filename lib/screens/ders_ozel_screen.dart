@@ -12,77 +12,74 @@ class DersOzelScreen extends StatefulWidget {
 }
 
 class _DersOzelScreenState extends State<DersOzelScreen> {
-  List<Konu> _konularVeri;
-  String _konuSayisi = '';
   Map<String, dynamic> key;
   bool flag = true;
   String hataMesaji;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
+  List<Konu> _konularVeri = [];
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
     if (flag) {
       key = ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-      Future.microtask(() {
-        Provider.of<KonuProvider>(context, listen: false)
-            .degerleriCek(key['kod'])
-            .then((deger) {
-          setState(() {
-            _konularVeri = deger;
-            _konuSayisi = '${_konularVeri.length} Konu';
-            flag = false;
-          });
-        }).catchError((error) {
-          setState(() {
-            hataMesaji = error;
-            _konularVeri = [];
-            _konuSayisi = '0 Konu';
-            flag = false;
-          });
+
+      Provider.of<KonuProvider>(context, listen: false)
+          .degerleriCek(key['kod'])
+          .catchError((e) {
+        setState(() {
+          hataMesaji = e;
+          _konularVeri = [];
+
+          flag = false;
         });
       });
+      flag = false;
+      // .then((deger) {
     }
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    hataMesaji = null;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    _konularVeri = Provider.of<KonuProvider>(context).konulariCek;
     return Scaffold(
       key: _scaffoldKey,
       extendBodyBehindAppBar: true,
       appBar: AppBar(),
-      body: buildColumnAnaDers(),
+      body: buildColumnAnaDers(_konularVeri),
     );
   }
 
-  Column buildColumnAnaDers() {
+  Column buildColumnAnaDers(List<Konu> konular) {
     return Column(
       children: <Widget>[
         UstAnaKart(
-          subtitle: _konuSayisi,
+          subtitle: '${konular.length} konu var.',
           title: key['ad'],
           icon: key['icon'].icon,
           lottie: key['lottie'],
         ),
         Expanded(
-          child: _konularVeri == null
-              ? Center(child: Constants.progressIndicator)
-              : hataMesaji != null
-                  ? Center(child: Text(hataMesaji))
+          child: hataMesaji != null
+              ? Center(child: Text(hataMesaji))
+              : konular.isEmpty
+                  ? Center(child: Constants.progressIndicator)
                   : Consumer<KonuProvider>(
                       builder: (_, prov, child) {
                         return ListView.builder(
                           physics: BouncingScrollPhysics(),
                           padding: EdgeInsets.zero,
                           itemBuilder: (ctx, i) {
-                            return konuKart(
-                                i == 0,
-                                _konularVeri[i],
-                                key['icon'].icon,
-                                i == (_konularVeri.length - 1));
+                            return konuKart(i == 0, konular[i],
+                                key['icon'].icon, i == (konular.length - 1));
                           },
-                          itemCount: _konularVeri.length,
+                          itemCount: konular.length,
                         );
                       },
                     ),
@@ -96,10 +93,7 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
         ders.durum == false ? Colors.black : Theme.of(context).accentColor;
     return Card(
       margin: EdgeInsets.only(
-          left: 8,
-          right: 8,
-          bottom: sonMu ? 15 : 8, 
-          top: ilkMi ? 15 : 8),
+          left: 8, right: 8, bottom: sonMu ? 15 : 8, top: ilkMi ? 15 : 8),
       child: ListTile(
         leading: Icon(
           icon,

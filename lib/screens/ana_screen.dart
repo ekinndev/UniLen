@@ -24,14 +24,19 @@ class AnaEkran extends StatefulWidget {
 class _AnaEkranState extends State<AnaEkran> {
   bool _flag = true;
   User _user;
-  List postlar = [];
-  Future<List> postlariCek() async {
-    var veriCek = await http.get(
-        Uri.encodeFull(
-            "https://danismanakademi.org/wp-json/wp/v2/posts?_embed"),
-        headers: {"Accept": "application/json"});
+  List postlar = null;
 
-    return jsonDecode(veriCek.body);
+  Future<List> postlariCek() async {
+    try {
+      var veriCek = await http.get(
+          Uri.encodeFull(
+              "https://danismanakademi.org/wp-json/wp/v2/posts?_embed"),
+          headers: {"Accept": "application/json"});
+
+      return jsonDecode(veriCek.body);
+    } catch (e) {
+      postlar = [];//TODO
+    }
   }
 
   @override
@@ -39,11 +44,12 @@ class _AnaEkranState extends State<AnaEkran> {
     super.didChangeDependencies();
     final prov = Provider.of<Auth>(context, listen: false);
     if (_flag) {
-      postlariCek().then((value) => Future.microtask(() {
-            setState(() {
-              postlar = value;
-            });
-          }));
+      // postlariCek().then((value) => Future.microtask(() {
+      //   if(this is)
+      //       setState(() {
+      //         postlar = value;
+      //       });
+      //     }));
       if (widget.user != null) {
         widget.user.getIdToken().then((data) {
           Future.microtask(() {
@@ -100,9 +106,11 @@ class _AnaEkranState extends State<AnaEkran> {
             children: <Widget>[
               anaDersButonlar(context),
               Constants.aralikHeight15,
-              postlar.isEmpty
+              postlar == null
                   ? Constants.progressIndicator
-                  : anaSiteYazilar(ekranBoy, context, postlar)
+                  : postlar.isEmpty
+                      ? Text('Son yazılar çekilemedi.')
+                      : anaSiteYazilar(ekranBoy, context, postlar)
             ],
           ),
         ),
@@ -300,7 +308,7 @@ Widget websiteCart(
   final ekranBoy = MediaQuery.of(context).size.height;
 
   return Container(
-    width: ekranEn * 0.85,
+    width: ekranEn * 0.85 /1.25,
     height: ekranBoy * 0.25,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10),

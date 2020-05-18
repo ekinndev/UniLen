@@ -12,8 +12,9 @@ class KonuProvider with ChangeNotifier {
 
   List<Konu> _konuVeriler = [];
 
-  Future<List<Konu>> degerleriCek(String kod) async {
+  Future<void> degerleriCek(String kod) async {
     try {
+      _konuVeriler = [];
       final konuApiLink = '${_apiLink}konular/$kod';
       final durumApiLink =
           '${_apiLink}konulardurum/${_user.uid}/$kod.json?auth=${_user.token}';
@@ -31,7 +32,7 @@ class KonuProvider with ChangeNotifier {
                   : jsonDurumJson[konu['id']] ?? false))
           .toList();
       _konuVeriler = donusturulmusVeri;
-      return konulariCek;
+      notifyListeners();
     } on SocketException {
       throw "İnternet bağlantısı ya da veri yok.";
     } catch (e) {
@@ -42,6 +43,7 @@ class KonuProvider with ChangeNotifier {
   List<Konu> get konulariCek {
     return _konuVeriler;
   }
+
 
   Future<void> durumuGuncelle(String id, String kod) async {
     try {
