@@ -50,6 +50,11 @@ class _UniScreenState extends State<UniScreen> {
           setStateIfMounted(() {
             isLocked = false;
           });
+        }).catchError((error) {
+          setStateIfMounted(() {
+            isLocked = false;
+            hataMesaji = error;
+          });
         });
       }
     };
@@ -103,6 +108,11 @@ class _UniScreenState extends State<UniScreen> {
       child: FutureBuilder(
         future: _future,
         builder: (context, snapshot) {
+          if (snapshot.hasError || hataMesaji != null) {
+            return Center(
+                child:
+                    Text(hataMesaji != null ? hataMesaji : snapshot.error));
+          }
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Constants.progressIndicator;
           }
