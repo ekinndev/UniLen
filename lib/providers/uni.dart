@@ -12,6 +12,7 @@ class Uni with ChangeNotifier {
   int _sayfa = 1;
   List<Universite> _uniler = [];
   List<Universite> _searchUniler = [];
+  Map<String, Object> _universite;
 
   Future<void> universiteleriCek() async {
     try {
@@ -82,5 +83,30 @@ class Uni with ChangeNotifier {
 
   List<Universite> get universiteler {
     return _uniler;
+  }
+
+  Future<void> uniyiGetir(String uniKod) async {
+    try {
+      _universite=null;
+      final jsonData = await http.get(
+          'https://danisman-akademi-94376.firebaseio.com/unibolumbilgi/$uniKod.json');
+      final veriler = jsonDecode(jsonData.body);
+      _universite = veriler;
+      // _sehir = veriler['sehir'];
+      // _uniTur = veriler['uniTur'];
+      // _soz = veriler['söz'];
+      // _say = veriler['say'];
+      // _dil = veriler['dil'];
+      // _ea = veriler['ea'];
+      notifyListeners();
+    } on SocketException {
+      throw 'İnternet bağlantısı ya da veri yok.';
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  Map<String, Object> get bolumBilgi {
+    return _universite;
   }
 }

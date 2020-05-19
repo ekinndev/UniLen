@@ -35,7 +35,7 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     serviceCall(context);
     return Scaffold(
-      body: Text('xDDDDDDDD'),
+      body: Center(child: Text('Splash Screen')),
     );
   }
 }

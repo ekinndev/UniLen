@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:json_table/json_table.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:uniapp/providers/uni.dart';
 import 'package:uniapp/settings/constants.dart';
 
 class UniversiteDetail extends StatefulWidget {
@@ -13,18 +15,10 @@ class UniversiteDetail extends StatefulWidget {
 }
 
 class _UniversiteDetailState extends State<UniversiteDetail> {
-  String _sehir;
-  String _uniTur;
   String _resimId;
-  List<dynamic> _soz;
-  List<dynamic> _say;
-  List<dynamic> _dil;
-  List<dynamic> _ea;
-  String _uniKod;
+  Map<String, Object> bolumVeriler;
   String _uniAdi;
   bool _flag = true;
-  bool _isLoading = true;
-  String hataMesaji;
 
   @override
   void didChangeDependencies() {
@@ -32,44 +26,18 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
     if (_flag) {
       Map<String, dynamic> verilenler =
           ModalRoute.of(context).settings.arguments;
-      _uniKod = verilenler['kod'];
+
       _uniAdi = verilenler['uniAdi'];
       _resimId = verilenler['resimId'].toString();
+      Provider.of<Uni>(context, listen: false).uniyiGetir(verilenler['kod']);
       _flag = false;
-      verileriCek().then((veriler) {
-        setState(() {
-          _isLoading = false;
-        });
-      }).catchError((onError) {
-        setState(() {
-          _isLoading = false;
-          hataMesaji = onError;
-        });
-      });
-    }
-  }
-
-  Future<void> verileriCek() async {
-    try {
-      final jsonData = await http.get(
-          'https://danisman-akademi-94376.firebaseio.com/unibolumbilgi/$_uniKod.json');
-      final veriler = jsonDecode(jsonData.body);
-
-      _sehir = veriler['sehir'];
-      _uniTur = veriler['uniTur'];
-      _soz = veriler['söz'];
-      _say = veriler['say'];
-      _dil = veriler['dil'];
-      _ea = veriler['ea'];
-    } on SocketException {
-      throw 'İnternet bağlantısı ya da veri yok.';
-    } catch (e) {
-      throw e.toString();
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    print('xD');
+    bolumVeriler = Provider.of<Uni>(context).bolumBilgi;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(),
@@ -84,33 +52,33 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
       children: <Widget>[
         UstUniAnaKart(
           icon: Icons.ac_unit,
-          subtitle: _sehir != null ? '$_sehir - $_uniTur' : '',
+          subtitle: bolumVeriler != null
+              ? '${bolumVeriler['sehir']} - ${bolumVeriler['uniTur']}'
+              : '',
           title: _uniAdi ?? "",
           id: _resimId,
         ),
-        buildExpandedTablolar(context)
+        bolumVeriler == null
+            ? Expanded(child: Constants.progressIndicator)
+            : buildExpandedTablolar(context),
       ],
     );
   }
 
   Expanded buildExpandedTablolar(BuildContext context) {
     final List<Widget> bolumler = [
-      tabloOlustur(context, _say, "SAYISAL BÖLÜMLER"),
-      tabloOlustur(context, _ea, "EA BÖLÜMLER"),
-      tabloOlustur(context, _soz, "SÖZEL BÖLÜMLER"),
-      tabloOlustur(context, _dil, "DİL BÖLÜMLER")
+      tabloOlustur(context, bolumVeriler['say'], "SAYISAL BÖLÜMLER"),
+      tabloOlustur(context, bolumVeriler['ea'], "EA BÖLÜMLER"),
+      tabloOlustur(context, bolumVeriler['söz'], "SÖZEL BÖLÜMLER"),
+      tabloOlustur(context, bolumVeriler['dil'], "DİL BÖLÜMLER")
     ];
     return Expanded(
-      child: _isLoading
-          ? Center(child: Constants.progressIndicator)
-          : hataMesaji != null
-              ? Center(child: Text(hataMesaji))
-              : ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  padding: EdgeInsets.only(top: 15),
-                  itemBuilder: (ctx, i) => bolumler[i],
-                  itemCount: bolumler.length,
-                ),
+      child: ListView.builder(
+        physics: BouncingScrollPhysics(),
+        padding: EdgeInsets.only(top: 15),
+        itemBuilder: (ctx, i) => bolumler[i],
+        itemCount: bolumler.length,
+      ),
     );
   }
 
@@ -148,11 +116,9 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
             padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
             decoration: BoxDecoration(
                 border: Border.all(width: 0.5), color: Colors.amber),
-            child: Text(
-              header,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyText1
-            ),
+            child: Text(header,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyText1),
           );
         },
         tableCellBuilder: (value) {
@@ -161,11 +127,12 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
             decoration: BoxDecoration(
                 border: Border.all(
                     width: 0.5, color: Colors.grey.withOpacity(0.5))),
-            child: Text(
-              value,
-              textAlign: TextAlign.left,
-              style: Theme.of(context).textTheme.bodyText1.copyWith(fontWeight: FontWeight.normal)
-            ),
+            child: Text(value,
+                textAlign: TextAlign.left,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText1
+                    .copyWith(fontWeight: FontWeight.normal)),
           );
         },
       ),
