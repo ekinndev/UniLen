@@ -27,7 +27,8 @@ class SplashScreen extends StatelessWidget {
         uid: this.user.uid);
 
     prov.setUser(_user);
-    Navigator.of(context).pushReplacementNamed(AnaEkran.anaEkranRoute);
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        AnaEkran.anaEkranRoute, (Route<dynamic> route) => false);
   }
 
   @override
@@ -35,8 +36,8 @@ class SplashScreen extends StatelessWidget {
     Future.microtask(() {
       final prov = Provider.of<Auth>(context, listen: false);
       if (prov.user != null) {
-        return Navigator.of(context)
-            .pushReplacementNamed(AnaEkran.anaEkranRoute);
+        return Navigator.of(context).pushNamedAndRemoveUntil(
+            AnaEkran.anaEkranRoute, (Route<dynamic> route) => false);
       } else {
         return serviceCall(context);
       }

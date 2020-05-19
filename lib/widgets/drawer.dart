@@ -27,7 +27,7 @@ class AnaDrawer extends StatelessWidget {
               style: Theme.of(context).textTheme.headline4,
             ),
             currentAccountPicture: CircleAvatar(
-              backgroundImage:   CachedNetworkImageProvider(_user.photoUrl),
+              backgroundImage: CachedNetworkImageProvider(_user.photoUrl),
             ),
             decoration: BoxDecoration(
               color: Theme.of(context).accentColor,
@@ -72,7 +72,8 @@ class AnaDrawer extends StatelessWidget {
                       title: Text('Çıkış Yap',
                           style: Theme.of(context).textTheme.bodyText2),
                       onTap: () {
-                        Navigator.pushReplacementNamed(context, '/');
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            '/', (Route<dynamic> route) => false);
                         Provider.of<Auth>(context, listen: false).signOutAll();
                       },
                     ),
