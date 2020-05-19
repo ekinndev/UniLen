@@ -21,6 +21,7 @@ class Auth with ChangeNotifier {
 
   void setUser(User newUser) {
     _currentUser = newUser;
+    notifyListeners();
   }
 
   Future<void> emailLoginOrSignUp(
@@ -49,6 +50,7 @@ class Auth with ChangeNotifier {
           photoUrl: _photoUrl,
           token: _token,
           uid: _userId);
+      notifyListeners();
     } on NoSuchMethodError {
       throw 'Login başarısız. Lütfen tekrar deneyin.';
     } on PlatformException catch (f) {
@@ -82,6 +84,7 @@ class Auth with ChangeNotifier {
           photoUrl: _photoUrl,
           token: _token,
           uid: _userId);
+      notifyListeners();
     } on NoSuchMethodError {
       throw 'Login başarısız. Lütfen tekrar deneyin.';
     } on PlatformException catch (f) {
@@ -96,6 +99,7 @@ class Auth with ChangeNotifier {
     _googleSignIn.signOut();
 
     _currentUser = null;
+    notifyListeners();
   }
 
   String hatayiCevir(String hata) {
