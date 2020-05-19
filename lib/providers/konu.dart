@@ -44,7 +44,6 @@ class KonuProvider with ChangeNotifier {
     return _konuVeriler;
   }
 
-
   Future<void> durumuGuncelle(String id, String kod) async {
     try {
       final link =

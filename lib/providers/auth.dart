@@ -6,39 +6,20 @@ import '../models/user.dart';
 import '../screens/login_screen.dart';
 
 class Auth with ChangeNotifier {
-  String _token;
-  String _userId;
-  String _email;
-  String _photoUrl;
-  String _name;
   User _currentUser;
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   String get token {
-    return _token;
+    return _currentUser.token;
   }
 
   User get user {
-    if (_token != null && _currentUser == null) {
-      _currentUser = User(
-          email: _email,
-          name: _name,
-          photoUrl: _photoUrl,
-          token: _token,
-          uid: _userId);
-    }
     return _currentUser;
   }
 
   void setUser(User newUser) {
-    _token = newUser.token;
-    _userId = newUser.uid;
-    _email = newUser.email;
-    _photoUrl = newUser.photoUrl;
-    _name = newUser.name;
-
     _currentUser = newUser;
   }
 
@@ -56,11 +37,18 @@ class Auth with ChangeNotifier {
             email: email, password: password);
       }
       final FirebaseUser userMail = result.user;
-      _token = (await userMail.getIdToken()).token;
-      _userId = userMail.uid;
-      _email = userMail.email;
-      _photoUrl = "https://i.ya-webdesign.com/images/empty-avatar-png.png";
-      _name = "Danışman Akademi Öğrenci";
+      final _token = (await userMail.getIdToken()).token;
+      final _userId = userMail.uid;
+      final _email = userMail.email;
+      final _photoUrl =
+          "https://i.ya-webdesign.com/images/empty-avatar-png.png";
+      final _name = "Danışman Akademi Öğrenci";
+      _currentUser = User(
+          email: _email,
+          name: _name,
+          photoUrl: _photoUrl,
+          token: _token,
+          uid: _userId);
     } on NoSuchMethodError {
       throw 'Login başarısız. Lütfen tekrar deneyin.';
     } on PlatformException catch (f) {
@@ -83,11 +71,17 @@ class Auth with ChangeNotifier {
       final FirebaseUser userGoogle =
           (await _auth.signInWithCredential(credential)).user;
 
-      _token = (await userGoogle.getIdToken()).token;
-      _userId = userGoogle.uid;
-      _email = userGoogle.email;
-      _photoUrl = userGoogle.photoUrl;
-      _name = userGoogle.displayName;
+      final _token = (await userGoogle.getIdToken()).token;
+      final _userId = userGoogle.uid;
+      final _email = userGoogle.email;
+      final _photoUrl = userGoogle.photoUrl;
+      final _name = userGoogle.displayName;
+      _currentUser = User(
+          email: _email,
+          name: _name,
+          photoUrl: _photoUrl,
+          token: _token,
+          uid: _userId);
     } on NoSuchMethodError {
       throw 'Login başarısız. Lütfen tekrar deneyin.';
     } on PlatformException catch (f) {
@@ -100,13 +94,8 @@ class Auth with ChangeNotifier {
   void signOutAll() {
     _auth.signOut();
     _googleSignIn.signOut();
-    _token = null;
+
     _currentUser = null;
-    _userId = null;
-    _email = null;
-    _photoUrl = null;
-    _name = null;
-    notifyListeners();
   }
 
   String hatayiCevir(String hata) {

@@ -84,11 +84,11 @@ class _UniScreenState extends State<UniScreen> {
       drawer: AnaDrawer(),
       appBar: buildAppBar(),
       extendBodyBehindAppBar: true,
-      body: buildColumnUniAna(context),
+      body: buildColumnUniAna(),
     );
   }
 
-  Column buildColumnUniAna(BuildContext context) {
+  Column buildColumnUniAna() {
     return Column(
       children: <Widget>[
         UstAnaKart(
@@ -97,21 +97,20 @@ class _UniScreenState extends State<UniScreen> {
           icon: SimpleLineIcons.graduation,
           lottie: 'assets/lottie/university.json',
         ),
-        buildExpandedUniList(context),
+        buildExpandedUniList(),
         if (isLocked) LinearProgressIndicator(),
       ],
     );
   }
 
-  Widget buildExpandedUniList(BuildContext context) {
+  Widget buildExpandedUniList() {
     return Expanded(
       child: FutureBuilder(
         future: _future,
         builder: (context, snapshot) {
           if (snapshot.hasError || hataMesaji != null) {
             return Center(
-                child:
-                    Text(hataMesaji != null ? hataMesaji : snapshot.error));
+                child: Text(hataMesaji != null ? hataMesaji : snapshot.error));
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Constants.progressIndicator;

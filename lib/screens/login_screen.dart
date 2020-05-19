@@ -145,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen>
                       'assets/login/logo.png',
                       height: 150,
                     ),
-                    emailLogin(context),
+                    emailLogin(),
                     socialMediaLogin(authProv),
                   ],
                 ),
@@ -165,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-  Widget emailLogin(BuildContext context) {
+  Widget emailLogin() {
     return AnimatedContainer(
       duration: Duration(milliseconds: 300),
       decoration: BoxDecoration(color: Colors.transparent),
@@ -205,13 +205,10 @@ class _LoginScreenState extends State<LoginScreen>
               }),
             ),
           if (_authMode == AuthMode.SignUp) Constants.aralikHeight20,
-          loginButton(
-              context,
-              _authMode == AuthMode.Login ? 'Giriş Yap' : 'Kayıt Ol',
+          loginButton(_authMode == AuthMode.Login ? 'Giriş Yap' : 'Kayıt Ol',
               girisYaDaKayitOl),
           Constants.aralikHeight20,
           authDegistirButton(
-              context,
               _authMode == AuthMode.Login
                   ? 'Hesabınız yok mu ?'
                   : 'Zaten kayıtlı mısın ?',
@@ -248,7 +245,7 @@ class _LoginScreenState extends State<LoginScreen>
     }
   }
 
-  Widget authDegistirButton(BuildContext context, String text, Function fnk) {
+  Widget authDegistirButton(String text, Function fnk) {
     const kayitText = ' Şimdi kayıt olun.';
     const girisText = ' Giriş yap.';
     return Row(
@@ -300,7 +297,7 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-  Material loginButton(BuildContext context, String text, Function fnk) {
+  Material loginButton(String text, Function fnk) {
     return Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(10),

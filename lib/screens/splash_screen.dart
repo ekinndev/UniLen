@@ -38,7 +38,7 @@ class SplashScreen extends StatelessWidget {
         return Navigator.of(context)
             .pushReplacementNamed(AnaEkran.anaEkranRoute);
       } else {
-        serviceCall(context);
+        return serviceCall(context);
       }
     });
     return Scaffold(

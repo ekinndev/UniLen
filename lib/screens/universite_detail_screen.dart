@@ -38,12 +38,12 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
       child: Scaffold(
         appBar: AppBar(),
         extendBodyBehindAppBar: true,
-        body: buildColumnUniDetailAna(context),
+        body: buildColumnUniDetailAna(),
       ),
     );
   }
 
-  Column buildColumnUniDetailAna(BuildContext context) {
+  Column buildColumnUniDetailAna() {
     return Column(
       children: <Widget>[
         UstUniAnaKart(
@@ -56,17 +56,17 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
         ),
         bolumVeriler == null
             ? Expanded(child: Constants.progressIndicator)
-            : buildExpandedTablolar(context),
+            : buildExpandedTablolar(),
       ],
     );
   }
 
-  Expanded buildExpandedTablolar(BuildContext context) {
+  Expanded buildExpandedTablolar() {
     final List<Widget> bolumler = [
-      tabloOlustur(context, bolumVeriler['say'], "SAYISAL BÖLÜMLER"),
-      tabloOlustur(context, bolumVeriler['ea'], "EA BÖLÜMLER"),
-      tabloOlustur(context, bolumVeriler['söz'], "SÖZEL BÖLÜMLER"),
-      tabloOlustur(context, bolumVeriler['dil'], "DİL BÖLÜMLER")
+      tabloOlustur(bolumVeriler['say'], "SAYISAL BÖLÜMLER"),
+      tabloOlustur(bolumVeriler['ea'], "EA BÖLÜMLER"),
+      tabloOlustur(bolumVeriler['söz'], "SÖZEL BÖLÜMLER"),
+      tabloOlustur(bolumVeriler['dil'], "DİL BÖLÜMLER")
     ];
     return Expanded(
       child: ListView.builder(
@@ -78,8 +78,7 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
     );
   }
 
-  Widget tabloOlustur(
-      BuildContext context, List<dynamic> liste, String baslik) {
+  Widget tabloOlustur(List<dynamic> liste, String baslik) {
     if (liste == null) {
       return Container();
     }
@@ -87,13 +86,13 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Text(baslik, style: Theme.of(context).textTheme.headline3),
-        tablo(liste, context),
+        tablo(liste),
         Constants.aralikHeight15,
       ],
     );
   }
 
-  Widget tablo(List<dynamic> json, BuildContext context) {
+  Widget tablo(List<dynamic> json) {
     if (json == null) {
       return Center(child: Constants.progressIndicator);
     }
