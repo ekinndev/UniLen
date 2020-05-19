@@ -24,7 +24,7 @@ class _AnaEkranState extends State<AnaEkran> {
   void initState() {
     super.initState();
     _user = Provider.of<Auth>(context, listen: false).user;
-    _future = Provider.of<Website>(context, listen: false).postlariCek();
+    _future = Future.microtask(() => Provider.of<Website>(context, listen: false).postlariCek()); 
   }
 
   @override

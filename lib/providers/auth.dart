@@ -11,7 +11,7 @@ class Auth with ChangeNotifier {
   String _email;
   String _photoUrl;
   String _name;
-  User currentUser;
+  User _currentUser;
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -21,15 +21,15 @@ class Auth with ChangeNotifier {
   }
 
   User get user {
-    if (_token != null && currentUser == null) {
-      currentUser = User(
+    if (_token != null && _currentUser == null) {
+      _currentUser = User(
           email: _email,
           name: _name,
           photoUrl: _photoUrl,
           token: _token,
           uid: _userId);
     }
-    return currentUser;
+    return _currentUser;
   }
 
   void setUser(User newUser) {
@@ -39,7 +39,7 @@ class Auth with ChangeNotifier {
     _photoUrl = newUser.photoUrl;
     _name = newUser.name;
 
-    currentUser = newUser;
+    _currentUser = newUser;
   }
 
   Future<void> emailLoginOrSignUp(
@@ -61,7 +61,6 @@ class Auth with ChangeNotifier {
       _email = userMail.email;
       _photoUrl = "https://i.ya-webdesign.com/images/empty-avatar-png.png";
       _name = "Danışman Akademi Öğrenci";
-      notifyListeners();
     } on NoSuchMethodError {
       throw 'Login başarısız. Lütfen tekrar deneyin.';
     } on PlatformException catch (f) {
@@ -89,7 +88,6 @@ class Auth with ChangeNotifier {
       _email = userGoogle.email;
       _photoUrl = userGoogle.photoUrl;
       _name = userGoogle.displayName;
-      notifyListeners();
     } on NoSuchMethodError {
       throw 'Login başarısız. Lütfen tekrar deneyin.';
     } on PlatformException catch (f) {
@@ -103,6 +101,7 @@ class Auth with ChangeNotifier {
     _auth.signOut();
     _googleSignIn.signOut();
     _token = null;
+    _currentUser = null;
     _userId = null;
     _email = null;
     _photoUrl = null;

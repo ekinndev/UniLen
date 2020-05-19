@@ -15,6 +15,7 @@ class SplashScreen extends StatelessWidget {
     }
 
     final prov = Provider.of<Auth>(context, listen: false);
+
     final data = await this.user.getIdToken();
 
     User _user = User(
@@ -31,7 +32,15 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    serviceCall(context);
+    Future.microtask(() {
+      final prov = Provider.of<Auth>(context, listen: false);
+      if (prov.user != null) {
+        return Navigator.of(context)
+            .pushReplacementNamed(AnaEkran.anaEkranRoute);
+      } else {
+        serviceCall(context);
+      }
+    });
     return Scaffold(
       body: Center(child: Text('Splash Screen')),
     );
