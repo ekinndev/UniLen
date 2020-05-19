@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:uniapp/models/website.dart';
 import 'package:uniapp/providers/uni.dart';
 import 'package:uniapp/screens/splash_screen.dart';
 import './providers/auth.dart';
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: Auth()),
+        ChangeNotifierProvider.value(value: Website()),
         ChangeNotifierProxyProvider<Auth, KonuProvider>(
           create: (_) => KonuProvider(),
           update: (ctx, auth, _) => KonuProvider(auth.user),
@@ -97,7 +99,7 @@ class MyApp extends StatelessWidget {
                 return SplashScreen();
               }
               if (snapshot.hasData) {
-                return AnaEkran(snapshot.data);
+                return SplashScreen(snapshot.data);
               }
               return LoginScreen();
             },

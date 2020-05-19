@@ -34,7 +34,7 @@ class KonuProvider with ChangeNotifier {
       _konuVeriler = donusturulmusVeri;
       notifyListeners();
     } on SocketException {
-      throw "Sunucuyla bağlanırken sorun oluştu.";
+      throw "Sunucuya bağlanırken sorun oluştu.";
     } catch (e) {
       throw e.toString();
     }
@@ -58,7 +58,7 @@ class KonuProvider with ChangeNotifier {
       notifyListeners();
       await http.put(link, body: jsonEncode(!dersDurum));
     } on SocketException {
-      throw "Sunucuyla bağlanırken sorun oluştu.";
+      throw "Sunucuya bağlanırken sorun oluştu.";
     } catch (e) {
       throw e.toString();
     }

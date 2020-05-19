@@ -39,7 +39,7 @@ class Uni with ChangeNotifier {
 
       notifyListeners();
     } on SocketException {
-      throw "Sunucuyla bağlanırken sorun oluştu.";
+      throw "Sunucuya bağlanırken sorun oluştu.";
     } catch (e) {
       throw e.toString();
     }
@@ -70,7 +70,7 @@ class Uni with ChangeNotifier {
       _searchUniler = uniCekilen;
       notifyListeners();
     } on SocketException {
-      throw "Sunucuyla bağlanırken sorun oluştu.";
+      throw "Sunucuya bağlanırken sorun oluştu.";
     } catch (e) {
       throw e.toString();
     }

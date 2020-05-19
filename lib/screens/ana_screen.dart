@@ -1,9 +1,7 @@
-import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:uniapp/models/website.dart';
 import '../models/user.dart';
 import '../providers/auth.dart';
 import '../settings/less_name.dart';
@@ -11,72 +9,22 @@ import '../widgets/ders_butonu.dart';
 import '../widgets/drawer.dart';
 import './ders_ozel_screen.dart';
 import '../settings/constants.dart';
-import 'package:http/http.dart' as http;
 
 class AnaEkran extends StatefulWidget {
   @override
   _AnaEkranState createState() => _AnaEkranState();
   static const anaEkranRoute = '/anaekran';
-  final FirebaseUser user;
-  AnaEkran([this.user]);
 }
 
 class _AnaEkranState extends State<AnaEkran> {
-  bool _flag = true;
   User _user;
-  List postlar = null;
-
-  Future<List> postlariCek() async {
-    try {
-      var veriCek = await http.get(
-          Uri.encodeFull(
-              "https://danismanakademi.org/wp-json/wp/v2/posts?_embed"),
-          headers: {"Accept": "application/json"});
-
-      return jsonDecode(veriCek.body);
-    } catch (e) {
-      postlar = []; //TODO
-    }
-  }
+  Future _future;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final prov = Provider.of<Auth>(context, listen: false);
-    if (_flag) {
-      // postlariCek().then((value) => Future.microtask(() {
-      //   if(this is)
-      //       setState(() {
-      //         postlar = value;
-      //       });
-      //     }));
-      if (widget.user != null) {
-        widget.user.getIdToken().then((data) {
-          Future.microtask(() {
-            setState(() {
-              this._user = User(
-                  email: widget.user.email,
-                  name: widget.user.displayName.isEmpty
-                      ? 'Danışman Akademi Öğrenci'
-                      : widget.user.displayName,
-                  photoUrl: widget.user.photoUrl ??
-                      'https://i.ya-webdesign.com/images/empty-avatar-png.png',
-                  token: data.token,
-                  uid: widget.user.uid);
-
-              this._flag = false;
-              prov.setUser(this._user);
-            });
-          });
-        });
-      } else {
-        setState(() {
-          this._user = prov.user;
-
-          this._flag = false;
-        });
-      }
-    }
+  void initState() {
+    super.initState();
+    _user = Provider.of<Auth>(context, listen: false).user;
+    _future = Provider.of<Website>(context, listen: false).postlariCek();
   }
 
   @override
@@ -106,11 +54,56 @@ class _AnaEkranState extends State<AnaEkran> {
             children: <Widget>[
               anaDersButonlar(context),
               Constants.aralikHeight15,
-              postlar == null
-                  ? Constants.progressIndicator
-                  : postlar.isEmpty
-                      ? Text('Son yazılar çekilemedi.')
-                      : anaSiteYazilar(ekranBoy, context, postlar)
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Sitedeki Son Yazılar',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline3
+                              .copyWith(color: Colors.black),
+                        )),
+                  ),
+                  Constants.aralikHeight15,
+                  Container(
+                    height: ekranBoy * 0.25,
+                    child: FutureBuilder(
+                        future: _future,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(child: LinearProgressIndicator());
+                          }
+                          if (snapshot.hasError) {
+                            return Center(
+                              child: Text(snapshot.error.toString()),
+                            );
+                          }
+                          return Consumer<Website>(
+                              builder: (context, snapshot, __) {
+                            List postlar = snapshot.postlariAl;
+                            return ListView.builder(
+                              physics: BouncingScrollPhysics(),
+                              itemBuilder: (ctx, i) => websiteCart(
+                                  baslik: postlar[i]["title"]["rendered"],
+                                  imageUrl: postlar[i]["_embedded"]
+                                      ["wp:featuredmedia"][0]["source_url"],
+                                  ilkMi: i == 0,
+                                  sonMu: i == (postlar.length - 1),
+                                  context: context),
+                              itemCount: postlar.length,
+                              scrollDirection: Axis.horizontal,
+                            );
+                          });
+                        }),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
@@ -131,9 +124,7 @@ class _AnaEkranState extends State<AnaEkran> {
         Positioned(
           top: 100,
           left: 15,
-          child: _user == null
-              ? CircularProgressIndicator()
-              : profileWidget(_user, context),
+          child: profileWidget(_user, context),
         ),
       ],
     );
@@ -230,42 +221,6 @@ Column anaDersButonlar(BuildContext context) {
                           settings: RouteSettings(arguments: LessName.aytedeb)),
                     )),
           ],
-        ),
-      ),
-    ],
-  );
-}
-
-Column anaSiteYazilar(double ekranBoy, BuildContext context, List postlar) {
-  return Column(
-    mainAxisSize: MainAxisSize.min,
-    children: <Widget>[
-      Padding(
-        padding: const EdgeInsets.only(left: 8),
-        child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Sitedeki Son Yazılar',
-              style: Theme.of(context)
-                  .textTheme
-                  .headline3
-                  .copyWith(color: Colors.black),
-            )),
-      ),
-      Constants.aralikHeight15,
-      Container(
-        height: ekranBoy * 0.25,
-        child: ListView.builder(
-          physics: BouncingScrollPhysics(),
-          itemBuilder: (ctx, i) => websiteCart(
-              baslik: postlar[i]["title"]["rendered"],
-              imageUrl: postlar[i]["_embedded"]["wp:featuredmedia"][0]
-                  ["source_url"],
-              ilkMi: i == 0,
-              sonMu: i == (postlar.length - 1),
-              context: context),
-          itemCount: postlar.length,
-          scrollDirection: Axis.horizontal,
         ),
       ),
     ],
