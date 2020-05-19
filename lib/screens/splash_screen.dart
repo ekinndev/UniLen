@@ -19,9 +19,7 @@ class SplashScreen extends StatelessWidget {
 
     User _user = User(
         email: this.user.email,
-        name: this.user.displayName.isEmpty
-            ? 'Danışman Akademi Öğrenci'
-            : this.user.displayName,
+        name: this.user.displayName ?? 'Danışman Akademi Öğrenci',
         photoUrl: this.user.photoUrl ??
             'https://i.ya-webdesign.com/images/empty-avatar-png.png',
         token: data.token,

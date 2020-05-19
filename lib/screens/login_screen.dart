@@ -51,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen>
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = RegExp(pattern);
     final authProv = Provider.of<Auth>(context, listen: false);
-    if (_pass.text.trim().length <= 6 || !regex.hasMatch(_email.text)) {
+    if (_pass.text.trim().length <= 6 || !regex.hasMatch(_email.text.trim())) {
       _scaffoldKey.currentState.showSnackBar(
         SnackBar(
           content: Text('Email geçersiz ya da şifre çok kısa.'),
@@ -77,11 +77,10 @@ class _LoginScreenState extends State<LoginScreen>
       _logStatus = LoginStatus.Working;
     });
     try {
-      final response = await authProv.emailLoginOrSignUp(
-          email: _email.text, password: _pass.text, regOrLog: _authMode);
-      // if (response is FirebaseError) {
-      //   throw FirebaseError.hatayiCevir(response.error.message);
-      // }
+      await authProv.emailLoginOrSignUp(
+          email: _email.text.trim(),
+          password: _pass.text.trim(),
+          regOrLog: _authMode);
     } catch (e) {
       _scaffoldKey.currentState.showSnackBar(
         SnackBar(
@@ -199,8 +198,8 @@ class _LoginScreenState extends State<LoginScreen>
           if (_authMode == AuthMode.SignUp)
             FadeTransition(
               opacity: _animation,
-              child: buildTextField('Tekrar şifre', true, _confPass, _confPassFocus,
-                  TextInputAction.done, () {
+              child: buildTextField('Tekrar şifre', true, _confPass,
+                  _confPassFocus, TextInputAction.done, () {
                 _confPassFocus.unfocus();
                 girisYaDaKayitOl();
               }),

@@ -46,21 +46,29 @@ class Auth with ChangeNotifier {
       {String email,
       String password,
       AuthMode regOrLog = AuthMode.Login}) async {
-    AuthResult result;
-    if (regOrLog == AuthMode.SignUp) {
-      result = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-    } else {
-      result = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
+    try {
+      AuthResult result;
+      if (regOrLog == AuthMode.SignUp) {
+        result = await _auth.createUserWithEmailAndPassword(
+            email: email, password: password);
+      } else {
+        result = await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
+      }
+      final FirebaseUser userMail = result.user;
+      _token = (await userMail.getIdToken()).token;
+      _userId = userMail.uid;
+      _email = userMail.email;
+      _photoUrl = "https://i.ya-webdesign.com/images/empty-avatar-png.png";
+      _name = "Danışman Akademi Öğrenci";
+      notifyListeners();
+    } on NoSuchMethodError {
+      throw 'Login başarısız. Lütfen tekrar deneyin.';
+    } on PlatformException catch (f) {
+      throw hatayiCevir(f.code);
+    } catch (e) {
+      throw e.toString();
     }
-    final FirebaseUser userMail = result.user;
-    _token = (await userMail.getIdToken()).token;
-    _userId = userMail.uid;
-    _email = userMail.email;
-    _photoUrl = "https://i.ya-webdesign.com/images/empty-avatar-png.png";
-    _name = "Danışman Akademi Öğrenci";
-    notifyListeners();
   }
 
   Future<void> handleSignInGoogle() async {
@@ -84,8 +92,8 @@ class Auth with ChangeNotifier {
       notifyListeners();
     } on NoSuchMethodError {
       throw 'Login başarısız. Lütfen tekrar deneyin.';
-    } on PlatformException {
-      throw "Sunucuya bağlantı sağlanamıyor. Lütfen alternatif yollarla giriş yapın.";
+    } on PlatformException catch (f) {
+      throw hatayiCevir(f.code);
     } catch (e) {
       throw e.toString();
     }
@@ -100,5 +108,22 @@ class Auth with ChangeNotifier {
     _photoUrl = null;
     _name = null;
     notifyListeners();
+  }
+
+  String hatayiCevir(String hata) {
+    switch (hata) {
+      case 'ERROR_USER_NOT_FOUND':
+        return 'Email ya da şifre yanlış.';
+        break;
+
+      case 'ERROR_WRONG_PASSWORD':
+        return 'Email ya da şifre yanlış.';
+        break;
+      case 'ERROR_EMAIL_ALREADY_IN_USE':
+        return 'Bu email kullanılmaktadır.';
+        break;
+      default:
+        return 'Bir hata oluştu. Lütfen daha sonra tekrar deneyin.';
+    }
   }
 }

@@ -87,17 +87,12 @@ class Uni with ChangeNotifier {
 
   Future<void> uniyiGetir(String uniKod) async {
     try {
-      _universite=null;
+      _universite = null;
       final jsonData = await http.get(
           'https://danisman-akademi-94376.firebaseio.com/unibolumbilgi/$uniKod.json');
       final veriler = jsonDecode(jsonData.body);
       _universite = veriler;
-      // _sehir = veriler['sehir'];
-      // _uniTur = veriler['uniTur'];
-      // _soz = veriler['söz'];
-      // _say = veriler['say'];
-      // _dil = veriler['dil'];
-      // _ea = veriler['ea'];
+
       notifyListeners();
     } on SocketException {
       throw 'İnternet bağlantısı ya da veri yok.';

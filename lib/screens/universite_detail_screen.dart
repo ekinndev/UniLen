@@ -1,8 +1,5 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:json_table/json_table.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:uniapp/providers/uni.dart';
 import 'package:uniapp/settings/constants.dart';
@@ -36,7 +33,6 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
 
   @override
   Widget build(BuildContext context) {
-    print('xD');
     bolumVeriler = Provider.of<Uni>(context).bolumBilgi;
     return SafeArea(
       child: Scaffold(
