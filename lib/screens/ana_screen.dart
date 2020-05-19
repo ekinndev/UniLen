@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:uniapp/models/website.dart';
+import 'package:uniapp/providers/website.dart';
 import '../models/user.dart';
 import '../providers/auth.dart';
 import '../settings/less_name.dart';

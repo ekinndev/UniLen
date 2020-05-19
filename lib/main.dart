@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:uniapp/models/website.dart';
 import 'package:uniapp/providers/uni.dart';
+import 'package:uniapp/providers/website.dart';
 import 'package:uniapp/screens/splash_screen.dart';
 import './providers/auth.dart';
 import './providers/konu.dart';

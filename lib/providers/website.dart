@@ -9,6 +9,9 @@ class Website with ChangeNotifier {
 
   Future<void> postlariCek() async {
     try {
+      if (_postlar.length > 0) {
+        return notifyListeners();
+      }
       var veriCek = await http.get(
           Uri.encodeFull(
               "https://danismanakademi.org/wp-json/wp/v2/posts?_embed"),
@@ -16,7 +19,7 @@ class Website with ChangeNotifier {
 
       _postlar = jsonDecode(veriCek.body);
       notifyListeners();
-    } on SocketException{
+    } on SocketException {
       throw 'Sunucuya bağlanırken sorun oluştu.';
     } catch (e) {
       throw e.toString();
