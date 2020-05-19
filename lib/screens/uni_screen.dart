@@ -18,12 +18,10 @@ class UniScreen extends StatefulWidget {
 class _UniScreenState extends State<UniScreen> {
   final ScrollController _scrollController = ScrollController();
   List<Universite> _universiteVeriler = [];
-
-  bool isLoading = true;
+  Future<void> _future;
   bool isSearch = false;
   bool isLocked = false;
   String hataMesaji;
-  bool flag = true;
   var listener;
 
   @override
@@ -35,62 +33,48 @@ class _UniScreenState extends State<UniScreen> {
   final TextEditingController textCtrl = TextEditingController();
   final FocusNode textFocus = FocusNode();
   /////////////////////////////////////////////////////////////////////////////
-
   @override
   void initState() {
     super.initState();
-    // unileriCek();
+    _future = Provider.of<Uni>(context, listen: false).universiteleriCek();
     listener = () {
       if (_scrollController.position.pixels ==
               _scrollController.position.maxScrollExtent &&
           !isLocked) {
-        setState(() {
-          isLoading = true;
+        setStateIfMounted(() {
+          isLocked = true;
         });
-        isLocked = true;
         Provider.of<Uni>(context, listen: false)
             .universiteleriCek()
             .then((value) {
-          isLocked = false;
-          isLoading = false;
+          setStateIfMounted(() {
+            isLocked = false;
+          });
         });
       }
     };
     _scrollController.addListener(listener);
   }
 
+  void setStateIfMounted(f) {
+    if (mounted) {
+      setState(f);
+    }
+  }
+
   Future<void> aramaYap() async {
     textFocus.unfocus();
     _scrollController.removeListener(listener);
-    setState(() {
-      _universiteVeriler = [];
-      isLoading = true;
+
+    setStateIfMounted(() {
       isSearch = true;
+      _future =
+          Provider.of<Uni>(context, listen: false).aramaYap(textCtrl.text);
     });
-    await Provider.of<Uni>(context, listen: false).aramaYap(textCtrl.text);
-    isLoading = false;
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (flag) {
-      Provider.of<Uni>(context, listen: false)
-          .universiteleriCek()
-          .then((value) {
-        isLoading = false;
-      });
-
-      flag = false;
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    _universiteVeriler = isSearch
-        ? Provider.of<Uni>(context).searchResult
-        : Provider.of<Uni>(context).universiteler;
-
     return Scaffold(
       drawer: AnaDrawer(),
       appBar: buildAppBar(),
@@ -109,41 +93,48 @@ class _UniScreenState extends State<UniScreen> {
           lottie: 'assets/lottie/university.json',
         ),
         buildExpandedUniList(context),
-        if (isLoading && _universiteVeriler.isNotEmpty && !isSearch)
-          LinearProgressIndicator(),
+        if (isLocked) LinearProgressIndicator(),
       ],
     );
   }
 
-  Expanded buildExpandedUniList(BuildContext context) {
+  Widget buildExpandedUniList(BuildContext context) {
     return Expanded(
-      child: isLoading && _universiteVeriler.isEmpty
-          ? Center(
-              child: Constants.progressIndicator,
-            )
-          : _universiteVeriler.isEmpty
-              ? Center(child: Text('Veri yok.'))
-              : ListView.builder(
-                  controller: _scrollController,
-                  padding: EdgeInsets.zero,
-                  itemBuilder: (ctx, i) {
-                    return InkWell(
-                      onTap: () {
-                        Navigator.of(context).pushNamed(
-                            UniversiteDetail.universiteDetailRoute,
-                            arguments: {
-                              "kod": _universiteVeriler[i].uniKod,
-                              "uniAdi": _universiteVeriler[i].uniAd,
-                              "resimId": _universiteVeriler[i].uniId,
-                            });
-                      },
-                      child: UniCard(
-                        uni: _universiteVeriler[i],
-                      ),
-                    );
-                  },
-                  itemCount: _universiteVeriler.length,
-                ),
+      child: FutureBuilder(
+        future: _future,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Constants.progressIndicator;
+          }
+          return Consumer<Uni>(
+            builder: (__, prov, child) {
+              _universiteVeriler =
+                  isSearch ? prov.searchResult : prov.universiteler;
+              return ListView.builder(
+                controller: _scrollController,
+                padding: EdgeInsets.zero,
+                itemBuilder: (ctx, i) {
+                  return InkWell(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(
+                          UniversiteDetail.universiteDetailRoute,
+                          arguments: {
+                            "kod": _universiteVeriler[i].uniKod,
+                            "uniAdi": _universiteVeriler[i].uniAd,
+                            "resimId": _universiteVeriler[i].uniId,
+                          });
+                    },
+                    child: UniCard(
+                      uni: _universiteVeriler[i],
+                    ),
+                  );
+                },
+                itemCount: _universiteVeriler.length,
+              );
+            },
+          );
+        },
+      ),
     );
   }
 
