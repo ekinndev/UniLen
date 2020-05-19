@@ -13,76 +13,74 @@ class DersOzelScreen extends StatefulWidget {
 
 class _DersOzelScreenState extends State<DersOzelScreen> {
   Map<String, dynamic> key;
-  bool flag = true;
-  String hataMesaji;
+  bool _flag = true;
+  Future<void> _future;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  List<Konu> _konularVeri = [];
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    if (flag) {
+    if (_flag) {
       key = ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
 
-      Provider.of<KonuProvider>(context, listen: false)
-          .degerleriCek(key['kod'])
-          .catchError((e) {
-        setState(() {
-          hataMesaji = e;
-          _konularVeri = [];
-
-          flag = false;
-        });
-      });
-      flag = false;
-      // .then((deger) {
+      _future = Provider.of<KonuProvider>(context, listen: false)
+          .degerleriCek(key['kod']);
+      _flag = false;
     }
   }
 
   @override
   void dispose() {
     super.dispose();
-    hataMesaji = null;
   }
 
   @override
   Widget build(BuildContext context) {
-    _konularVeri = Provider.of<KonuProvider>(context).konulariCek;
     return Scaffold(
       key: _scaffoldKey,
       extendBodyBehindAppBar: true,
       appBar: AppBar(),
-      body: buildColumnAnaDers(_konularVeri),
+      body: buildColumnAnaDers(),
     );
   }
 
-  Column buildColumnAnaDers(List<Konu> konular) {
+  Column buildColumnAnaDers() {
     return Column(
       children: <Widget>[
         UstAnaKart(
-          subtitle: '${konular.length} konu var.',
+          subtitle: 'konularında güncel durumun',
           title: key['ad'],
           icon: key['icon'].icon,
           lottie: key['lottie'],
         ),
         Expanded(
-          child: hataMesaji != null
-              ? Center(child: Text(hataMesaji))
-              : konular.isEmpty
-                  ? Center(child: Constants.progressIndicator)
-                  : Consumer<KonuProvider>(
-                      builder: (_, prov, child) {
-                        return ListView.builder(
-                          physics: BouncingScrollPhysics(),
-                          padding: EdgeInsets.zero,
-                          itemBuilder: (ctx, i) {
-                            return konuKart(i == 0, konular[i],
-                                key['icon'].icon, i == (konular.length - 1));
-                          },
-                          itemCount: konular.length,
-                        );
-                      },
-                    ),
+          child: FutureBuilder(
+            future: _future,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(child: Text(snapshot.error));
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Constants.progressIndicator;
+              }
+
+              return Consumer<KonuProvider>(
+                builder: (_, prov, child) {
+                  List<Konu> konular = prov.konulariCek;
+
+                  return ListView.builder(
+                    physics: BouncingScrollPhysics(),
+                    padding: EdgeInsets.zero,
+                    itemBuilder: (ctx, i) {
+                      return konuKart(i == 0, konular[i], key['icon'].icon,
+                          i == (konular.length - 1));
+                    },
+                    itemCount: konular.length,
+                  );
+                },
+              );
+            },
+          ),
         ),
       ],
     );
