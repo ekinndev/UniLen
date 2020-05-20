@@ -16,7 +16,7 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
   Map<String, Object> bolumVeriler;
   String _uniAdi;
   bool _flag = true;
-
+  String hataMesaji;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -26,7 +26,14 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
 
       _uniAdi = verilenler['uniAdi'];
       _resimId = verilenler['kod'];
-      Provider.of<Uni>(context, listen: false).uniyiGetir(verilenler['kod']);
+
+      Provider.of<Uni>(context, listen: false)
+          .uniyiGetir(verilenler['kod'])
+          .catchError((onError) {
+        setState(() {
+          hataMesaji = onError;
+        });
+      });
       _flag = false;
     }
   }
@@ -53,9 +60,11 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
           title: _uniAdi ?? "",
           resimId: _resimId,
         ),
-        bolumVeriler == null
-            ? Expanded(child: Constants.progressIndicator)
-            : buildExpandedTablolar(),
+        hataMesaji != null
+            ? Expanded(child: Center(child: Text(hataMesaji)))
+            : bolumVeriler == null
+                ? Expanded(child: Constants.progressIndicator)
+                : buildExpandedTablolar(),
       ],
     );
   }
@@ -156,8 +165,8 @@ class UstUniAnaKart extends StatelessWidget {
             backgroundColor: Colors.white,
             child: Hero(
                 tag: "uniLogo$resimId",
-                child:
-                    Image.asset('assets/logolar/$resimId.png', fit: BoxFit.cover)),
+                child: Image.asset('assets/logolar/$resimId.png',
+                    fit: BoxFit.cover)),
             radius: 55,
           ),
           Padding(

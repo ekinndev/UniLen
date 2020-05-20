@@ -57,9 +57,11 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
           child: FutureBuilder(
             future: _future,
             builder: (context, snapshot) {
-              
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Constants.progressIndicator;
+              }
+              if (snapshot.hasError) {
+                return Center(child: Text(snapshot.error));
               }
 
               return Consumer<KonuProvider>(
