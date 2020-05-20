@@ -54,6 +54,7 @@ class Auth with ChangeNotifier {
     } on NoSuchMethodError {
       throw 'Login başarısız. Lütfen tekrar deneyin.';
     } on PlatformException catch (f) {
+      print(f.code);
       throw hatayiCevir(f.code);
     } catch (e) {
       throw e.toString();
@@ -113,6 +114,9 @@ class Auth with ChangeNotifier {
         break;
       case 'ERROR_EMAIL_ALREADY_IN_USE':
         return 'Bu email kullanılmaktadır.';
+        break;
+      case 'ERROR_NETWORK_REQUEST_FAILED':
+        return "Sunucuya bağlanırken sorun oluştu.";
         break;
       default:
         return 'Bir hata oluştu. Lütfen daha sonra tekrar deneyin.';
