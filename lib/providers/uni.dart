@@ -9,13 +9,16 @@ import 'package:uniapp/models/user.dart';
 class Uni with ChangeNotifier {
   final User user;
   Uni([this.user]);
-  int _sayfa = 1;
+  int _sayfa = 3;
   List<Universite> _uniler = [];
   List<Universite> _searchUniler = [];
   Map<String, Object> _universite;
 
   Future<void> universiteleriCek() async {
     try {
+      if(_sayfa >20){
+        return;
+      }
       final int _uniSayisiLimit = 10;
       http.Response uniJson;
       List<Universite> uniCekilen = [];

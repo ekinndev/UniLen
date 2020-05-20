@@ -130,7 +130,6 @@ class _UniScreenState extends State<UniScreen> {
                           arguments: {
                             "kod": _universiteVeriler[i].uniKod,
                             "uniAdi": _universiteVeriler[i].uniAd,
-                            "resimId": _universiteVeriler[i].uniId,
                           });
                     },
                     child: UniCard(
@@ -206,8 +205,8 @@ class UniCard extends StatelessWidget {
                   child: CircleAvatar(
                     backgroundColor: Colors.white,
                     child: Hero(
-                      tag: "uniLogo${uni.uniId}",
-                      child: Image.asset('assets/logolar/${uni.uniId}.png',
+                      tag: "uniLogo${uni.uniKod}",
+                      child: Image.asset('assets/logolar/${uni.uniKod}.png',
                           fit: BoxFit.cover),
                     ),
                     radius: 40,

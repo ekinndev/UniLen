@@ -25,7 +25,7 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
           ModalRoute.of(context).settings.arguments;
 
       _uniAdi = verilenler['uniAdi'];
-      _resimId = verilenler['resimId'].toString();
+      _resimId = verilenler['kod'];
       Provider.of<Uni>(context, listen: false).uniyiGetir(verilenler['kod']);
       _flag = false;
     }
@@ -47,12 +47,11 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
     return Column(
       children: <Widget>[
         UstUniAnaKart(
-          icon: Icons.ac_unit,
           subtitle: bolumVeriler != null
               ? '${bolumVeriler['sehir']} - ${bolumVeriler['uniTur']}'
               : '',
           title: _uniAdi ?? "",
-          id: _resimId,
+          resimId: _resimId,
         ),
         bolumVeriler == null
             ? Expanded(child: Constants.progressIndicator)
@@ -138,10 +137,9 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
 class UstUniAnaKart extends StatelessWidget {
   final String title;
   final String subtitle;
-  final IconData icon;
-  final String id;
+  final String resimId;
 
-  UstUniAnaKart({this.title, this.subtitle, this.icon, this.id});
+  UstUniAnaKart({this.title, this.subtitle, this.resimId});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -157,9 +155,9 @@ class UstUniAnaKart extends StatelessWidget {
           CircleAvatar(
             backgroundColor: Colors.white,
             child: Hero(
-                tag: "uniLogo$id",
+                tag: "uniLogo$resimId",
                 child:
-                    Image.asset('assets/logolar/$id.png', fit: BoxFit.cover)),
+                    Image.asset('assets/logolar/$resimId.png', fit: BoxFit.cover)),
             radius: 55,
           ),
           Padding(
