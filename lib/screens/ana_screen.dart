@@ -93,6 +93,7 @@ class _AnaEkranState extends State<AnaEkran> {
                               physics: BouncingScrollPhysics(),
                               itemBuilder: (ctx, i) => websiteCart(
                                 baslik: postlar[i]["title"]["rendered"],
+                                link: postlar[i]["link"],
                                 imageUrl: postlar[i]["_embedded"]
                                     ["wp:featuredmedia"][0]["source_url"],
                                 ilkMi: i == 0,
