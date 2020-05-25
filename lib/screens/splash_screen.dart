@@ -20,7 +20,6 @@ class _SplashScreenState extends State<SplashScreen> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   void handleNotification() {
-    // _firebaseMessaging.requestNotificationPermissions();
     _firebaseMessaging.configure(onMessage: (not) {
       return launch(not['data']['link']);
     }, onLaunch: (not) {

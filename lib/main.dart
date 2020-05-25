@@ -1,3 +1,5 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +17,7 @@ import './screens/ana_screen.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  final FirebaseAnalytics analytics = FirebaseAnalytics();
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -31,6 +34,9 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+          navigatorObservers: [
+            FirebaseAnalyticsObserver(analytics: analytics)
+          ],
           routes: {
             DersGenelSecim.dersGenelSecimRoute: (ctx) => DersGenelSecim(),
             UniScreen.uniScreenRoute: (ctx) => UniScreen(),
@@ -39,7 +45,6 @@ class MyApp extends StatelessWidget {
             AnaEkran.anaEkranRoute: (ctx) => AnaEkran(),
           },
           debugShowCheckedModeBanner: false,
-          
           title: 'Danışman Akademi',
           theme: ThemeData(
             inputDecorationTheme: InputDecorationTheme(
