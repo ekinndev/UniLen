@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uniapp/providers/website.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../models/user.dart';
 import '../providers/auth.dart';
 import '../settings/less_name.dart';
@@ -262,52 +263,56 @@ class _AnaEkranState extends State<AnaEkran> {
     final ekranEn = MediaQuery.of(context).size.width;
     final ekranBoy = MediaQuery.of(context).size.height;
 
-    return Container(
-      width: ekranEn * 0.85 / 1.25,
-      height: ekranBoy * 0.25,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      margin: EdgeInsets.only(
-          left: ilkMi ? 8 : 15, bottom: 15, right: sonMu ? 8 : 0),
-      child: Stack(
-        children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: CachedNetworkImage(
-              imageUrl: imageUrl,
-              fit: BoxFit.fill,
+    return InkWell(
+      onTap: () async {
+        if (await canLaunch(link)) {
+          await launch(link);
+        }
+      },
+      child: Container(
+        width: ekranEn * 0.85 / 1.25,
+        height: ekranBoy * 0.25,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        margin: EdgeInsets.only(
+            left: ilkMi ? 8 : 15, bottom: 15, right: sonMu ? 8 : 0),
+        child: Stack(
+          children: <Widget>[
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: CachedNetworkImage(
+                imageUrl: imageUrl,
+                fit: BoxFit.fill,
+                width: ekranEn * 0.85,
+                height: ekranBoy * 0.25,
+              ),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.6),
+                  borderRadius: BorderRadius.circular(10)),
               width: ekranEn * 0.85,
-              height: ekranBoy * 0.25,
+              height: ekranBoy * 0.3,
             ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.6),
-                borderRadius: BorderRadius.circular(10)),
-            width: ekranEn * 0.85,
-            height: ekranBoy * 0.3,
-          ),
-          Center(
-            child: Text(
-              baslik,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline3
-                  .copyWith(fontWeight: FontWeight.normal, color: Colors.white),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10.0),
+                  child: Text(
+                    baslik,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headline3.copyWith(
+                        fontWeight: FontWeight.normal,
+                        color: Colors.white,
+                        fontSize: 18),
+                  ),
+                ),
+              ],
             ),
-          ),
-          Positioned(
-            top: 10,
-            right: 10,
-            child: Image.asset(
-              'assets/login/logotek.png',
-              width: 60,
-            ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }
