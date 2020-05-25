@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../models/user.dart';
 import '../screens/login_screen.dart';
@@ -10,6 +11,7 @@ class Auth with ChangeNotifier {
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FacebookLogin _facebookLogin = FacebookLogin();
 
   String get token {
     return _currentUser.token;
@@ -99,7 +101,7 @@ class Auth with ChangeNotifier {
   void signOutAll() {
     _auth.signOut();
     _googleSignIn.signOut();
-
+    _facebookLogin.logOut();
     _currentUser = null;
     notifyListeners();
   }
@@ -122,8 +124,43 @@ class Auth with ChangeNotifier {
       case 'network_error':
         return "Sunucuya bağlanırken sorun oluştu.";
         break;
+      case 'ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL':
+        return 'Bu email daha önce başka bir üyelikte kullanılmış.';
+        break;
       default:
         return 'Bir hata oluştu. Lütfen daha sonra tekrar deneyin.';
+    }
+  }
+
+  //Facebook
+
+  Future<void> handleSignInFacebook() async {
+    try {
+      FacebookLoginResult facebookLoginResult =
+          await _facebookLogin.logIn(['email']);
+
+      final accessToken = facebookLoginResult.accessToken.token;
+      final facebookAuthCred =
+          FacebookAuthProvider.getCredential(accessToken: accessToken);
+      final data = await _auth.signInWithCredential(facebookAuthCred);
+      final _token = (await data.user.getIdToken()).token;
+      final _userId = data.user.uid;
+      final _email = data.user.email;
+      final _photoUrl = data.user.photoUrl;
+      final _name = data.user.displayName;
+      _currentUser = User(
+          email: _email,
+          name: _name,
+          photoUrl: _photoUrl,
+          token: _token,
+          uid: _userId);
+      notifyListeners();
+    } on NoSuchMethodError {
+      throw 'Login başarısız. Lütfen tekrar deneyin.';
+    } on PlatformException catch (f) {
+      throw hatayiCevir(f.code);
+    } catch (e) {
+      throw e.toString();
     }
   }
 }
