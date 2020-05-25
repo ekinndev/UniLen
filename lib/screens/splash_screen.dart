@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:uniapp/helpers/customRoute.dart';
 import 'package:uniapp/models/user.dart';
 import 'package:uniapp/providers/auth.dart';
 import 'package:uniapp/screens/ana_screen.dart';
@@ -27,8 +28,8 @@ class SplashScreen extends StatelessWidget {
         uid: this.user.uid);
 
     prov.setUser(_user);
-    Navigator.of(context).pushNamedAndRemoveUntil(
-        AnaEkran.anaEkranRoute, (Route<dynamic> route) => false);
+    Navigator.of(context)
+        .pushAndRemoveUntil(CustomRoute(page: AnaEkran()), (route) => false);
   }
 
   @override
@@ -36,8 +37,8 @@ class SplashScreen extends StatelessWidget {
     Future.microtask(() {
       final prov = Provider.of<Auth>(context, listen: false);
       if (prov.user != null) {
-        return Navigator.of(context).pushNamedAndRemoveUntil(
-            AnaEkran.anaEkranRoute, (Route<dynamic> route) => false);
+        return Navigator.of(context).pushAndRemoveUntil(
+            CustomRoute(page: AnaEkran()), (route) => false);
       } else {
         return serviceCall(context);
       }
