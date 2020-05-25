@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:uniapp/providers/uni.dart';
-import 'package:uniapp/providers/website.dart';
-import 'package:uniapp/screens/splash_screen.dart';
+import './providers/uni.dart';
+import './providers/website.dart';
+import './screens/splash_screen.dart';
 import './providers/auth.dart';
 import './providers/konu.dart';
 import './screens/ders_screen.dart';
@@ -39,6 +39,7 @@ class MyApp extends StatelessWidget {
             AnaEkran.anaEkranRoute: (ctx) => AnaEkran(),
           },
           debugShowCheckedModeBanner: false,
+          
           title: 'Danışman Akademi',
           theme: ThemeData(
             inputDecorationTheme: InputDecorationTheme(

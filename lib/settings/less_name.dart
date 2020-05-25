@@ -1,5 +1,5 @@
-import 'package:uniapp/settings/colors.dart';
-import 'package:uniapp/settings/icons.dart';
+import '../settings/colors.dart';
+import '../settings/icons.dart';
 
 class LessName {
   

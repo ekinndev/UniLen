@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:uniapp/models/konu.dart';
+import '../models/konu.dart';
 import '../models/user.dart';
 
 class KonuProvider with ChangeNotifier {

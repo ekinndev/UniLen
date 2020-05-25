@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:uniapp/models/universite.dart';
+import '../models/universite.dart';
 import 'package:http/http.dart' as http;
-import 'package:uniapp/models/user.dart';
+import '../models/user.dart';
 
 class Uni with ChangeNotifier {
   final User user;

@@ -1,7 +1,7 @@
 import 'package:provider/provider.dart';
-import 'package:uniapp/providers/uni.dart';
-import 'package:uniapp/settings/constants.dart';
-import 'package:uniapp/widgets/drawer.dart';
+import '../providers/uni.dart';
+import '../settings/constants.dart';
+import '../widgets/drawer.dart';
 import '../models/universite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';

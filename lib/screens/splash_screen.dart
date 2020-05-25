@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:uniapp/helpers/customRoute.dart';
-import 'package:uniapp/models/user.dart';
-import 'package:uniapp/providers/auth.dart';
-import 'package:uniapp/screens/ana_screen.dart';
+import '../helpers/customRoute.dart';
+import '../models/user.dart';
+import '../providers/auth.dart';
+import '../screens/ana_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   final FirebaseUser user;

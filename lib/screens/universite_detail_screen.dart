@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:json_table/json_table.dart';
 import 'package:provider/provider.dart';
-import 'package:uniapp/providers/uni.dart';
-import 'package:uniapp/settings/constants.dart';
+import '../providers/uni.dart';
+import '../settings/constants.dart';
 
 class UniversiteDetail extends StatefulWidget {
   static const universiteDetailRoute = '/unidetail';
