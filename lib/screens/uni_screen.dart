@@ -119,7 +119,7 @@ class _UniScreenState extends State<UniScreen> {
             builder: (__, prov, child) {
               _universiteVeriler =
                   isSearch ? prov.searchResult : prov.universiteler;
-              return ListView.builder(
+              return isSearch && _universiteVeriler.isEmpty ?Center(child: Text('Üniversite Bulunamadı.')): ListView.builder(
                 controller: _scrollController,
                 padding: EdgeInsets.zero,
                 itemBuilder: (ctx, i) {
