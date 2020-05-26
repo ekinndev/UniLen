@@ -39,9 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final data = await this.widget.user.getIdToken();
     User _user = User(
         email: this.widget.user.email,
-        name: this.widget.user.displayName.isEmpty
-            ? 'Danışman Akademi Öğrenci'
-            : widget.user.displayName,
+        name: this.widget.user.displayName==null || widget.user.displayName.isEmpty ?  'Danışman Akademi Öğrenci':widget.user.displayName,
         photoUrl: this.widget.user.photoUrl ??
             'https://firebasestorage.googleapis.com/v0/b/danisman-akademi-94376.appspot.com/o/ayar%2Fempty.png?alt=media&token=6ccec04d-c9ee-474f-bb15-af7fc8a3c208',
         token: data.token,

@@ -54,7 +54,7 @@ class Uni with ChangeNotifier {
       _searchUniler.clear();
       List<Universite> uniCekilen = [];
       http.Response uniJson = await http.get(
-          'https://danisman-akademi-94376.firebaseio.com/universiteler.json?orderBy="uniId"&startAt=1');
+          'https://danisman-akademi-94376.firebaseio.com/universiteler.json?auth=${user.token}&orderBy="uniId"&startAt=1');
 
       final Map<String, dynamic> veri = jsonDecode(uniJson.body);
       veri.forEach((f, s) {
@@ -92,7 +92,7 @@ class Uni with ChangeNotifier {
     try {
       _universite = null;
       final jsonData = await http.get(
-          'https://danisman-akademi-94376.firebaseio.com/unibolumbilgi/$uniKod.json');
+          'https://danisman-akademi-94376.firebaseio.com/unibolumbilgi/$uniKod.json?auth=${user.token}');
       final veriler = jsonDecode(jsonData.body);
       _universite = veriler;
 
