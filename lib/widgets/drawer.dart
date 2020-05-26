@@ -77,12 +77,6 @@ class AnaDrawer extends StatelessWidget {
                         Provider.of<Auth>(context, listen: false).signOutAll();
                       },
                     ),
-                    ListTile(
-                      leading: Icon(SimpleLineIcons.envelope),
-                      title: Text('İletişim',
-                          style: Theme.of(context).textTheme.bodyText2),
-                      onTap: () {},
-                    ),
                   ],
                 ),
               ),
