@@ -70,7 +70,15 @@ class _SplashScreenState extends State<SplashScreen> {
       }
     });
     return Scaffold(
-      body: Center(child: Text('Splash Screen')),
+      backgroundColor: Theme.of(context).accentColor,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Image.asset('assets/login/logo.png'),
+          LinearProgressIndicator()
+        ],
+      ),
     );
   }
 }
