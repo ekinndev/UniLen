@@ -300,17 +300,15 @@ class _AnaEkranState extends State<AnaEkran> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      baslik,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headline3.copyWith(
-                          fontWeight: FontWeight.normal,
-                          color: Colors.white,
-                          fontSize: 18),
-                    ),
+                  padding: const EdgeInsets.only(
+                      bottom: 10.0, left: 8.0, right: 8.0),
+                  child: Text(
+                    baslik,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headline3.copyWith(
+                        fontWeight: FontWeight.normal,
+                        color: Colors.white,
+                        fontSize: 18),
                   ),
                 ),
               ],
