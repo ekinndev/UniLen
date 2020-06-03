@@ -73,7 +73,7 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
                     padding: EdgeInsets.zero,
                     itemBuilder: (ctx, i) {
                       return konuKart(i == 0, konular[i], key['icon'].icon,
-                          i == (konular.length - 1));
+                          i == (konular.length - 1), konular[i].yildiz);
                     },
                     itemCount: konular.length,
                   );
@@ -86,13 +86,14 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
     );
   }
 
-  Card konuKart(bool ilkMi, Konu ders, IconData icon, bool sonMu) {
+  Card konuKart(bool ilkMi, Konu ders, IconData icon, bool sonMu, int yildiz) {
     final rengiBelirle =
-        ders.durum == false ? Colors.black : Theme.of(context).accentColor;
+        ders.yildiz <5  ? Colors.black : Theme.of(context).accentColor;
     return Card(
       margin: EdgeInsets.only(
           left: 8, right: 8, bottom: sonMu ? 15 : 8, top: ilkMi ? 15 : 8),
       child: ListTile(
+        dense: true,
         leading: Icon(
           icon,
           color: rengiBelirle,
@@ -101,22 +102,30 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
         title: Text(
           ders.konu,
           textAlign: TextAlign.center,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: Theme.of(context)
               .textTheme
               .bodyText1
               .copyWith(color: rengiBelirle),
         ),
+        subtitle: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: List.generate(5, (index) => buildStar(index, yildiz)),
+        ),
         trailing: IconButton(
             onPressed: () {
               Provider.of<KonuProvider>(context, listen: false)
-                  .durumuGuncelle(ders.id, key['kod'])
+                  .yildiziArtir(ders.id, key['kod'])
                   .catchError((e) {
                 _scaffoldKey.currentState
                     .showSnackBar(SnackBar(content: Text(e.toString())));
               });
             },
             icon: Icon(
-              SimpleLineIcons.check,
+              SimpleLineIcons.plus,
               color: rengiBelirle,
             )),
       ),
@@ -124,5 +133,18 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
           borderRadius: BorderRadius.circular(10),
           side: BorderSide(color: rengiBelirle)),
     );
+  }
+
+  Widget buildStar(int index, int yildiz) {
+    IconData icon;
+    Color renk;
+    if (yildiz > index) {
+      renk = Colors.amber;
+      icon = MaterialIcons.star;
+    } else {
+      renk = Colors.black;
+      icon = MaterialIcons.star_border;
+    }
+    return Icon(icon, color: renk);
   }
 }

@@ -56,7 +56,7 @@ class Auth with ChangeNotifier {
     } on NoSuchMethodError {
       throw 'Login başarısız. Lütfen tekrar deneyin.';
     } on PlatformException catch (f) {
-      print(f.code);
+     
       throw hatayiCevir(f.code);
     } catch (e) {
       throw e.toString();
@@ -91,7 +91,7 @@ class Auth with ChangeNotifier {
     } on NoSuchMethodError {
       throw 'Login başarısız. Lütfen tekrar deneyin.';
     } on PlatformException catch (f) {
-      print(f.code);
+    
       throw hatayiCevir(f.code);
     } catch (e) {
       throw e.toString();

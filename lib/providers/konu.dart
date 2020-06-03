@@ -24,12 +24,13 @@ class KonuProvider with ChangeNotifier {
 
       final List<dynamic> jsonKonuJson = jsonDecode(konuJson.body);
       final List<Konu> donusturulmusVeri = jsonKonuJson
-          .map((konu) => Konu(
+          .map(
+            (konu) => Konu(
               konu['id'],
               konu['konu'],
-              jsonDurumJson == null
-                  ? false
-                  : jsonDurumJson[konu['id']] ?? false))
+              jsonDurumJson == null ? 0 : jsonDurumJson[konu['id']] ?? 0,
+            ),
+          )
           .toList();
       _konuVeriler = donusturulmusVeri;
       notifyListeners();
@@ -44,18 +45,21 @@ class KonuProvider with ChangeNotifier {
     return _konuVeriler;
   }
 
-  Future<void> durumuGuncelle(String id, String kod) async {
+  Future<void> yildiziArtir(String id, String kod) async {
     try {
       final link =
           '${_apiLink}konulardurum/${_user.uid}/$kod/$id.json?auth=${_user.token}';
       final konuIndex = _konuVeriler.indexWhere((konu) {
         return konu.id == id;
       });
-      final dersDurum = _konuVeriler[konuIndex].durum;
-      _konuVeriler[konuIndex].durum = !dersDurum;
+      if (_konuVeriler[konuIndex].yildiz == 5) {
+        _konuVeriler[konuIndex].yildiz = 0;
+      } else {
+        _konuVeriler[konuIndex].yildiz += 1;
+      }
 
       notifyListeners();
-      await http.put(link, body: jsonEncode(!dersDurum));
+      await http.put(link, body: jsonEncode(_konuVeriler[konuIndex].yildiz));
     } on SocketException {
       throw "Sunucuya bağlanırken sorun oluştu.";
     } catch (e) {
