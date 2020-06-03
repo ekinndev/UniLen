@@ -41,12 +41,10 @@ class _UniversiteDetailState extends State<UniversiteDetail> {
   @override
   Widget build(BuildContext context) {
     bolumVeriler = Provider.of<Uni>(context).bolumBilgi;
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(),
-        extendBodyBehindAppBar: true,
-        body: buildColumnUniDetailAna(),
-      ),
+    return Scaffold(
+      appBar: AppBar(),
+      extendBodyBehindAppBar: true,
+      body: buildColumnUniDetailAna(),
     );
   }
 
