@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../providers/website.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -22,11 +23,17 @@ class _AnaEkranState extends State<AnaEkran> {
   Future _future;
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  final birthday = DateTime(2021, 06, 12);
+  @override
   void initState() {
     super.initState();
     _user = Provider.of<Auth>(context, listen: false).user;
     _future = Future.microtask(
-        () => Provider.of<Website>(context, listen: false).postlariCek());
+        () => Provider.of<Website>(context, listen: false).tarihleriCek());
   }
 
   @override
@@ -64,7 +71,7 @@ class _AnaEkranState extends State<AnaEkran> {
                     child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Sitedeki Son Yazılar',
+                          'Sınav Sayacı',
                           style: Theme.of(context)
                               .textTheme
                               .headline3
@@ -73,43 +80,68 @@ class _AnaEkranState extends State<AnaEkran> {
                   ),
                   Constants.aralikHeight15,
                   Container(
-                    height: ekranBoy * 0.25,
+                    height: ekranBoy * 0.20,
+                    width: double.infinity,
                     child: FutureBuilder(
-                        future: _future,
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return Center(child: LinearProgressIndicator());
-                          }
-                          if (snapshot.hasError) {
-                            return Center(
-                              child: Text(snapshot.error.toString()),
-                            );
-                          }
-                          return Consumer<Website>(
-                              builder: (context, snapshot, __) {
-                            List postlar = snapshot.postlariAl;
-                            return ListView.builder(
-                              physics: BouncingScrollPhysics(),
-                              itemBuilder: (ctx, i) => websiteCart(
-                                baslik: postlar[i]["title"]["rendered"],
-                                link: postlar[i]["link"],
-                                imageUrl: postlar[i]["_embedded"]
-                                    ["wp:featuredmedia"][0]["source_url"],
-                                ilkMi: i == 0,
-                                sonMu: i == (postlar.length - 1),
-                              ),
-                              itemCount: postlar.length,
-                              scrollDirection: Axis.horizontal,
-                            );
-                          });
-                        }),
+                      future: _future,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: LinearProgressIndicator());
+                        }
+                        if (snapshot.hasError) {
+                          return Center(
+                            child: Text(snapshot.error.toString()),
+                          );
+                        }
+                        return Consumer<Website>(
+                            builder: (context, snapshot, __) {
+                          Map<String, String> tarihler = snapshot.tarihleriAl;
+                          return sinavSayaci(ekranBoy, tarihler['sinavtarih'],
+                              tarihler['sinavtarihyazi']);
+                        });
+                      },
+                    ),
                   ),
                 ],
               ),
             ],
           ),
         ),
+      ],
+    );
+  }
+
+  Row sinavSayaci(double ekranBoy, String sinavTarih, String sinavTarihYazi) {
+    final dateSinav = DateTime.parse(sinavTarih);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Lottie.asset(
+          'assets/lottie/timer.json',
+          repeat: true,
+          alignment: Alignment.centerLeft,
+          fit: BoxFit.fill,
+          height: 130,
+        ),
+        Flexible(
+          fit: FlexFit.tight,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                sinavTarihYazi,
+                style: Theme.of(context)
+                    .textTheme
+                    .headline5
+                    .copyWith(color: Colors.black),
+              ),
+              Text(dateSinav.difference(DateTime.now()).inDays.toString() +
+                  ' Gün Kaldı.')
+            ],
+          ),
+        )
       ],
     );
   }
