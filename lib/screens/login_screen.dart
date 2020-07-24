@@ -375,7 +375,7 @@ class _LoginScreenState extends State<LoginScreen>
             color: Colors.deepOrange[300],
           ),
         ),
-        hintText: secure ? '********' : 'giris@danismanakademi.org',
+        hintText: secure ? '********' : 'giris@unilen.org',
       ),
     );
   }

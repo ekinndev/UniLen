@@ -8,7 +8,7 @@ import '../models/user.dart';
 class KonuProvider with ChangeNotifier {
   final User _user;
   KonuProvider([this._user]);
-  final String _apiLink = 'https://danisman-akademi-94376.firebaseio.com/';
+  final String _apiLink = 'https://unilen-75828.firebaseio.com/';
 
   List<Konu> _konuVeriler = [];
 

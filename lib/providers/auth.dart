@@ -44,8 +44,8 @@ class Auth with ChangeNotifier {
       final _userId = userMail.uid;
       final _email = userMail.email;
       final _photoUrl =
-          "https://firebasestorage.googleapis.com/v0/b/danisman-akademi-94376.appspot.com/o/ayar%2Fempty.png?alt=media&token=6ccec04d-c9ee-474f-bb15-af7fc8a3c208";
-      final _name = "Danışman Akademi Öğrenci";
+          "https://firebasestorage.googleapis.com/v0/b/unilen-75828.appspot.com/o/empty.png?alt=media&token=1db1a0a9-be49-4581-bffe-0df38347276c";
+      final _name = "UniLen Öğrenci";
       _currentUser = User(
           email: _email,
           name: _name,

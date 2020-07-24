@@ -1,4 +1,4 @@
-package org.danismanakademi.uniapp
+package org.unilen.app
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

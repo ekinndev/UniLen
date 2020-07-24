@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import '../models/universite.dart';
 import 'package:http/http.dart' as http;
@@ -13,10 +12,11 @@ class Uni with ChangeNotifier {
   List<Universite> _uniler = [];
   List<Universite> _searchUniler = [];
   Map<String, Object> _universite;
+  final String _apiLink = 'https://unilen-75828.firebaseio.com/';
 
   Future<void> universiteleriCek() async {
     try {
-      if(_sayfa >20){
+      if (_sayfa > 20) {
         return;
       }
       final int _uniSayisiLimit = 10;
@@ -25,7 +25,7 @@ class Uni with ChangeNotifier {
 
       final basIndex = ((_sayfa - 1) * _uniSayisiLimit) + 1;
       uniJson = await http.get(
-          'https://danisman-akademi-94376.firebaseio.com/universiteler.json?auth=${user.token}&orderBy="uniId"&startAt=$basIndex&limitToFirst=$_uniSayisiLimit');
+          '${_apiLink}universiteler.json?auth=${user.token}&orderBy="uniId"&startAt=$basIndex&limitToFirst=$_uniSayisiLimit');
       _sayfa += 1;
 
       final Map<String, dynamic> veri = jsonDecode(uniJson.body);
@@ -54,7 +54,7 @@ class Uni with ChangeNotifier {
       _searchUniler.clear();
       List<Universite> uniCekilen = [];
       http.Response uniJson = await http.get(
-          'https://danisman-akademi-94376.firebaseio.com/universiteler.json?auth=${user.token}&orderBy="uniId"&startAt=1');
+          '${_apiLink}universiteler.json?auth=${user.token}&orderBy="uniId"&startAt=1');
 
       final Map<String, dynamic> veri = jsonDecode(uniJson.body);
       veri.forEach((f, s) {
@@ -91,8 +91,8 @@ class Uni with ChangeNotifier {
   Future<void> uniyiGetir(String uniKod) async {
     try {
       _universite = null;
-      final jsonData = await http.get(
-          'https://danisman-akademi-94376.firebaseio.com/unibolumbilgi/$uniKod.json?auth=${user.token}');
+      final jsonData = await http
+          .get('${_apiLink}unibolumbilgi/$uniKod.json?auth=${user.token}');
       final veriler = jsonDecode(jsonData.body);
       _universite = veriler;
 

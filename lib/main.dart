@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
             AnaEkran.anaEkranRoute: (ctx) => AnaEkran(),
           },
           debugShowCheckedModeBanner: false,
-          title: 'Danışman Akademi',
+          title: 'UniLen',
           theme: ThemeData(
             inputDecorationTheme: InputDecorationTheme(
               hintStyle: TextStyle(color: Colors.white70),

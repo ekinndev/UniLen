@@ -38,7 +38,7 @@ class _AnaEkranState extends State<AnaEkran> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          'Danışman Akademi',
+          'UniLen',
           style: Theme.of(context).appBarTheme.textTheme.headline3,
         ),
       ),
