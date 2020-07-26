@@ -10,7 +10,7 @@ class Website with ChangeNotifier {
   final User _user;
   Website([this._user]);
 
-  Map<String, String> _sinavTarih;
+  Map<String, String> _sinavTarih={};
   Future<void> postlariCek() async {
     try {
       if (_postlar.length > 0) {
@@ -31,6 +31,9 @@ class Website with ChangeNotifier {
 
   Future<void> tarihleriCek() async {
     try {
+      if (_user == null || _sinavTarih.isNotEmpty) {
+        return notifyListeners();
+      }
       final veri = await http.get(
           'https://unilen-75828.firebaseio.com/ayarlar.json?auth=${_user.token}');
       final jsonVeri = jsonDecode(veri.body);

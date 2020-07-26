@@ -96,10 +96,10 @@ class Auth with ChangeNotifier {
     }
   }
 
-  void signOutAll() async {
-    await _auth.signOut();
-     _googleSignIn.signOut();
-     _facebookLogin.logOut();
+  void signOutAll() {
+    _auth.signOut();
+    _googleSignIn.signOut();
+    _facebookLogin.logOut();
     _currentUser = null;
     notifyListeners();
   }
