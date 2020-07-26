@@ -72,9 +72,9 @@ class AnaDrawer extends StatelessWidget {
                       title: Text('Çıkış Yap',
                           style: Theme.of(context).textTheme.bodyText2),
                       onTap: () {
+                        Provider.of<Auth>(context, listen: false).signOutAll();
                         Navigator.of(context).pushNamedAndRemoveUntil(
                             '/', (Route<dynamic> route) => false);
-                        Provider.of<Auth>(context, listen: false).signOutAll();
                       },
                     ),
                   ],

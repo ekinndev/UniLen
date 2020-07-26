@@ -31,8 +31,8 @@ class Website with ChangeNotifier {
 
   Future<void> tarihleriCek() async {
     try {
-      final veri =
-          await http.get('https://unilen-75828.firebaseio.com/ayarlar.json?auth=${_user.token}');
+      final veri = await http.get(
+          'https://unilen-75828.firebaseio.com/ayarlar.json?auth=${_user.token}');
       final jsonVeri = jsonDecode(veri.body);
       _sinavTarih = {
         'sinavtarih': jsonVeri['sinavtarih'],
@@ -51,6 +51,12 @@ class Website with ChangeNotifier {
   }
 
   Map<String, String> get tarihleriAl {
+    if (_user == null) {
+      return {
+        'sinavtarihyazi': 'Lütfen Tekrar Giriş Yapın',
+        'sinavtarih': '3020-10-20'
+      };
+    }
     return _sinavTarih;
   }
 }

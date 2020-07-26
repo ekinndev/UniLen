@@ -56,7 +56,6 @@ class Auth with ChangeNotifier {
     } on NoSuchMethodError {
       throw 'Login başarısız. Lütfen tekrar deneyin.';
     } on PlatformException catch (f) {
-     
       throw hatayiCevir(f.code);
     } catch (e) {
       throw e.toString();
@@ -91,17 +90,16 @@ class Auth with ChangeNotifier {
     } on NoSuchMethodError {
       throw 'Login başarısız. Lütfen tekrar deneyin.';
     } on PlatformException catch (f) {
-    
       throw hatayiCevir(f.code);
     } catch (e) {
       throw e.toString();
     }
   }
 
-  void signOutAll() {
-    _auth.signOut();
-    _googleSignIn.signOut();
-    _facebookLogin.logOut();
+  void signOutAll() async {
+    await _auth.signOut();
+    await _googleSignIn.signOut();
+    await _facebookLogin.logOut();
     _currentUser = null;
     notifyListeners();
   }
