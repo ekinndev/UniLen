@@ -65,10 +65,7 @@ class _AnaEkranState extends State<AnaEkran> {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           'Sınav Sayacı',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline3
-                              .copyWith(color: Colors.black),
+                          style: Theme.of(context).textTheme.headline3,
                         )),
                   ),
                   Constants.aralikHeight15,
@@ -119,10 +116,7 @@ class _AnaEkranState extends State<AnaEkran> {
           children: <Widget>[
             Text(
               sinavTarihYazi,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline5
-                  .copyWith(color: Colors.black),
+              style: Theme.of(context).textTheme.headline5,
             ),
             Text(dateSinav.difference(DateTime.now()).inDays.toString() +
                 ' Gün Kaldı.')
@@ -173,10 +167,7 @@ class _AnaEkranState extends State<AnaEkran> {
               alignment: Alignment.topLeft,
               child: Text(
                 'Hangi Dersin Konusunu Bitirdin ?',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline3
-                    .copyWith(color: Colors.black),
+                style: Theme.of(context).textTheme.headline3,
               )),
         ),
         Constants.aralikHeight15,

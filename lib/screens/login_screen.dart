@@ -225,8 +225,8 @@ class _LoginScreenState extends State<LoginScreen>
       children: <Widget>[
         sosyalMedyaButton(FontAwesome5Brands.google, Color(0xFFDD4B39),
             authProv.handleSignInGoogle),
-        sosyalMedyaButton(
-            FontAwesome5Brands.facebook_f, Color(0xFF4064AD), authProv.handleSignInFacebook),
+        sosyalMedyaButton(FontAwesome5Brands.facebook_f, Color(0xFF4064AD),
+            authProv.handleSignInFacebook),
       ],
     );
   }

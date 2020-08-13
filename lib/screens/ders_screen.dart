@@ -94,11 +94,7 @@ class DersGenelSecim extends StatelessWidget {
   Padding dersBasligi(String text, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 8.0),
-      child: Text(text,
-          style: Theme.of(context)
-              .textTheme
-              .headline3
-              .copyWith(color: Colors.black)),
+      child: Text(text, style: Theme.of(context).textTheme.headline3),
     );
   }
 

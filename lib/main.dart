@@ -82,21 +82,73 @@ class MyApp extends StatelessWidget {
             ),
             buttonTheme: ButtonThemeData(),
             textTheme: TextTheme(
-                headline1: TextStyle(color: Colors.white, fontSize: 35),
-                headline2: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold),
+              headline1: TextStyle(color: Colors.white, fontSize: 35),
+              headline2: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
+              headline3: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20),
+              headline4: TextStyle(color: Colors.white, fontSize: 15),
+              button: TextStyle(color: Colors.white, fontSize: 18),
+              bodyText1: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: Colors.black),
+            ),
+          ),
+          darkTheme: ThemeData(
+            brightness: Brightness.dark,
+            buttonTheme: ButtonThemeData(),
+            textTheme: TextTheme(
+              headline1: TextStyle(color: Colors.white, fontSize: 35),
+              headline2: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
+              headline3: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20),
+              headline4: TextStyle(color: Colors.white, fontSize: 15),
+              button: TextStyle(color: Colors.white, fontSize: 18),
+              bodyText1: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: Colors.white),
+            ),
+            inputDecorationTheme: InputDecorationTheme(
+              hintStyle: TextStyle(color: Colors.white70),
+              labelStyle: TextStyle(color: Colors.white),
+              contentPadding: EdgeInsets.all(10),
+              isDense: true,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(color: Colors.white),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(color: Colors.white),
+              ),
+            ),
+            fontFamily: 'Manrope',
+            primarySwatch: Colors.deepOrange,
+            accentColor: Color(0xffCB6B3B),
+            appBarTheme: AppBarTheme(
+              elevation: 0,
+              color: Colors.transparent,
+              textTheme: TextTheme(
                 headline3: TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 20),
-                headline4: TextStyle(color: Colors.white, fontSize: 15),
-                button: TextStyle(color: Colors.white, fontSize: 18),
-                bodyText1: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.black)),
+              ),
+            ),
           ),
 
           // home: UniversiteDetail(),
