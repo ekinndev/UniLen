@@ -30,11 +30,6 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
@@ -88,7 +83,7 @@ class _DersOzelScreenState extends State<DersOzelScreen> {
 
   Card konuKart(bool ilkMi, Konu ders, IconData icon, bool sonMu, int yildiz) {
     final rengiBelirle =
-        ders.yildiz <5  ? Colors.black : Theme.of(context).accentColor;
+        ders.yildiz < 5 ? Colors.black : Theme.of(context).accentColor;
     return Card(
       margin: EdgeInsets.only(
           left: 8, right: 8, bottom: sonMu ? 15 : 8, top: ilkMi ? 15 : 8),

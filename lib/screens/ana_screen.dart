@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../providers/website.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../providers/auth.dart';
 import '../settings/less_name.dart';
 import '../widgets/ders_butonu.dart';
@@ -21,12 +20,6 @@ class AnaEkran extends StatefulWidget {
 class _AnaEkranState extends State<AnaEkran> {
   Future _future;
   FirebaseUser _user;
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   final birthday = DateTime(2021, 06, 12);
   @override
   void initState() {
@@ -97,6 +90,7 @@ class _AnaEkranState extends State<AnaEkran> {
                         return Consumer<Website>(
                             builder: (context, snapshot, __) {
                           Map<String, String> tarihler = snapshot.tarihleriAl;
+
                           return sinavSayaci(ekranBoy, tarihler['sinavtarih'],
                               tarihler['sinavtarihyazi']);
                         });
@@ -113,7 +107,29 @@ class _AnaEkranState extends State<AnaEkran> {
   }
 
   Row sinavSayaci(double ekranBoy, String sinavTarih, String sinavTarihYazi) {
-    final dateSinav = DateTime.parse(sinavTarih);
+    Widget tarihWidget = Text('Sınav Tarihleri Bulunamadı.');
+
+    if (!(sinavTarih == null || sinavTarihYazi == null)) {
+      final dateSinav = DateTime.parse(sinavTarih);
+      tarihWidget = Flexible(
+        fit: FlexFit.tight,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              sinavTarihYazi,
+              style: Theme.of(context)
+                  .textTheme
+                  .headline5
+                  .copyWith(color: Colors.black),
+            ),
+            Text(dateSinav.difference(DateTime.now()).inDays.toString() +
+                ' Gün Kaldı.')
+          ],
+        ),
+      );
+    }
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
@@ -124,24 +140,7 @@ class _AnaEkranState extends State<AnaEkran> {
           fit: BoxFit.fill,
           height: 130,
         ),
-        Flexible(
-          fit: FlexFit.tight,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                sinavTarihYazi,
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5
-                    .copyWith(color: Colors.black),
-              ),
-              Text(dateSinav.difference(DateTime.now()).inDays.toString() +
-                  ' Gün Kaldı.')
-            ],
-          ),
-        )
+        tarihWidget,
       ],
     );
   }
@@ -271,14 +270,16 @@ class _AnaEkranState extends State<AnaEkran> {
       children: <Widget>[
         CircleAvatar(
           minRadius: 25,
-          backgroundImage: CachedNetworkImageProvider(_user.photoUrl),
+          backgroundImage: CachedNetworkImageProvider(
+              _user.photoUrl ?? Constants.defaultImg),
         ),
         Padding(
           padding: const EdgeInsets.all(8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(_user.name, style: Theme.of(context).textTheme.headline2),
+              Text(_user.displayName ?? "UniLen Öğrenci",
+                  style: Theme.of(context).textTheme.headline2),
               Text(
                 _user.email,
                 textAlign: TextAlign.start,
@@ -291,63 +292,63 @@ class _AnaEkranState extends State<AnaEkran> {
     );
   }
 
-  Widget websiteCart(
-      {String imageUrl, String baslik, String link, bool ilkMi, bool sonMu}) {
-    final ekranEn = MediaQuery.of(context).size.width;
-    final ekranBoy = MediaQuery.of(context).size.height;
+  // Widget websiteCart(
+  //     {String imageUrl, String baslik, String link, bool ilkMi, bool sonMu}) {
+  //   final ekranEn = MediaQuery.of(context).size.width;
+  //   final ekranBoy = MediaQuery.of(context).size.height;
 
-    return InkWell(
-      onTap: () async {
-        if (await canLaunch(link)) {
-          await launch(link);
-        }
-      },
-      child: Container(
-        width: ekranEn * 0.85 / 1.25,
-        height: ekranBoy * 0.25,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        margin: EdgeInsets.only(
-            left: ilkMi ? 8 : 15, bottom: 15, right: sonMu ? 8 : 0),
-        child: Stack(
-          children: <Widget>[
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: CachedNetworkImage(
-                imageUrl: imageUrl,
-                fit: BoxFit.fill,
-                width: ekranEn * 0.85,
-                height: ekranBoy * 0.25,
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.6),
-                  borderRadius: BorderRadius.circular(10)),
-              width: ekranEn * 0.85,
-              height: ekranBoy * 0.3,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(
-                      bottom: 10.0, left: 8.0, right: 8.0),
-                  child: Text(
-                    baslik,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline3.copyWith(
-                        fontWeight: FontWeight.normal,
-                        color: Colors.white,
-                        fontSize: 18),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  //   return InkWell(
+  //     onTap: () async {
+  //       if (await canLaunch(link)) {
+  //         await launch(link);
+  //       }
+  //     },
+  //     child: Container(
+  //       width: ekranEn * 0.85 / 1.25,
+  //       height: ekranBoy * 0.25,
+  //       decoration: BoxDecoration(
+  //         borderRadius: BorderRadius.circular(10),
+  //       ),
+  //       margin: EdgeInsets.only(
+  //           left: ilkMi ? 8 : 15, bottom: 15, right: sonMu ? 8 : 0),
+  //       child: Stack(
+  //         children: <Widget>[
+  //           ClipRRect(
+  //             borderRadius: BorderRadius.circular(10),
+  //             child: CachedNetworkImage(
+  //               imageUrl: imageUrl,
+  //               fit: BoxFit.fill,
+  //               width: ekranEn * 0.85,
+  //               height: ekranBoy * 0.25,
+  //             ),
+  //           ),
+  //           Container(
+  //             decoration: BoxDecoration(
+  //                 color: Colors.black.withOpacity(0.6),
+  //                 borderRadius: BorderRadius.circular(10)),
+  //             width: ekranEn * 0.85,
+  //             height: ekranBoy * 0.3,
+  //           ),
+  //           Column(
+  //             mainAxisAlignment: MainAxisAlignment.end,
+  //             children: <Widget>[
+  //               Padding(
+  //                 padding: const EdgeInsets.only(
+  //                     bottom: 10.0, left: 8.0, right: 8.0),
+  //                 child: Text(
+  //                   baslik,
+  //                   textAlign: TextAlign.center,
+  //                   style: Theme.of(context).textTheme.headline3.copyWith(
+  //                       fontWeight: FontWeight.normal,
+  //                       color: Colors.white,
+  //                       fontSize: 18),
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 }
