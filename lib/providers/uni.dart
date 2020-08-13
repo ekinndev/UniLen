@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../models/universite.dart';
 import 'package:http/http.dart' as http;
+import '../settings/constants.dart';
 
 class Uni with ChangeNotifier {
   final FirebaseUser _user;
@@ -12,7 +13,6 @@ class Uni with ChangeNotifier {
   List<Universite> _uniler = [];
   List<Universite> _searchUniler = [];
   Map<String, Object> _universite;
-  final String _apiLink = 'https://unilen-75828.firebaseio.com/';
 
   Future<void> universiteleriCek() async {
     try {

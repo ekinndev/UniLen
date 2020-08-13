@@ -1,3 +1,4 @@
+import 'package:UniLen/settings/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -19,7 +20,7 @@ class AnaDrawer extends StatelessWidget {
           UserAccountsDrawerHeader(
             margin: EdgeInsets.zero,
             accountName: Text(
-              _user.name,
+              _user.displayName ?? "UniLen Öğrenci",
               style: Theme.of(context).textTheme.headline2,
             ),
             accountEmail: Text(
@@ -27,7 +28,8 @@ class AnaDrawer extends StatelessWidget {
               style: Theme.of(context).textTheme.headline4,
             ),
             currentAccountPicture: CircleAvatar(
-              backgroundImage: CachedNetworkImageProvider(_user.photoUrl),
+              backgroundImage: CachedNetworkImageProvider(
+                  _user.photoUrl ?? Constants.defaultImg),
             ),
             decoration: BoxDecoration(
               color: Theme.of(context).accentColor,

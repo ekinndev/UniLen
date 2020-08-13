@@ -4,11 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../models/konu.dart';
+import '../settings/constants.dart';
 
 class KonuProvider with ChangeNotifier {
   final FirebaseUser _user;
   KonuProvider([this._user]);
-  final String _apiLink = 'https://unilen-75828.firebaseio.com/';
 
   List<Konu> _konuVeriler = [];
 
@@ -16,9 +16,9 @@ class KonuProvider with ChangeNotifier {
     try {
       final token = (await _user.getIdToken()).token;
       _konuVeriler = [];
-      final konuApiLink = '${_apiLink}konular/$kod';
+      final konuApiLink = '${Constants.apiLink}konular/$kod';
       final durumApiLink =
-          '${_apiLink}konulardurum/${_user.uid}/$kod.json?auth=${_user.token}';
+          '${Constants.apiLink}konulardurum/${_user.uid}/$kod.json?auth=$token';
       final durumJson = await http.get(durumApiLink);
       final konuJson = await http.get('$konuApiLink.json?auth=$token');
       final jsonDurumJson = jsonDecode(durumJson.body);

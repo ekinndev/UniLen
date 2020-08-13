@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import '../settings/constants.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,8 @@ class Website with ChangeNotifier {
         return notifyListeners();
       }
       final token = (await _user.getIdToken()).token;
+      final veri =
+          await http.get('${Constants.apiLink}ayarlar.json?auth=$token');
       final jsonVeri = jsonDecode(veri.body);
       _sinavTarih = {
         'sinavtarih': jsonVeri['sinavtarih'],
