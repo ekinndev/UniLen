@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../providers/website.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../models/user.dart';
 import '../providers/auth.dart';
 import '../settings/less_name.dart';
 import '../widgets/ders_butonu.dart';
@@ -19,8 +19,8 @@ class AnaEkran extends StatefulWidget {
 }
 
 class _AnaEkranState extends State<AnaEkran> {
-  User _user;
   Future _future;
+  FirebaseUser _user;
 
   @override
   void dispose() {

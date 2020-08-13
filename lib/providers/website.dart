@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
-import '../models/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class Website with ChangeNotifier {
   List _postlar = [];
-  final User _user;
+  final FirebaseUser _user;
   Website([this._user]);
 
   Map<String, String> _sinavTarih={};
@@ -34,8 +34,7 @@ class Website with ChangeNotifier {
       if (_user == null || _sinavTarih.isNotEmpty) {
         return notifyListeners();
       }
-      final veri = await http.get(
-          'https://unilen-75828.firebaseio.com/ayarlar.json?auth=${_user.token}');
+      final token = (await _user.getIdToken()).token;
       final jsonVeri = jsonDecode(veri.body);
       _sinavTarih = {
         'sinavtarih': jsonVeri['sinavtarih'],

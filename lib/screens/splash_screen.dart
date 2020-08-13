@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../helpers/customRoute.dart';
-import '../models/user.dart';
 import '../providers/auth.dart';
 import '../screens/ana_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -36,16 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     final prov = Provider.of<Auth>(context, listen: false);
 
-    final data = await this.widget.user.getIdToken();
-    User _user = User(
-        email: this.widget.user.email,
-        name: this.widget.user.displayName==null || widget.user.displayName.isEmpty ?  'UniLen Öğrenci':widget.user.displayName,
-        photoUrl: this.widget.user.photoUrl ??
-            'https://firebasestorage.googleapis.com/v0/b/unilen-75828.appspot.com/o/empty.png?alt=media&token=1db1a0a9-be49-4581-bffe-0df38347276c',
-        token: data.token,
-        uid: this.widget.user.uid);
-
-    prov.setUser(_user);
+    prov.setUser(widget.user);
     Navigator.of(context)
         .pushAndRemoveUntil(CustomRoute(page: AnaEkran()), (route) => false);
   }

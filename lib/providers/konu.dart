@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../models/konu.dart';
-import '../models/user.dart';
 
 class KonuProvider with ChangeNotifier {
-  final User _user;
+  final FirebaseUser _user;
   KonuProvider([this._user]);
   final String _apiLink = 'https://unilen-75828.firebaseio.com/';
 
@@ -14,12 +14,13 @@ class KonuProvider with ChangeNotifier {
 
   Future<void> degerleriCek(String kod) async {
     try {
+      final token = (await _user.getIdToken()).token;
       _konuVeriler = [];
       final konuApiLink = '${_apiLink}konular/$kod';
       final durumApiLink =
           '${_apiLink}konulardurum/${_user.uid}/$kod.json?auth=${_user.token}';
       final durumJson = await http.get(durumApiLink);
-      final konuJson = await http.get('$konuApiLink.json?auth=${_user.token}');
+      final konuJson = await http.get('$konuApiLink.json?auth=$token');
       final jsonDurumJson = jsonDecode(durumJson.body);
 
       final List<dynamic> jsonKonuJson = jsonDecode(konuJson.body);
@@ -47,8 +48,9 @@ class KonuProvider with ChangeNotifier {
 
   Future<void> yildiziArtir(String id, String kod) async {
     try {
+      final token = (await _user.getIdToken()).token;
       final link =
-          '${_apiLink}konulardurum/${_user.uid}/$kod/$id.json?auth=${_user.token}';
+          '${Constants.apiLink}konulardurum/${_user.uid}/$kod/$id.json?auth=$token';
       final konuIndex = _konuVeriler.indexWhere((konu) {
         return konu.id == id;
       });
