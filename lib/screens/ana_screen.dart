@@ -269,7 +269,10 @@ class _AnaEkranState extends State<AnaEkran> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(_user.displayName ?? "UniLen Öğrenci",
+              Text(
+                  _user.displayName.isEmpty || _user.displayName == null
+                      ? "UniLen Öğrenci"
+                      : _user.displayName,
                   style: Theme.of(context).textTheme.headline2),
               Text(
                 _user.email,
